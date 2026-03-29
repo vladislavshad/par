@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   PRODUCTS,
@@ -135,6 +136,55 @@ export function OrderSummary() {
         </p>
       </div>
 
+      {/* ── Visual kit preview ── */}
+      <div className="mb-10 bg-bg-secondary border border-white/5 p-6">
+        <h3 className="text-sm text-text-secondary font-medium mb-4">Ваш комплект</h3>
+        <div className="flex flex-wrap justify-center gap-4">
+          {selectedProducts.map((product) => {
+            const config = itemConfigs[product.id];
+            const variant = product.variants?.find((v) => v.id === config?.variantId);
+            const displayImage = variant?.image ?? product.image;
+            const color = product.colors.find((c) => c.id === config?.colorId);
+
+            return (
+              <div key={product.id} className="text-center flex-shrink-0" style={{ width: "110px" }}>
+                <div className="relative w-24 h-24 mx-auto mb-2 rounded-lg overflow-hidden bg-bg-primary border border-white/10">
+                  <Image
+                    src={displayImage}
+                    alt={product.name}
+                    fill
+                    sizes="96px"
+                    className="object-cover"
+                  />
+                  {color && (
+                    <span
+                      className="absolute bottom-1 right-1 w-4 h-4 rounded-full border-2 border-bg-secondary"
+                      style={{ backgroundColor: color.hex }}
+                    />
+                  )}
+                </div>
+                <p className="text-xs text-text-secondary leading-tight">{product.name}</p>
+                {variant && <p className="text-xs text-text-muted">{variant.name}</p>}
+              </div>
+            );
+          })}
+          {packaging && (
+            <div className="text-center flex-shrink-0" style={{ width: "110px" }}>
+              <div className="relative w-24 h-24 mx-auto mb-2 rounded-lg overflow-hidden bg-bg-primary border border-white/10">
+                <Image
+                  src={packaging.image}
+                  alt={packaging.name}
+                  fill
+                  sizes="96px"
+                  className="object-cover"
+                />
+              </div>
+              <p className="text-xs text-text-secondary leading-tight">{packaging.name}</p>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3 space-y-3">
           {selectedProducts.map((product) => {
@@ -144,13 +194,23 @@ export function OrderSummary() {
             const size = product.sizes?.find((s) => s.id === config?.sizeId);
             const variant = product.variants?.find((v) => v.id === config?.variantId);
             const trimColor = product.trimColors?.find((c) => c.id === config?.trimColorId);
+            const displayImage = variant?.image ?? product.image;
 
             return (
               <div
                 key={product.id}
-                className="bg-bg-secondary border border-white/5 p-4 flex justify-between items-start"
+                className="bg-bg-secondary border border-white/5 p-4 flex gap-4 items-start"
               >
-                <div>
+                <div className="relative w-16 h-16 flex-shrink-0 rounded overflow-hidden bg-bg-primary">
+                  <Image
+                    src={displayImage}
+                    alt={product.name}
+                    fill
+                    sizes="64px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
                   <h4 className="font-serif font-semibold">{product.name}</h4>
                   <div className="text-text-muted text-sm mt-1 space-y-0.5">
                     <p>{material?.name}</p>
@@ -171,7 +231,7 @@ export function OrderSummary() {
                     )}
                   </div>
                 </div>
-                <div className="text-gold font-serif font-bold text-right whitespace-nowrap">
+                <div className="text-gold font-serif font-bold text-right whitespace-nowrap flex-shrink-0">
                   {getItemPrice(product.id).toLocaleString("ru-RU")} ₽
                 </div>
               </div>

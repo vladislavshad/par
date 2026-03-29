@@ -37,6 +37,7 @@ export type ProductVariant = {
   id: string;
   name: string;
   description?: string;
+  image?: string;
 };
 
 export type Product = {
@@ -160,10 +161,10 @@ export const PRODUCTS: Product[] = [
     ],
     colors: FELT_COLORS,
     variants: [
-      { id: "kolpak", name: "Колпак", description: "Классическая остроконечная форма" },
-      { id: "budenovka", name: "Будёновка", description: "С отворотами и козырьком" },
-      { id: "ushanka", name: "Ушанка", description: "С опускающимися ушками" },
-      { id: "panama", name: "Панама", description: "С полями, расслабленный стиль" },
+      { id: "kolpak", name: "Колпак", description: "Классическая остроконечная форма", image: "/images/hat-kolpak.png" },
+      { id: "budenovka", name: "Будёновка", description: "С отворотами и козырьком", image: "/images/hat-budenovka.png" },
+      { id: "ushanka", name: "Ушанка", description: "С опускающимися ушками", image: "/images/hat-ushanka.png" },
+      { id: "panama", name: "Панама", description: "С полями, расслабленный стиль", image: "/images/hat-panama.png" },
     ],
     allowEngraving: true,
     engravingPrice: 500,
@@ -330,7 +331,7 @@ export const PACKAGING_OPTIONS: PackagingOption[] = [
     name: "Льняная сумка",
     description: "Элегантная сумка из натурального льна с лого ПАРЪ",
     price: 0,
-    image: "/images/product-bag.png",
+    image: "/images/packaging-linen.png",
     freeThreshold: 3,
   },
   {
@@ -338,14 +339,14 @@ export const PACKAGING_OPTIONS: PackagingOption[] = [
     name: "Кожаная сумка",
     description: "Натуральная кожа с золотой фурнитурой и тиснением",
     price: 4900,
-    image: "/images/product-bag.png",
+    image: "/images/packaging-leather.png",
   },
   {
     id: "vip-case",
     name: "VIP кожаный кейс",
     description: "Кейс ручной работы из полированной кожи с бархатной подкладкой",
     price: 7900,
-    image: "/images/product-bag.png",
+    image: "/images/packaging-vip.png",
   },
 ];
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { PACKAGING_OPTIONS } from "@/data/products";
 import { useConstructor } from "@/store/useConstructor";
@@ -46,12 +47,22 @@ export function PackagingStep() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: i * 0.1 }}
                   onClick={() => setPackaging(pkg.id)}
-                  className={`p-5 text-left border transition-all ${
+                  className={`text-left border transition-all overflow-hidden ${
                     isSelected
-                      ? "border-gold bg-gold/5"
+                      ? "border-gold bg-gold/5 ring-1 ring-gold/20"
                       : "border-white/10 hover:border-white/20"
                   }`}
                 >
+                  <div className="relative w-full aspect-[4/3] bg-bg-primary">
+                    <Image
+                      src={pkg.image}
+                      alt={pkg.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-5">
                   <h3 className="font-serif font-semibold mb-1">{pkg.name}</h3>
                   <p className="text-text-muted text-xs mb-3 leading-relaxed">
                     {pkg.description}
@@ -79,6 +90,7 @@ export function PackagingStep() {
                       Бесплатно при {pkg.freeThreshold}+ предметах
                     </p>
                   )}
+                  </div>
                 </motion.button>
               );
             })}

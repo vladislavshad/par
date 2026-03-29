@@ -117,26 +117,39 @@ export function ItemCustomizer() {
                       {/* ── Variant (hat shape, etc.) ── */}
                       {product.variants && (
                         <div>
-                          <label className="text-sm text-text-secondary font-medium mb-2 block">
+                          <label className="text-sm text-text-secondary font-medium mb-3 block">
                             Форма
                           </label>
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                             {product.variants.map((v) => (
                               <button
                                 key={v.id}
                                 onClick={() =>
                                   setItemConfig(product.id, { variantId: v.id })
                                 }
-                                className={`p-3 text-left border transition-colors ${
+                                className={`text-left border transition-all overflow-hidden ${
                                   config.variantId === v.id
-                                    ? "border-gold bg-gold/5"
+                                    ? "border-gold bg-gold/5 ring-1 ring-gold/20"
                                     : "border-white/10 hover:border-white/20"
                                 }`}
                               >
-                                <div className="text-sm font-medium">{v.name}</div>
-                                {v.description && (
-                                  <div className="text-text-muted text-xs mt-0.5">{v.description}</div>
+                                {v.image && (
+                                  <div className="relative w-full aspect-square bg-bg-primary">
+                                    <Image
+                                      src={v.image}
+                                      alt={v.name}
+                                      fill
+                                      sizes="(max-width: 640px) 50vw, 25vw"
+                                      className="object-cover"
+                                    />
+                                  </div>
                                 )}
+                                <div className="p-2.5">
+                                  <div className="text-sm font-medium">{v.name}</div>
+                                  {v.description && (
+                                    <div className="text-text-muted text-xs mt-0.5">{v.description}</div>
+                                  )}
+                                </div>
                               </button>
                             ))}
                           </div>
