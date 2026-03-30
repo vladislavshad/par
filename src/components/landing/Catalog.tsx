@@ -23,6 +23,33 @@ export function Catalog() {
           </h2>
         </motion.div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5 }}
+          className="mb-10 relative overflow-hidden border border-white/5"
+        >
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full aspect-[21/9] object-cover"
+          >
+            <source src="/videos/hat.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-r from-bg-primary/80 via-bg-primary/30 to-transparent flex items-center">
+            <div className="px-8 sm:px-12 max-w-md">
+              <p className="text-gold tracking-[0.3em] uppercase text-xs mb-2">Ручная работа</p>
+              <h3 className="font-serif text-2xl sm:text-3xl font-bold mb-2">Банная шапка ПАРЪ</h3>
+              <p className="text-text-secondary text-sm leading-relaxed">
+                Натуральный войлок, 4 формы, именная вышивка. Защита от перегрева со стилем.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {PRODUCTS.map((product, i) => (
             <motion.div

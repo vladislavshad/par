@@ -47,22 +47,22 @@ export function About() {
             className="grid grid-cols-2 gap-4"
           >
             {[
-              { number: "7", label: "предметов\nв конструкторе" },
-              { number: "20", label: "цветов\nпалитры" },
-              { number: "5+", label: "материалов\nна каждый предмет" },
-              { number: "∞", label: "вариантов\nвашего комплекта" },
-            ].map((stat, i) => (
-              <div
-                key={i}
-                className="bg-bg-primary border border-white/5 p-6 sm:p-8 text-center"
-              >
-                <div className="text-gold text-3xl sm:text-4xl font-serif font-bold mb-2">
-                  {stat.number}
+                { number: "7", label: "предметов\nв конструкторе" },
+                { number: "20", label: "цветов\nпалитры" },
+                { number: "5+", label: "материалов\nна каждый предмет" },
+                { number: "∞", label: "вариантов\nвашего комплекта" },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className="bg-bg-primary border border-white/5 p-6 sm:p-8 text-center"
+                >
+                  <div className="text-gold text-3xl sm:text-4xl font-serif font-bold mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="text-text-muted text-sm whitespace-pre-line">
+                    {stat.label}
+                  </div>
                 </div>
-                <div className="text-text-muted text-sm whitespace-pre-line">
-                  {stat.label}
-                </div>
-              </div>
             ))}
           </motion.div>
         </div>

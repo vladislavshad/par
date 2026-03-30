@@ -1,21 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-bath-set-flatlay.png"
-          alt="ПАРЪ — премиальный банный комплект"
-          fill
-          sizes="100vw"
-          className="object-cover opacity-35"
-          priority
-        />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-35"
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-bg-primary/60 via-bg-primary/40 to-bg-primary" />
       </div>
 
