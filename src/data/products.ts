@@ -327,6 +327,13 @@ export const PRODUCTS: Product[] = [
 
 export const PACKAGING_OPTIONS: PackagingOption[] = [
   {
+    id: "standard",
+    name: "Стандартная упаковка",
+    description: "Фирменная крафт-коробка ПАРЪ с тишью-бумагой",
+    price: 0,
+    image: "/images/packaging-linen.png",
+  },
+  {
     id: "linen-bag",
     name: "Льняная сумка",
     description: "Элегантная сумка из натурального льна с лого ПАРЪ",

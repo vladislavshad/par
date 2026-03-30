@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -103,10 +103,11 @@ export function OrderSummary() {
   };
 
   // Redirect to step 1 if all items removed
-  if (selectedItems.length === 0 && !submitted) {
-    setStep(1);
-    return null;
-  }
+  useEffect(() => {
+    if (selectedItems.length === 0 && !submitted) {
+      setStep(1);
+    }
+  }, [selectedItems.length, submitted, setStep]);
 
   if (submitted) {
     return (

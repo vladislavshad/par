@@ -46,7 +46,7 @@ const initialState = {
   step: 1,
   selectedItems: [] as string[],
   itemConfigs: {} as Record<string, ItemConfig>,
-  packagingId: "linen-bag",
+  packagingId: "standard",
   giftCardText: "",
   contactName: "",
   contactPhone: "",
