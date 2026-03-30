@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ПАРЪ — Премиальные банные комплекты
 
-## Getting Started
+Онлайн-конструктор персональных банных комплектов ручной работы. Натуральные материалы, именная вышивка, элитная упаковка.
 
-First, run the development server:
+**Production:** https://par-mfg.vercel.app
+
+## Возможности
+
+- **Лендинг** — презентация бренда с видео-контентом
+- **Конструктор комплекта** — 4-шаговый визард: выбор предметов, кастомизация, упаковка, оформление заказа
+- **Конструктор шапки** — визуальный конфигуратор с переключением цветов и форм, превью вышивки
+- **7 предметов** — шапка, полотенце, халат, килт, подстилка, тапочки, сумка
+- **Именная вышивка** — монограмма, имя или фраза, 2 шрифта, 3 цвета нити
+- **Упаковка** — от стандартной крафт-коробки до VIP кожаного кейса
+- **Кастомные заказы** — форма связи для корпоративных и нестандартных запросов
+- **Админ-панель** — управление заказами на `/admin`
+- **Telegram-уведомления** — заказы отправляются в Telegram-бот
+
+## Стек
+
+- **Next.js 16** (App Router, Turbopack)
+- **React 19**
+- **Tailwind CSS 4**
+- **Zustand** — состояние конструктора
+- **Framer Motion** — анимации
+- **Vercel** — хостинг и деплой
+
+## Запуск
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Открыть http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Структура
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+  app/
+    page.tsx                  # Лендинг
+    constructor/page.tsx      # Конструктор комплекта
+    constructor/hat/page.tsx  # Конструктор шапки
+    admin/page.tsx            # Админ-панель
+    api/order/                # API заказов
+    api/admin/                # API админки
+  components/
+    landing/                  # Компоненты лендинга
+    constructor/              # Компоненты конструктора
+  data/products.ts            # Каталог продуктов и опций
+  store/useConstructor.ts     # Zustand стор
+  lib/                        # DB, Telegram
+public/
+  images/                     # Фото продуктов
+  images/hats/                # Цветовые варианты шапок
+  videos/                     # Видео для лендинга
+```
 
-## Learn More
+## Переменные окружения (опционально)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+POSTGRES_URL=           # Vercel Postgres для хранения заказов
+TELEGRAM_BOT_TOKEN=     # Telegram бот для уведомлений
+TELEGRAM_CHAT_ID=       # Chat ID для отправки заказов
+ADMIN_PASSWORD=         # Пароль для админ-панели
+```
