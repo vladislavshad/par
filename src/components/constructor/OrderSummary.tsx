@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   PRODUCTS,
@@ -26,6 +27,8 @@ export function OrderSummary() {
     getItemPrice,
     getTotal,
     prevStep,
+    toggleItem,
+    setStep,
   } = useConstructor();
 
   const [submitting, setSubmitting] = useState(false);
@@ -98,6 +101,12 @@ export function OrderSummary() {
       setSubmitting(false);
     }
   };
+
+  // Redirect to step 1 if all items removed
+  if (selectedItems.length === 0 && !submitted) {
+    setStep(1);
+    return null;
+  }
 
   if (submitted) {
     return (
@@ -231,8 +240,33 @@ export function OrderSummary() {
                     )}
                   </div>
                 </div>
-                <div className="text-gold font-serif font-bold text-right whitespace-nowrap flex-shrink-0">
-                  {getItemPrice(product.id).toLocaleString("ru-RU")} ₽
+                <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                  <div className="text-gold font-serif font-bold whitespace-nowrap">
+                    {getItemPrice(product.id).toLocaleString("ru-RU")} ₽
+                  </div>
+                  <div className="flex gap-2">
+                    {product.id === "hat" ? (
+                      <Link
+                        href="/constructor/hat"
+                        className="text-text-muted hover:text-gold text-xs transition-colors"
+                      >
+                        Изменить
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => setStep(2)}
+                        className="text-text-muted hover:text-gold text-xs transition-colors"
+                      >
+                        Изменить
+                      </button>
+                    )}
+                    <button
+                      onClick={() => toggleItem(product.id)}
+                      className="text-text-muted hover:text-red-400 text-xs transition-colors"
+                    >
+                      Удалить
+                    </button>
+                  </div>
                 </div>
               </div>
             );

@@ -13,6 +13,14 @@ import { ColorPicker } from "./ColorPicker";
 
 const hatProduct = PRODUCTS.find((p) => p.id === "hat")!;
 
+const HAT_COLORS_SHORT = FELT_COLORS.filter((c) =>
+  ["snow", "cream", "anthracite"].includes(c.id)
+);
+
+const EMBROIDERY_COLORS_SHORT = EMBROIDERY_COLORS.filter((c) =>
+  ["gold", "silver", "black"].includes(c.id)
+);
+
 export function HatOptionsPanel() {
   const { itemConfigs, setItemConfig, getItemPrice } = useConstructor();
   const config = itemConfigs["hat"];
@@ -87,11 +95,11 @@ export function HatOptionsPanel() {
         <h3 className="text-sm text-text-secondary font-medium mb-3">
           Цвет:{" "}
           <span className="text-text-muted">
-            {FELT_COLORS.find((c) => c.id === config.colorId)?.name}
+            {HAT_COLORS_SHORT.find((c) => c.id === config.colorId)?.name}
           </span>
         </h3>
         <ColorPicker
-          colors={FELT_COLORS}
+          colors={HAT_COLORS_SHORT}
           selected={config.colorId}
           onSelect={(id) => setItemConfig("hat", { colorId: id })}
         />
@@ -170,11 +178,11 @@ export function HatOptionsPanel() {
           <label className="text-xs text-text-muted mb-2 block">
             Цвет нити:{" "}
             <span>
-              {EMBROIDERY_COLORS.find((c) => c.id === config.engravingColorId)?.name}
+              {EMBROIDERY_COLORS_SHORT.find((c) => c.id === config.engravingColorId)?.name}
             </span>
           </label>
           <ColorPicker
-            colors={EMBROIDERY_COLORS}
+            colors={EMBROIDERY_COLORS_SHORT}
             selected={config.engravingColorId ?? "gold"}
             onSelect={(id) => setItemConfig("hat", { engravingColorId: id })}
           />
