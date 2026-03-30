@@ -12,11 +12,14 @@ const HAT_IMAGES: Record<string, string> = {
   panama: "/images/hat-panama.png",
 };
 
-// Color-specific images (kolpak only for now)
+// Color-specific images
 const HAT_COLOR_IMAGES: Record<string, string> = {
   "kolpak-snow": "/images/hat-kolpak.png",
   "kolpak-cream": "/images/hats/kolpak-cream.png",
   "kolpak-anthracite": "/images/hats/kolpak-anthracite.png",
+  "budenovka-snow": "/images/hat-budenovka.png",
+  "budenovka-cream": "/images/hats/budenovka-cream.png",
+  "budenovka-anthracite": "/images/hats/budenovka-anthracite.png",
 };
 
 const FONT_SIZE_BY_TYPE: Record<string, string> = {
