@@ -21,6 +21,15 @@ const EMBROIDERY_COLORS_SHORT = EMBROIDERY_COLORS.filter((c) =>
   ["gold", "silver", "black"].includes(c.id)
 );
 
+const FONTS_SHORT = ENGRAVING_FONTS.filter((f) =>
+  ["serif", "oldrus"].includes(f.id)
+);
+
+const POSITION_OPTIONS = [
+  { id: "front-center", name: "По центру (крупно)", description: "Большие буквы по центру шапки" },
+  { id: "front-side", name: "Сбоку (мелко)", description: "Маленькие буквы сбоку" },
+];
+
 export function HatOptionsPanel() {
   const { itemConfigs, setItemConfig, getItemPrice } = useConstructor();
   const config = itemConfigs["hat"];
@@ -157,7 +166,7 @@ export function HatOptionsPanel() {
         <div>
           <label className="text-xs text-text-muted mb-2 block">Шрифт</label>
           <div className="flex flex-wrap gap-2">
-            {ENGRAVING_FONTS.map((font) => (
+            {FONTS_SHORT.map((font) => (
               <button
                 key={font.id}
                 onClick={() => setItemConfig("hat", { engravingFont: font.id })}
@@ -189,28 +198,50 @@ export function HatOptionsPanel() {
         </div>
 
         {/* Position */}
-        {hatProduct.engravingPositions && (
-          <div>
-            <label className="text-xs text-text-muted mb-2 block">Расположение</label>
-            <div className="flex flex-wrap gap-2">
-              {hatProduct.engravingPositions.map((pos) => (
-                <button
-                  key={pos.id}
-                  onClick={() =>
-                    setItemConfig("hat", { engravingPositionId: pos.id })
-                  }
-                  className={`px-3 py-2 text-xs border transition-colors ${
-                    config.engravingPositionId === pos.id
-                      ? "border-gold bg-gold/5 text-gold"
-                      : "border-white/10 text-text-secondary hover:border-white/20"
-                  }`}
-                >
-                  {pos.name}
-                </button>
-              ))}
-            </div>
+        <div>
+          <label className="text-xs text-text-muted mb-2 block">Расположение</label>
+          <div className="grid grid-cols-2 gap-2">
+            {POSITION_OPTIONS.map((pos) => (
+              <button
+                key={pos.id}
+                onClick={() =>
+                  setItemConfig("hat", { engravingPositionId: pos.id })
+                }
+                className={`p-3 text-left border transition-colors ${
+                  config.engravingPositionId === pos.id
+                    ? "border-gold bg-gold/5"
+                    : "border-white/10 hover:border-white/20"
+                }`}
+              >
+                <div className={`text-xs font-medium ${config.engravingPositionId === pos.id ? "text-gold" : "text-text-secondary"}`}>{pos.name}</div>
+                <div className="text-text-muted text-[10px] mt-0.5">{pos.description}</div>
+              </button>
+            ))}
           </div>
-        )}
+        </div>
+      </div>
+
+      {/* ── Custom order disclaimer ── */}
+      <div className="border border-white/10 bg-bg-primary/50 p-4">
+        <p className="text-text-secondary text-sm mb-2">
+          Хотите нанести логотип, рисунок или нестандартный текст?
+        </p>
+        <p className="text-text-muted text-xs mb-3">
+          Мы выполняем кастомные заказы — свяжитесь с отделом продаж для обсуждения деталей.
+        </p>
+        <a
+          href="#custom-contact"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("custom-contact-form")?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="text-gold hover:text-gold-light text-sm font-medium transition-colors flex items-center gap-1"
+        >
+          Связаться с нами
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
       </div>
     </div>
   );

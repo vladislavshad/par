@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PRODUCTS, FELT_COLORS } from "@/data/products";
@@ -99,7 +99,105 @@ export default function HatConstructorPage() {
             </div>
           </div>
         </div>
+
+        {/* Custom order contact form */}
+        <CustomContactForm />
       </div>
+    </div>
+  );
+}
+
+function CustomContactForm() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!name.trim() || !phone.trim()) return;
+    setSending(true);
+    try {
+      await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contactName: name.trim(),
+          contactPhone: phone.trim(),
+          contactMethod: "telegram",
+          items: [{ name: "Кастомный запрос", material: "-", color: "-", price: 0 }],
+          packaging: "-",
+          giftCardText: message.trim() || undefined,
+          total: 0,
+        }),
+      });
+      setSent(true);
+    } catch {
+      // silent
+    } finally {
+      setSending(false);
+    }
+  };
+
+  if (sent) {
+    return (
+      <div id="custom-contact-form" className="mt-16 border border-gold/20 bg-bg-secondary p-8 text-center">
+        <div className="w-12 h-12 bg-gold/10 text-gold flex items-center justify-center mx-auto mb-4">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h3 className="font-serif text-xl font-bold mb-2">Заявка отправлена!</h3>
+        <p className="text-text-muted text-sm">Мы свяжемся с вами в ближайшее время.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div id="custom-contact-form" className="mt-16 border border-white/10 bg-bg-secondary p-6 sm:p-8">
+      <h3 className="font-serif text-xl font-bold mb-2">Кастомный заказ</h3>
+      <p className="text-text-muted text-sm mb-6">
+        Логотип компании, нестандартный рисунок, корпоративный тираж — обсудим любой запрос.
+      </p>
+      <div className="grid sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label className="text-sm text-text-secondary mb-1 block">Имя *</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Иван"
+            className="w-full bg-bg-primary border border-white/10 px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-gold focus:outline-none transition-colors"
+          />
+        </div>
+        <div>
+          <label className="text-sm text-text-secondary mb-1 block">Телефон *</label>
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="+7 (999) 123-45-67"
+            className="w-full bg-bg-primary border border-white/10 px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-gold focus:outline-none transition-colors"
+          />
+        </div>
+      </div>
+      <div className="mb-4">
+        <label className="text-sm text-text-secondary mb-1 block">Опишите ваш запрос</label>
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Например: хотим нанести логотип компании на 50 шапок для корпоратива"
+          rows={3}
+          className="w-full bg-bg-primary border border-white/10 px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-gold focus:outline-none transition-colors resize-none"
+        />
+      </div>
+      <button
+        onClick={handleSubmit}
+        disabled={sending || !name.trim() || !phone.trim()}
+        className="bg-gold hover:bg-gold-light disabled:opacity-50 text-bg-primary px-8 py-3 font-medium tracking-wide transition-colors"
+      >
+        {sending ? "Отправка..." : "Отправить заявку"}
+      </button>
     </div>
   );
 }
