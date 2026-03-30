@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PRODUCTS,
@@ -68,7 +69,7 @@ export function ItemCustomizer() {
               >
                 <div className="relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 overflow-hidden">
                   <Image
-                    src={product.image}
+                    src={product.id === "hat" && selectedVariant?.image ? selectedVariant.image : product.image}
                     alt={product.name}
                     fill
                     sizes="64px"
@@ -90,19 +91,33 @@ export function ItemCustomizer() {
                     {getItemPrice(product.id).toLocaleString("ru-RU")} ₽
                   </div>
                 </div>
-                <svg
-                  className={`w-5 h-5 text-text-muted transition-transform flex-shrink-0 ${
-                    isExpanded ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                {product.id === "hat" ? (
+                  <Link
+                    href="/constructor/hat"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-shrink-0 bg-gold/10 hover:bg-gold/20 text-gold px-4 py-2 text-sm font-medium transition-colors flex items-center gap-1"
+                  >
+                    Настроить
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                ) : (
+                  <svg
+                    className={`w-5 h-5 text-text-muted transition-transform flex-shrink-0 ${
+                      isExpanded ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
               </button>
 
               {/* Expanded panel */}
+              {product.id !== "hat" && (
               <AnimatePresence>
                 {isExpanded && (
                   <motion.div
@@ -400,6 +415,7 @@ export function ItemCustomizer() {
                   </motion.div>
                 )}
               </AnimatePresence>
+              )}
             </div>
           );
         })}
