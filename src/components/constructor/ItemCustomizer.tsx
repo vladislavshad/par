@@ -9,6 +9,7 @@ import {
   EMBROIDERY_COLORS,
   EMBROIDERY_TYPES,
   getMaterialImage,
+  getLogoProductImage,
 } from "@/data/products";
 import { useConstructor } from "@/store/useConstructor";
 import { ColorPicker } from "./ColorPicker";
@@ -134,24 +135,35 @@ export function ItemCustomizer() {
                     <div className="px-4 pb-5 space-y-6 border-t border-white/5 pt-5">
 
                       {/* ── Material image preview ── */}
-                      {getMaterialImage(product.id, config.materialId) && (
-                        <div className="relative aspect-[16/10] bg-bg-primary overflow-hidden border border-white/5">
-                          <Image
-                            src={getMaterialImage(product.id, config.materialId)!}
-                            alt={`${product.name} — ${selectedMaterial?.name}`}
-                            fill
-                            sizes="(max-width: 640px) 100vw, 50vw"
-                            className="object-cover"
-                          />
-                          {product.allowEngraving && (
-                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
-                              <p className="text-[10px] text-white/70 tracking-wide uppercase">
-                                Пример вышивки «АБ» — ваши инициалы будут выполнены в выбранном стиле
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                      {(() => {
+                        const logoImg = config.engravingTypeId === "logo" ? getLogoProductImage(product.id) : null;
+                        const matImg = getMaterialImage(product.id, config.materialId);
+                        const previewSrc = logoImg ?? matImg;
+                        if (!previewSrc) return null;
+                        const isLogo = config.engravingTypeId === "logo" && !!logoImg;
+                        const isNone = config.engravingTypeId === "none";
+                        return (
+                          <div className="relative aspect-[16/10] bg-bg-primary overflow-hidden border border-white/5">
+                            <Image
+                              key={previewSrc}
+                              src={previewSrc}
+                              alt={`${product.name} — ${selectedMaterial?.name}`}
+                              fill
+                              sizes="(max-width: 640px) 100vw, 50vw"
+                              className="object-cover transition-opacity duration-300"
+                            />
+                            {product.allowEngraving && !isNone && (
+                              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
+                                <p className="text-[10px] text-white/70 tracking-wide uppercase">
+                                  {isLogo
+                                    ? "Фирменная вышивка ПАРЪ"
+                                    : "Пример вышивки «АБ» — ваши инициалы будут выполнены в выбранном стиле"}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
 
                       {/* ── Variant (hat shape, etc.) ── */}
                       {product.variants && (
@@ -288,11 +300,13 @@ export function ItemCustomizer() {
                         <div className="space-y-4">
                           <div className="flex items-center justify-between">
                             <label className="text-sm text-text-secondary font-medium">
-                              Именная вышивка
+                              Вышивка
                             </label>
-                            <span className="text-gold text-xs">
-                              +{product.engravingPrice} ₽
-                            </span>
+                            {config.engravingTypeId !== "none" && (
+                              <span className="text-gold text-xs">
+                                +{product.engravingPrice} ₽
+                              </span>
+                            )}
                           </div>
 
                           {/* Embroidery type */}
@@ -314,114 +328,129 @@ export function ItemCustomizer() {
                             ))}
                           </div>
 
-                          {/* Text input */}
-                          <input
-                            type="text"
-                            value={config.engraving ?? ""}
-                            onChange={(e) =>
-                              setItemConfig(product.id, { engraving: e.target.value })
-                            }
-                            placeholder={
-                              config.engravingTypeId === "monogram"
-                                ? "АБ"
-                                : config.engravingTypeId === "name"
-                                  ? "Александр"
-                                  : "С лёгким паром!"
-                            }
-                            maxLength={
-                              config.engravingTypeId === "monogram"
-                                ? 3
-                                : config.engravingTypeId === "name"
-                                  ? 15
-                                  : 30
-                            }
-                            className="w-full bg-bg-primary border border-white/10 px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-gold focus:outline-none transition-colors"
-                          />
+                          {config.engravingTypeId === "none" ? null : config.engravingTypeId === "logo" ? (
+                            <div className="border border-gold/20 bg-gold/5 p-4">
+                              <p className="text-sm text-text-secondary">
+                                Фирменная вышивка <span className="text-gold font-medium">ПАРЪ</span>
+                              </p>
+                              <p className="text-text-muted text-xs mt-1">
+                                Выполняется в выбранном цвете нити
+                              </p>
+                            </div>
+                          ) : (
+                            <>
+                              {/* Text input */}
+                              <input
+                                type="text"
+                                value={config.engraving ?? ""}
+                                onChange={(e) =>
+                                  setItemConfig(product.id, { engraving: e.target.value })
+                                }
+                                placeholder={
+                                  config.engravingTypeId === "monogram"
+                                    ? "АБ"
+                                    : config.engravingTypeId === "name"
+                                      ? "Александр"
+                                      : "С лёгким паром!"
+                                }
+                                maxLength={
+                                  config.engravingTypeId === "monogram"
+                                    ? 3
+                                    : config.engravingTypeId === "name"
+                                      ? 15
+                                      : 30
+                                }
+                                className="w-full bg-bg-primary border border-white/10 px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-gold focus:outline-none transition-colors"
+                              />
 
-                          {config.engraving && (
-                            <div className="space-y-4">
-                              {/* Font */}
-                              <div>
-                                <label className="text-xs text-text-muted mb-2 block">Шрифт</label>
-                                <div className="flex flex-wrap gap-2">
-                                  {ENGRAVING_FONTS.map((font) => (
-                                    <button
-                                      key={font.id}
-                                      onClick={() =>
-                                        setItemConfig(product.id, { engravingFont: font.id })
-                                      }
-                                      className={`px-3 py-2 text-sm border transition-colors ${font.css} ${
-                                        config.engravingFont === font.id
-                                          ? "border-gold bg-gold/5"
-                                          : "border-white/10 hover:border-white/20"
-                                      }`}
-                                    >
-                                      {font.name}
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
+                              {config.engraving && (
+                                <div className="space-y-4">
+                                  {/* Font */}
+                                  <div>
+                                    <label className="text-xs text-text-muted mb-2 block">Шрифт</label>
+                                    <div className="flex flex-wrap gap-2">
+                                      {ENGRAVING_FONTS.map((font) => (
+                                        <button
+                                          key={font.id}
+                                          onClick={() =>
+                                            setItemConfig(product.id, { engravingFont: font.id })
+                                          }
+                                          className={`px-3 py-2 text-sm border transition-colors ${font.css} ${
+                                            config.engravingFont === font.id
+                                              ? "border-gold bg-gold/5"
+                                              : "border-white/10 hover:border-white/20"
+                                          }`}
+                                        >
+                                          {font.name}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
 
-                              {/* Embroidery color */}
-                              <div>
-                                <label className="text-xs text-text-muted mb-2 block">
-                                  Цвет нити:{" "}
-                                  <span>
-                                    {EMBROIDERY_COLORS.find(
-                                      (c) => c.id === config.engravingColorId
-                                    )?.name}
-                                  </span>
-                                </label>
-                                <ColorPicker
-                                  colors={EMBROIDERY_COLORS}
-                                  selected={config.engravingColorId ?? "gold"}
-                                  onSelect={(id) =>
-                                    setItemConfig(product.id, { engravingColorId: id })
-                                  }
-                                />
-                              </div>
+                                  {/* Position */}
+                                  {product.engravingPositions && (
+                                    <div>
+                                      <label className="text-xs text-text-muted mb-2 block">
+                                        Расположение
+                                      </label>
+                                      <div className="flex flex-wrap gap-2">
+                                        {product.engravingPositions.map((pos) => (
+                                          <button
+                                            key={pos.id}
+                                            onClick={() =>
+                                              setItemConfig(product.id, {
+                                                engravingPositionId: pos.id,
+                                              })
+                                            }
+                                            className={`px-3 py-2 text-xs border transition-colors ${
+                                              config.engravingPositionId === pos.id
+                                                ? "border-gold bg-gold/5 text-gold"
+                                                : "border-white/10 text-text-secondary hover:border-white/20"
+                                            }`}
+                                          >
+                                            {pos.name}
+                                          </button>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
 
-                              {/* Position */}
-                              {product.engravingPositions && (
-                                <div>
-                                  <label className="text-xs text-text-muted mb-2 block">
-                                    Расположение
-                                  </label>
-                                  <div className="flex flex-wrap gap-2">
-                                    {product.engravingPositions.map((pos) => (
-                                      <button
-                                        key={pos.id}
-                                        onClick={() =>
-                                          setItemConfig(product.id, {
-                                            engravingPositionId: pos.id,
-                                          })
-                                        }
-                                        className={`px-3 py-2 text-xs border transition-colors ${
-                                          config.engravingPositionId === pos.id
-                                            ? "border-gold bg-gold/5 text-gold"
-                                            : "border-white/10 text-text-secondary hover:border-white/20"
-                                        }`}
-                                      >
-                                        {pos.name}
-                                      </button>
-                                    ))}
+                                  {/* Summary */}
+                                  <div className="bg-bg-primary border border-gold/10 p-3">
+                                    <p className="text-sm text-text-secondary">
+                                      Вышивка:{" "}
+                                      <span className="text-gold font-medium">«{config.engraving}»</span>
+                                      <span className="text-text-muted"> · </span>
+                                      <span className="text-text-muted text-xs">
+                                        {ENGRAVING_FONTS.find((f) => f.id === config.engravingFont)?.name}
+                                        {" · "}
+                                        {EMBROIDERY_COLORS.find((c) => c.id === config.engravingColorId)?.name}
+                                      </span>
+                                    </p>
                                   </div>
                                 </div>
                               )}
+                            </>
+                          )}
 
-                              {/* Summary */}
-                              <div className="bg-bg-primary border border-gold/10 p-3">
-                                <p className="text-sm text-text-secondary">
-                                  Вышивка:{" "}
-                                  <span className="text-gold font-medium">«{config.engraving}»</span>
-                                  <span className="text-text-muted"> · </span>
-                                  <span className="text-text-muted text-xs">
-                                    {ENGRAVING_FONTS.find((f) => f.id === config.engravingFont)?.name}
-                                    {" · "}
-                                    {EMBROIDERY_COLORS.find((c) => c.id === config.engravingColorId)?.name}
-                                  </span>
-                                </p>
-                              </div>
+                          {/* Thread color — visible for logo and custom */}
+                          {config.engravingTypeId !== "none" && (
+                            <div>
+                              <label className="text-xs text-text-muted mb-2 block">
+                                Цвет нити:{" "}
+                                <span>
+                                  {EMBROIDERY_COLORS.find(
+                                    (c) => c.id === config.engravingColorId
+                                  )?.name}
+                                </span>
+                              </label>
+                              <ColorPicker
+                                colors={EMBROIDERY_COLORS}
+                                selected={config.engravingColorId ?? "gold"}
+                                onSelect={(id) =>
+                                  setItemConfig(product.id, { engravingColorId: id })
+                                }
+                              />
                             </div>
                           )}
                         </div>

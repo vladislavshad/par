@@ -113,9 +113,11 @@ export function HatOptionsPanel() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm text-text-secondary font-medium">
-            Именная вышивка
+            Вышивка
           </h3>
-          <span className="text-gold text-xs">+{hatProduct.engravingPrice} ₽</span>
+          {config.engravingTypeId !== "none" && (
+            <span className="text-gold text-xs">+{hatProduct.engravingPrice} ₽</span>
+          )}
         </div>
 
         {/* Type */}
@@ -135,7 +137,7 @@ export function HatOptionsPanel() {
           ))}
         </div>
 
-        {config.engravingTypeId === "logo" ? (
+        {config.engravingTypeId === "none" ? null : config.engravingTypeId === "logo" ? (
           <div className="border border-gold/20 bg-gold/5 p-4">
             <p className="text-sm text-text-secondary">
               Фирменная вышивка <span className="text-gold font-medium">ПАРЪ</span> по центру шапки
@@ -190,23 +192,25 @@ export function HatOptionsPanel() {
           </>
         )}
 
-        {/* Thread color */}
-        <div>
-          <label className="text-xs text-text-muted mb-2 block">
-            Цвет нити:{" "}
-            <span>
-              {EMBROIDERY_COLORS_SHORT.find((c) => c.id === config.engravingColorId)?.name}
-            </span>
-          </label>
-          <ColorPicker
-            colors={EMBROIDERY_COLORS_SHORT}
-            selected={config.engravingColorId ?? "gold"}
-            onSelect={(id) => setItemConfig("hat", { engravingColorId: id })}
-          />
-        </div>
+        {/* Thread color — visible for logo and custom engraving */}
+        {config.engravingTypeId !== "none" && (
+          <div>
+            <label className="text-xs text-text-muted mb-2 block">
+              Цвет нити:{" "}
+              <span>
+                {EMBROIDERY_COLORS_SHORT.find((c) => c.id === config.engravingColorId)?.name}
+              </span>
+            </label>
+            <ColorPicker
+              colors={EMBROIDERY_COLORS_SHORT}
+              selected={config.engravingColorId ?? "gold"}
+              onSelect={(id) => setItemConfig("hat", { engravingColorId: id })}
+            />
+          </div>
+        )}
 
-        {/* Position — hidden for logo */}
-        {config.engravingTypeId !== "logo" && (
+        {/* Position — visible only for custom engraving */}
+        {config.engravingTypeId !== "none" && config.engravingTypeId !== "logo" && (
           <div>
             <label className="text-xs text-text-muted mb-2 block">Расположение</label>
             <div className="grid grid-cols-2 gap-2">

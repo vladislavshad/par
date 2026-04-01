@@ -130,6 +130,7 @@ export const EMBROIDERY_COLORS: EmbroideryColor[] = [
 ];
 
 export const EMBROIDERY_TYPES: EmbroideryType[] = [
+  { id: "none", name: "Без вышивки", description: "Чистый вид без нанесений" },
   { id: "logo", name: "Логотип ПАРЪ", description: "Фирменная вышивка бренда ПАРЪ" },
   { id: "monogram", name: "Монограмма", description: "Инициалы в классическом стиле (1–3 буквы)" },
   { id: "name", name: "Имя", description: "Полное имя или фамилия (до 15 символов)" },
@@ -373,6 +374,16 @@ const MATERIAL_IMAGES: Record<string, Record<string, string>> = {
 
 export function getMaterialImage(productId: string, materialId: string): string | null {
   return MATERIAL_IMAGES[productId]?.[materialId] ?? null;
+}
+
+const LOGO_IMAGES: Record<string, string> = {
+  robe: "/images/materials/robe/robe-logo-par.png",
+  towel: "/images/materials/towel/towel-logo-par.png",
+  kilt: "/images/materials/kilt/kilt-logo-par.png",
+};
+
+export function getLogoProductImage(productId: string): string | null {
+  return LOGO_IMAGES[productId] ?? null;
 }
 
 // ─── Packaging ────────────────────────────────────────

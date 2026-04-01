@@ -87,7 +87,7 @@ export const useConstructor = create<ConstructorState>((set, get) => ({
             engraving: "",
             engravingFont: "serif",
             engravingColorId: "gold",
-            engravingTypeId: productId === "hat" ? "logo" : "monogram",
+            engravingTypeId: "none",
             engravingPositionId: product.engravingPositions?.[0]?.id,
           },
         },
@@ -121,7 +121,7 @@ export const useConstructor = create<ConstructorState>((set, get) => ({
           engraving: "",
           engravingFont: "serif",
           engravingColorId: "gold",
-          engravingTypeId: productId === "hat" ? "logo" : "monogram",
+          engravingTypeId: "none",
           engravingPositionId: product.engravingPositions?.[0]?.id,
         };
       }
@@ -147,7 +147,7 @@ export const useConstructor = create<ConstructorState>((set, get) => ({
     if (!product) return 0;
     const material = product.materials.find((m) => m.id === config.materialId);
     const base = material?.price ?? product.materials[0].price;
-    const hasEngraving = config.engravingTypeId === "logo" || !!config.engraving;
+    const hasEngraving = config.engravingTypeId !== "none" && (config.engravingTypeId === "logo" || !!config.engraving);
     const engravingCost =
       product.allowEngraving && hasEngraving
         ? product.engravingPrice

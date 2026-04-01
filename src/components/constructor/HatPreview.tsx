@@ -4,44 +4,34 @@ import Image from "next/image";
 import { EMBROIDERY_COLORS } from "@/data/products";
 import type { ItemConfig } from "@/store/useConstructor";
 
-const HAT_IMAGES: Record<string, string> = {
-  kolpak: "/images/hat-kolpak.png",
-  budenovka: "/images/hat-budenovka.png",
-  ushanka: "/images/hat-ushanka.png",
-  panama: "/images/hat-panama.png",
-};
-
-const HAT_COLOR_IMAGES: Record<string, string> = {
-  "kolpak-snow": "/images/hat-kolpak.png",
-  "kolpak-cream": "/images/hats/kolpak-cream.png",
-  "kolpak-anthracite": "/images/hats/kolpak-anthracite.png",
-  "budenovka-snow": "/images/hat-budenovka.png",
-  "budenovka-cream": "/images/hats/budenovka-cream.png",
-  "budenovka-anthracite": "/images/hats/budenovka-anthracite.png",
-  "ushanka-snow": "/images/hat-ushanka.png",
-  "ushanka-cream": "/images/hats/ushanka-cream.png",
-  "ushanka-anthracite": "/images/hats/ushanka-anthracite.png",
-  "panama-snow": "/images/hat-panama.png",
-  "panama-cream": "/images/hats/panama-cream.png",
-  "panama-anthracite": "/images/hats/panama-anthracite.png",
-};
-
 const DARK_COLORS = new Set(["anthracite", "graphite", "burgundy", "cognac"]);
+
+const MATERIAL_LABELS: Record<string, string> = {
+  "felt-standard": "felt",
+  "felt-premium": "premium",
+  "felt-merino": "merino",
+  "felt-fetl": "fetr",
+};
+
+function getBaseImage(variantId: string, colorId: string, materialId: string): string {
+  const mat = MATERIAL_LABELS[materialId];
+  if (mat) {
+    return `/images/hats/base/${variantId}-${colorId}-${mat}.png`;
+  }
+  return `/images/hats/base/${variantId}-${colorId}.png`;
+}
+
+function getLogoImage(variantId: string, colorId: string, threadColorId: string): string {
+  const tone = DARK_COLORS.has(colorId) ? "dark" : "light";
+  const thread = threadColorId === "silver" ? "silver" : "gold";
+  return `/images/hats/logo/${variantId}-${tone}-${thread}.png`;
+}
 
 function getEngravingImage(variantId: string, colorId: string, threadColorId: string, positionId: string): string {
   const tone = DARK_COLORS.has(colorId) ? "dark" : "light";
   const thread = threadColorId === "silver" ? "silver" : "gold";
   const pos = positionId === "front-side" ? "side" : "center";
   return `/images/hats/engraving/hat-${variantId}-${tone}-${thread}-${pos}.png`;
-}
-
-const LOGO_VARIANTS = new Set(["kolpak"]);
-
-function getLogoImage(variantId: string, colorId: string, threadColorId: string): string | null {
-  if (!LOGO_VARIANTS.has(variantId)) return null;
-  const tone = DARK_COLORS.has(colorId) ? "dark" : "light";
-  const thread = threadColorId === "silver" ? "logo-silver" : "logo";
-  return `/images/hats/engraving/hat-${variantId}-${tone}-${thread}-center.png`;
 }
 
 type Props = {
@@ -53,23 +43,32 @@ type Props = {
 export function HatPreview({ config, colorName, materialName }: Props) {
   const variantId = config.variantId ?? "kolpak";
   const colorId = config.colorId ?? "snow";
-  const colorKey = `${variantId}-${colorId}`;
+  const materialId = config.materialId ?? "felt-standard";
 
+  const isNone = config.engravingTypeId === "none";
   const isLogo = config.engravingTypeId === "logo";
-  const hasEngraving = isLogo || !!config.engraving;
+  const hasCustomEngraving = !isNone && !isLogo && !!config.engraving;
+  const hasEngraving = isLogo || hasCustomEngraving;
 
-  const shapeImage = HAT_COLOR_IMAGES[colorKey] ?? HAT_IMAGES[variantId] ?? HAT_IMAGES.kolpak;
+  const baseImage = getBaseImage(variantId, colorId, materialId);
+  const logoImage = getLogoImage(variantId, colorId, config.engravingColorId ?? "gold");
   const engravingImage = getEngravingImage(
     variantId,
     colorId,
     config.engravingColorId ?? "gold",
     config.engravingPositionId ?? "front-center"
   );
-  const logoImage = getLogoImage(variantId, colorId, config.engravingColorId ?? "gold");
 
-  const imageSrc = isLogo
-    ? (logoImage ?? shapeImage)
-    : hasEngraving ? engravingImage : shapeImage;
+  let imageSrc: string;
+  if (isNone) {
+    imageSrc = baseImage;
+  } else if (isLogo) {
+    imageSrc = logoImage;
+  } else if (hasCustomEngraving) {
+    imageSrc = engravingImage;
+  } else {
+    imageSrc = baseImage;
+  }
 
   const engravingColor = EMBROIDERY_COLORS.find(
     (c) => c.id === config.engravingColorId
@@ -91,14 +90,13 @@ export function HatPreview({ config, colorName, materialName }: Props) {
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
             <p className="text-[10px] text-white/70 tracking-wide uppercase">
               {isLogo
-                ? (logoImage ? "Фирменная вышивка ПАРЪ" : "Логотип ПАРЪ будет нанесён на эту форму")
+                ? "Фирменная вышивка ПАРЪ"
                 : "Пример вышивки «АБ» — ваши инициалы будут выполнены в выбранном стиле"}
             </p>
           </div>
         )}
       </div>
 
-      {/* Embroidery summary */}
       {hasEngraving && (
         <div className="mt-3 border border-gold/20 bg-bg-secondary p-4">
           <div className="flex items-center gap-3">

@@ -10,6 +10,7 @@ import {
   EMBROIDERY_COLORS,
   EMBROIDERY_TYPES,
   getMaterialImage,
+  getLogoProductImage,
 } from "@/data/products";
 import { useConstructor } from "@/store/useConstructor";
 
@@ -154,7 +155,9 @@ export function OrderSummary() {
           {selectedProducts.map((product) => {
             const config = itemConfigs[product.id];
             const variant = product.variants?.find((v) => v.id === config?.variantId);
-            const displayImage = (config ? getMaterialImage(product.id, config.materialId) : null)
+            const logoImg = config?.engravingTypeId === "logo" ? getLogoProductImage(product.id) : null;
+            const displayImage = logoImg
+              ?? (config ? getMaterialImage(product.id, config.materialId) : null)
               ?? variant?.image ?? product.image;
             const color = product.colors.find((c) => c.id === config?.colorId);
 
@@ -206,7 +209,9 @@ export function OrderSummary() {
             const size = product.sizes?.find((s) => s.id === config?.sizeId);
             const variant = product.variants?.find((v) => v.id === config?.variantId);
             const trimColor = product.trimColors?.find((c) => c.id === config?.trimColorId);
-            const displayImage = (config ? getMaterialImage(product.id, config.materialId) : null)
+            const logoImg2 = config?.engravingTypeId === "logo" ? getLogoProductImage(product.id) : null;
+            const displayImage = logoImg2
+              ?? (config ? getMaterialImage(product.id, config.materialId) : null)
               ?? variant?.image ?? product.image;
 
             return (
