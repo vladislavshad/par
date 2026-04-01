@@ -28,11 +28,11 @@ const HAT_COLOR_IMAGES: Record<string, string> = {
 
 const DARK_COLORS = new Set(["anthracite", "graphite", "burgundy", "cognac"]);
 
-function getEngravingImage(colorId: string, threadColorId: string, positionId: string): string {
+function getEngravingImage(variantId: string, colorId: string, threadColorId: string, positionId: string): string {
   const tone = DARK_COLORS.has(colorId) ? "dark" : "light";
   const thread = threadColorId === "silver" ? "silver" : "gold";
   const pos = positionId === "front-side" ? "side" : "center";
-  return `/images/hats/engraving/hat-${tone}-${thread}-${pos}.png`;
+  return `/images/hats/engraving/hat-${variantId}-${tone}-${thread}-${pos}.png`;
 }
 
 type Props = {
@@ -50,6 +50,7 @@ export function HatPreview({ config, colorName, materialName }: Props) {
 
   const shapeImage = HAT_COLOR_IMAGES[colorKey] ?? HAT_IMAGES[variantId] ?? HAT_IMAGES.kolpak;
   const engravingImage = getEngravingImage(
+    variantId,
     colorId,
     config.engravingColorId ?? "gold",
     config.engravingPositionId ?? "front-center"
