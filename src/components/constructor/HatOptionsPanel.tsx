@@ -3,7 +3,6 @@
 import Image from "next/image";
 import {
   PRODUCTS,
-  FELT_COLORS,
   EMBROIDERY_COLORS,
   EMBROIDERY_TYPES,
   ENGRAVING_FONTS,
@@ -12,10 +11,6 @@ import { useConstructor } from "@/store/useConstructor";
 import { ColorPicker } from "./ColorPicker";
 
 const hatProduct = PRODUCTS.find((p) => p.id === "hat")!;
-
-const HAT_COLORS_SHORT = FELT_COLORS.filter((c) =>
-  ["snow", "cream", "anthracite"].includes(c.id)
-);
 
 const EMBROIDERY_COLORS_SHORT = EMBROIDERY_COLORS.filter((c) =>
   ["gold", "silver", "black"].includes(c.id)
@@ -104,11 +99,11 @@ export function HatOptionsPanel() {
         <h3 className="text-sm text-text-secondary font-medium mb-3">
           Цвет:{" "}
           <span className="text-text-muted">
-            {HAT_COLORS_SHORT.find((c) => c.id === config.colorId)?.name}
+            {hatProduct.colors.find((c) => c.id === config.colorId)?.name}
           </span>
         </h3>
         <ColorPicker
-          colors={HAT_COLORS_SHORT}
+          colors={hatProduct.colors}
           selected={config.colorId}
           onSelect={(id) => setItemConfig("hat", { colorId: id })}
         />

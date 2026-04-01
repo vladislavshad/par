@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { PRODUCTS, FELT_COLORS } from "@/data/products";
+import { PRODUCTS } from "@/data/products";
 import { useConstructor } from "@/store/useConstructor";
 import { HatPreview } from "@/components/constructor/HatPreview";
 import { HatOptionsPanel } from "@/components/constructor/HatOptionsPanel";
@@ -40,7 +40,7 @@ export default function HatConstructorPage() {
   const selectedMaterial = hatProduct.materials.find(
     (m) => m.id === config.materialId
   );
-  const selectedColor = FELT_COLORS.find((c) => c.id === config.colorId);
+  const selectedColor = hatProduct.colors.find((c) => c.id === config.colorId);
   const price = getItemPrice("hat");
 
   const handleAddToKit = () => {

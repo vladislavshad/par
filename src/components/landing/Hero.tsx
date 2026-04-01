@@ -36,7 +36,7 @@ export function Hero() {
           </h1>
           <p className="text-text-secondary text-lg sm:text-xl leading-relaxed mb-10 max-w-lg">
             Соберите уникальный банный комплект в&nbsp;онлайн&#8209;конструкторе.
-            20 цветов, 5 материалов, именная вышивка золотом — каждая деталь под&nbsp;вас.
+            7&nbsp;предметов, 5+&nbsp;материалов, именная вышивка золотом — каждая деталь под&nbsp;вас.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link

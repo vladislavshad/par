@@ -111,6 +111,12 @@ export const FELT_COLORS: Color[] = [
   { id: "cognac", name: "Коньяк", hex: "#834A2E" },
 ];
 
+export const UNIVERSAL_COLORS: Color[] = [
+  { id: "snow", name: "Снежный", hex: "#FFFAFA" },
+  { id: "cream", name: "Кремовый", hex: "#F5F0E8" },
+  { id: "anthracite", name: "Антрацит", hex: "#2D2D2D" },
+];
+
 // ─── Embroidery ───────────────────────────────────────
 
 export const EMBROIDERY_COLORS: EmbroideryColor[] = [
@@ -159,7 +165,7 @@ export const PRODUCTS: Product[] = [
       { id: "felt-merino", name: "Меринос", price: 3400, description: "Тончайшая шерсть мериноса, мягкий" },
       { id: "felt-fetl", name: "Фетр", price: 2400, description: "Гладкий плотный фетр" },
     ],
-    colors: FELT_COLORS,
+    colors: UNIVERSAL_COLORS,
     variants: [
       { id: "kolpak", name: "Колпак", description: "Классическая остроконечная форма", image: "/images/hat-kolpak.png" },
       { id: "budenovka", name: "Будёновка", description: "С отворотами и козырьком", image: "/images/hat-budenovka.png" },
@@ -185,7 +191,7 @@ export const PRODUCTS: Product[] = [
       { id: "linen", name: "Лён 100%", price: 3200, description: "Натуральный, прочный, дышащий" },
       { id: "linen-waffle", name: "Лён вафельный", price: 3500, description: "Рельефное плетение, массажный эффект" },
     ],
-    colors: COLORS,
+    colors: UNIVERSAL_COLORS,
     allowEngraving: true,
     engravingPrice: 500,
     engravingPositions: [
@@ -207,7 +213,7 @@ export const PRODUCTS: Product[] = [
       { id: "linen", name: "Лён", price: 8900, description: "Натуральный лён, дышащий" },
       { id: "linen-cotton", name: "Лён/хлопок", price: 7200, description: "Смесь 50/50, мягче чистого льна" },
     ],
-    colors: COLORS,
+    colors: UNIVERSAL_COLORS,
     sizes: [
       { id: "s", name: "S (44-46)" },
       { id: "m", name: "M (48-50)" },
@@ -236,7 +242,7 @@ export const PRODUCTS: Product[] = [
       { id: "linen-cotton", name: "Лён/хлопок", price: 3200, description: "Смесь 50/50, прочный" },
       { id: "linen", name: "Лён 100%", price: 3900, description: "Натуральный, дышащий лён" },
     ],
-    colors: COLORS,
+    colors: UNIVERSAL_COLORS,
     sizes: [
       { id: "m", name: "M (48-50)" },
       { id: "l", name: "L (52-54)" },
@@ -261,13 +267,7 @@ export const PRODUCTS: Product[] = [
       { id: "felt-premium", name: "Войлок премиум", price: 2400, description: "Утолщённый, двойной слой" },
       { id: "linen", name: "Лён", price: 2900, description: "Натуральный лён с подкладкой" },
     ],
-    colors: [
-      { id: "snow", name: "Снежный", hex: "#FFFAFA" },
-      { id: "cream", name: "Кремовый", hex: "#F5F0E8" },
-      { id: "ash", name: "Пепельный", hex: "#B2BEB5" },
-      { id: "graphite", name: "Графит", hex: "#4A4A4A" },
-      { id: "sage", name: "Шалфей", hex: "#87A96B" },
-    ],
+    colors: UNIVERSAL_COLORS,
     allowEngraving: false,
     engravingPrice: 0,
     trimColors: TRIM_COLORS,
@@ -282,7 +282,7 @@ export const PRODUCTS: Product[] = [
       { id: "felt-premium", name: "Войлок премиум", price: 2200, description: "Утолщённый, двойная подошва" },
       { id: "felt-merino", name: "Меринос", price: 2800, description: "Мягчайшая шерсть мериноса" },
     ],
-    colors: FELT_COLORS,
+    colors: UNIVERSAL_COLORS,
     sizes: [
       { id: "36-37", name: "36-37" },
       { id: "38-39", name: "38-39" },

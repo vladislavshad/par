@@ -48,8 +48,8 @@ export function About() {
           >
             {[
                 { number: "7", label: "предметов\nв конструкторе" },
-                { number: "20", label: "цветов\nпалитры" },
                 { number: "5+", label: "материалов\nна каждый предмет" },
+                { number: "100%", label: "натуральные\nматериалы" },
                 { number: "∞", label: "вариантов\nвашего комплекта" },
               ].map((stat, i) => (
                 <div
