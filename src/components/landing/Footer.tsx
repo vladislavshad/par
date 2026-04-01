@@ -26,7 +26,7 @@ export function Footer() {
               Навигация
             </h4>
             <div className="space-y-2">
-              <a href="/#about" className="block text-text-muted hover:text-gold transition-colors text-sm">О нас</a>
+              <Link href="/about" className="block text-text-muted hover:text-gold transition-colors text-sm">О нас</Link>
               <a href="/#catalog" className="block text-text-muted hover:text-gold transition-colors text-sm">Каталог</a>
               <a href="/#how-it-works" className="block text-text-muted hover:text-gold transition-colors text-sm">Как это работает</a>
               <Link href="/constructor" className="block text-text-muted hover:text-gold transition-colors text-sm">Конструктор</Link>

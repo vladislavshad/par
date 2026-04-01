@@ -20,12 +20,12 @@ export function Header() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
-            <a
-              href="/#about"
+            <Link
+              href="/about"
               className="text-text-secondary hover:text-gold transition-colors text-sm tracking-wide"
             >
               О нас
-            </a>
+            </Link>
             <a
               href="/#catalog"
               className="text-text-secondary hover:text-gold transition-colors text-sm tracking-wide"
@@ -86,7 +86,7 @@ export function Header() {
       {menuOpen && (
         <div className="md:hidden bg-bg-secondary border-t border-white/5">
           <div className="px-4 py-4 space-y-3">
-            <a href="/#about" onClick={() => setMenuOpen(false)} className="block text-text-secondary hover:text-gold transition-colors py-2">О нас</a>
+            <Link href="/about" onClick={() => setMenuOpen(false)} className="block text-text-secondary hover:text-gold transition-colors py-2">О нас</Link>
             <a href="/#catalog" onClick={() => setMenuOpen(false)} className="block text-text-secondary hover:text-gold transition-colors py-2">Каталог</a>
             <a href="/#how-it-works" onClick={() => setMenuOpen(false)} className="block text-text-secondary hover:text-gold transition-colors py-2">Как это работает</a>
             <a href="/#gallery" onClick={() => setMenuOpen(false)} className="block text-text-secondary hover:text-gold transition-colors py-2">Коллекции</a>
