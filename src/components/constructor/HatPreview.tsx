@@ -35,10 +35,13 @@ function getEngravingImage(variantId: string, colorId: string, threadColorId: st
   return `/images/hats/engraving/hat-${variantId}-${tone}-${thread}-${pos}.png`;
 }
 
-function getLogoImage(colorId: string, threadColorId: string): string {
+const LOGO_VARIANTS = new Set(["kolpak"]);
+
+function getLogoImage(variantId: string, colorId: string, threadColorId: string): string | null {
+  if (!LOGO_VARIANTS.has(variantId)) return null;
   const tone = DARK_COLORS.has(colorId) ? "dark" : "light";
   const thread = threadColorId === "silver" ? "logo-silver" : "logo";
-  return `/images/hats/engraving/hat-kolpak-${tone}-${thread}-center.png`;
+  return `/images/hats/engraving/hat-${variantId}-${tone}-${thread}-center.png`;
 }
 
 type Props = {
@@ -62,9 +65,11 @@ export function HatPreview({ config, colorName, materialName }: Props) {
     config.engravingColorId ?? "gold",
     config.engravingPositionId ?? "front-center"
   );
-  const logoImage = getLogoImage(colorId, config.engravingColorId ?? "gold");
+  const logoImage = getLogoImage(variantId, colorId, config.engravingColorId ?? "gold");
 
-  const imageSrc = isLogo ? logoImage : hasEngraving ? engravingImage : shapeImage;
+  const imageSrc = isLogo
+    ? (logoImage ?? shapeImage)
+    : hasEngraving ? engravingImage : shapeImage;
 
   const engravingColor = EMBROIDERY_COLORS.find(
     (c) => c.id === config.engravingColorId
@@ -86,7 +91,7 @@ export function HatPreview({ config, colorName, materialName }: Props) {
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
             <p className="text-[10px] text-white/70 tracking-wide uppercase">
               {isLogo
-                ? "Фирменная вышивка ПАРЪ"
+                ? (logoImage ? "Фирменная вышивка ПАРЪ" : "Логотип ПАРЪ будет нанесён на эту форму")
                 : "Пример вышивки «АБ» — ваши инициалы будут выполнены в выбранном стиле"}
             </p>
           </div>
