@@ -45,7 +45,7 @@ export function HatOptionsPanel() {
             <button
               key={v.id}
               onClick={() => setItemConfig("hat", { variantId: v.id })}
-              className={`text-center border transition-all overflow-hidden ${
+              className={`text-center border transition-colors overflow-hidden ${
                 config.variantId === v.id
                   ? "border-gold ring-1 ring-gold/20"
                   : "border-white/10 hover:border-white/20"

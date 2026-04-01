@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { EMBROIDERY_COLORS } from "@/data/products";
 import type { ItemConfig } from "@/store/useConstructor";
@@ -70,6 +71,35 @@ export function HatPreview({ config, colorName, materialName }: Props) {
     imageSrc = baseImage;
   }
 
+  // Track which image is currently displayed (loaded) vs which is requested
+  const [displayedSrc, setDisplayedSrc] = useState(imageSrc);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const pendingSrcRef = useRef(imageSrc);
+
+  // When the desired image changes, start loading it in background
+  useEffect(() => {
+    if (imageSrc === displayedSrc) return;
+    pendingSrcRef.current = imageSrc;
+    setIsTransitioning(true);
+
+    // Preload the new image via a plain <img> to avoid unmounting Next/Image
+    const img = new window.Image();
+    img.src = imageSrc;
+    img.onload = () => {
+      // Only apply if this is still the latest requested src
+      if (pendingSrcRef.current === img.src) {
+        setDisplayedSrc(img.src);
+        setIsTransitioning(false);
+      }
+    };
+    img.onerror = () => {
+      if (pendingSrcRef.current === img.src) {
+        setDisplayedSrc(img.src);
+        setIsTransitioning(false);
+      }
+    };
+  }, [imageSrc, displayedSrc]);
+
   const engravingColor = EMBROIDERY_COLORS.find(
     (c) => c.id === config.engravingColorId
   )?.hex ?? "#C9A96E";
@@ -78,12 +108,11 @@ export function HatPreview({ config, colorName, materialName }: Props) {
     <div>
       <div className="relative aspect-[4/3] bg-bg-primary overflow-hidden border border-white/5">
         <Image
-          key={imageSrc}
-          src={imageSrc}
+          src={displayedSrc}
           alt="Банная шапка"
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover transition-opacity duration-300"
+          className={`object-cover transition-opacity duration-200 ${isTransitioning ? "opacity-60" : "opacity-100"}`}
           priority
         />
         {hasEngraving && (

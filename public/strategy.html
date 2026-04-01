@@ -2,7 +2,9 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>ПАРЪ — Brand Strategy & Positioning</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,8 +49,10 @@
     inset: 0;
     pointer-events: none;
     z-index: 9999;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    will-change: auto;
   }
 
   /* ─── NAV ─── */
@@ -62,9 +66,9 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px 16px;
-    background: rgba(10,10,10,0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(201,169,110,0.08);
     transition: transform 0.4s;
   }
@@ -117,6 +121,13 @@
     min-height: 100vh;
     padding: 120px 60px 80px;
     position: relative;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 100vh;
+  }
+
+  #hero {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
   }
 
   @media (max-width: 900px) {
@@ -174,17 +185,18 @@
   #hero::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at 50% 40%, rgba(201,169,110,0.06) 0%, transparent 60%);
-    animation: hero-glow 8s ease-in-out infinite alternate;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 50% 40%, rgba(201,169,110,0.07) 0%, transparent 55%);
+    animation: hero-glow 10s ease-in-out infinite alternate;
+    will-change: opacity;
   }
 
   @keyframes hero-glow {
-    0% { transform: scale(1) translate(0, 0); }
-    100% { transform: scale(1.1) translate(2%, -2%); }
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
   }
 
   .hero-badge {
@@ -281,6 +293,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
     .hero-badge,
     .hero-title,
     .hero-subtitle,
@@ -289,6 +305,9 @@
       animation: none !important;
     }
     #hero::before {
+      animation: none !important;
+    }
+    .pos-dot .dot.par::after {
       animation: none !important;
     }
   }
@@ -306,26 +325,15 @@
     border: 1px solid rgba(201,169,110,0.06);
     border-radius: 12px;
     padding: 32px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: border-color 0.3s, transform 0.3s;
     position: relative;
     overflow: hidden;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(201,169,110,0.04) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.4s;
   }
 
   .card:hover {
     border-color: rgba(201,169,110,0.15);
     transform: translateY(-4px);
   }
-
-  .card:hover::before { opacity: 1; }
 
   .card-icon {
     width: 40px;
@@ -441,7 +449,7 @@
     position: absolute;
     transform: translate(-50%, -50%);
     text-align: center;
-    transition: all 0.3s;
+    transition: transform 0.3s;
     cursor: pointer;
   }
 
@@ -461,12 +469,22 @@
     background: var(--gold);
     border-color: var(--gold);
     box-shadow: 0 0 20px rgba(201,169,110,0.4);
-    animation: pulse-gold 2s infinite;
+    position: relative;
+  }
+
+  .pos-dot .dot.par::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: rgba(201,169,110,0.15);
+    animation: pulse-gold 2.5s ease-in-out infinite;
+    will-change: opacity;
   }
 
   @keyframes pulse-gold {
-    0%, 100% { box-shadow: 0 0 20px rgba(201,169,110,0.3); }
-    50% { box-shadow: 0 0 40px rgba(201,169,110,0.6); }
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
   }
 
   .pos-dot .name {
@@ -530,7 +548,8 @@
 
   @media (max-width: 900px) {
     section#audience > .card-grid.reveal,
-    section#financials .card-grid.reveal {
+    section#financials .card-grid.reveal,
+    section#gtm .card-grid.reveal {
       grid-template-columns: 1fr !important;
     }
     .segment-card .segment-details {
@@ -575,7 +594,7 @@
     border: 1px solid rgba(201,169,110,0.1);
     clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
     background: var(--bg-card);
-    transition: all 0.4s;
+    transition: background 0.3s, border-color 0.3s;
   }
 
   .pyramid-level:hover {
@@ -641,7 +660,7 @@
     background: var(--bg-card);
     border: 1px solid rgba(201,169,110,0.06);
     border-radius: 12px;
-    transition: all 0.3s;
+    transition: border-color 0.3s, transform 0.3s;
   }
 
   .timeline-item:hover {
@@ -725,7 +744,7 @@
     padding: 28px;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s;
+    transition: border-color 0.3s, transform 0.3s;
   }
 
   .supplier-card:hover {
@@ -925,7 +944,7 @@
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    transition: all 0.3s;
+    transition: border-color 0.3s;
   }
 
   .spec-item:hover {
@@ -971,7 +990,7 @@
     border-radius: 12px;
     padding: 24px;
     text-align: center;
-    transition: all 0.3s;
+    transition: border-color 0.3s;
   }
 
   .fin-card:hover {
@@ -1009,7 +1028,7 @@
     border: 1px solid rgba(201,169,110,0.04);
     border-radius: 10px;
     align-items: center;
-    transition: all 0.3s;
+    transition: border-color 0.3s;
   }
 
   .moat-row:hover {
@@ -1157,6 +1176,400 @@
   footer p {
     font-size: 0.75rem;
     color: var(--text-secondary);
+  }
+
+  /* ─── iOS SAFE AREAS ─── */
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  nav {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-top: max(12px, env(safe-area-inset-top));
+  }
+
+  footer {
+    padding-bottom: max(60px, env(safe-area-inset-bottom));
+  }
+
+  /* ─── MOBILE: iPhone SE / small phones (≤ 430px) ─── */
+  @media (max-width: 430px) {
+    /* Disable noise overlay on mobile — invisible and wastes GPU */
+    .noise-overlay { display: none; }
+
+    /* Disable backdrop-filter on mobile Safari — major perf hit */
+    nav {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background: rgba(10,10,10,0.98);
+    }
+
+    /* Hero: use dvh for iOS address bar */
+    #hero {
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
+      padding: 80px 20px 40px;
+    }
+
+    #hero::before {
+      animation: none;
+      opacity: 0.8;
+    }
+
+    .hero-badge {
+      font-size: 0.5rem;
+      letter-spacing: 3px;
+      padding: 6px 16px;
+      margin-bottom: 28px;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 9vw, 3.2rem);
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      padding: 0 8px;
+    }
+
+    .hero-meta {
+      gap: 16px 20px;
+    }
+
+    .hero-meta-item .num {
+      font-size: 1.5rem;
+    }
+
+    .hero-meta-item .lbl {
+      font-size: 0.55rem;
+      letter-spacing: 1px;
+    }
+
+    /* Nav: horizontal scroll instead of wrapping */
+    nav .nav-links {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 16px;
+      padding-bottom: 4px;
+      max-width: 100%;
+    }
+
+    nav .nav-links::-webkit-scrollbar { display: none; }
+
+    nav .nav-links a {
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      padding: 8px 0;
+      min-width: max-content;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    nav .logo {
+      font-size: 1.1rem;
+      letter-spacing: 4px;
+    }
+
+    /* Sections */
+    section {
+      padding: 88px 16px 48px;
+      min-height: auto;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 6vw, 2.4rem);
+      margin-bottom: 32px;
+    }
+
+    .section-label {
+      font-size: 0.55rem;
+      letter-spacing: 3px;
+    }
+
+    /* Cards: single column */
+    .card-grid {
+      grid-template-columns: 1fr !important;
+      gap: 16px;
+    }
+
+    .card {
+      padding: 24px 20px;
+      border-radius: 10px;
+    }
+
+    .card .metric {
+      font-size: 2rem;
+    }
+
+    /* Charts smaller on mobile */
+    .chart-container .chart-canvas-host {
+      height: 220px;
+    }
+
+    .chart-container .chart-canvas-host.tall {
+      height: 260px;
+    }
+
+    .chart-row {
+      gap: 16px;
+    }
+
+    /* Positioning map */
+    .pos-map-wrap {
+      padding: 0 0 36px 0;
+      margin-bottom: 32px;
+    }
+
+    .pos-map {
+      min-width: 300px;
+    }
+
+    /* Segment cards */
+    .segment-card {
+      padding: 24px 20px;
+    }
+
+    .segment-card .segment-share {
+      font-size: 2rem;
+      top: 14px;
+      right: 16px;
+    }
+
+    .segment-card .segment-name {
+      font-size: 1.2rem;
+    }
+
+    .segment-card .segment-details {
+      grid-template-columns: 1fr !important;
+      gap: 8px;
+    }
+
+    /* Timeline */
+    .timeline {
+      padding-left: 32px;
+    }
+
+    .timeline-item {
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+
+    .timeline-item::before {
+      left: -24px;
+      width: 8px;
+      height: 8px;
+    }
+
+    .timeline-item .phase-tag {
+      font-size: 0.55rem;
+    }
+
+    .timeline-item h4 {
+      font-size: 1.1rem;
+    }
+
+    .timeline-item .metrics-row {
+      gap: 12px;
+    }
+
+    .timeline-item .mini-metric {
+      padding: 6px 12px;
+    }
+
+    .timeline-item .mini-metric .val {
+      font-size: 1.1rem;
+    }
+
+    /* Supplier cards */
+    .supplier-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .supplier-card {
+      padding: 20px;
+    }
+
+    /* Negotiation steps */
+    .nego-steps {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .nego-step {
+      padding: 20px;
+    }
+
+    /* Specs grid */
+    .specs-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .spec-item {
+      padding: 16px 12px;
+    }
+
+    .spec-item .spec-val {
+      font-size: 1.3rem;
+    }
+
+    /* Financials */
+    .fin-row {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .fin-card {
+      padding: 16px 12px;
+    }
+
+    .fin-card .fin-val {
+      font-size: 1.4rem;
+    }
+
+    .fin-card .fin-lbl {
+      font-size: 0.6rem;
+    }
+
+    /* Unit economics */
+    .unit-econ {
+      max-width: 100%;
+    }
+
+    .ue-row .ue-label {
+      font-size: 0.78rem;
+    }
+
+    .ue-row .ue-value {
+      font-size: 0.95rem;
+    }
+
+    /* Moat grid */
+    .moat-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 16px;
+    }
+
+    .moat-row .moat-time { text-align: left; }
+
+    /* TOV grid */
+    .tov-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    /* Positioning statement box */
+    .reveal > div[style*="padding:28px 36px"] {
+      padding: 20px !important;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 20px;
+    }
+
+    footer .logo {
+      font-size: 1.5rem;
+      letter-spacing: 6px;
+    }
+
+    /* Gold divider */
+    .gold-divider {
+      margin: 40px 0 28px;
+    }
+
+    /* Inline headings */
+    h3[style*="font-size:1.4rem"] {
+      font-size: 1.2rem !important;
+    }
+
+    h3[style*="font-size:1.8rem"] {
+      font-size: 1.4rem !important;
+    }
+
+    /* Pricing cards */
+    .card div[style*="font-size:2.4rem"] {
+      font-size: 1.8rem !important;
+    }
+
+    /* Disable hover transforms on touch — prevents sticky hover states */
+    .card:hover,
+    .timeline-item:hover,
+    .supplier-card:hover {
+      transform: none;
+    }
+  }
+
+  /* ─── MOBILE: very small screens (iPhone SE 1st gen, 320px) ─── */
+  @media (max-width: 370px) {
+    .hero-title {
+      font-size: 1.8rem;
+    }
+
+    .hero-badge {
+      font-size: 0.45rem;
+      letter-spacing: 2px;
+      padding: 5px 12px;
+    }
+
+    .specs-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .fin-row {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-meta {
+      gap: 12px 16px;
+    }
+
+    .hero-meta-item .num {
+      font-size: 1.3rem;
+    }
+  }
+
+  /* ─── Landscape phone (short viewport) ─── */
+  @media (max-height: 500px) and (max-width: 900px) {
+    #hero {
+      min-height: auto;
+      padding-top: 80px;
+      padding-bottom: 40px;
+    }
+
+    .hero-meta {
+      position: relative;
+      bottom: auto;
+      margin-top: 24px;
+    }
+  }
+
+  /* ─── Touch device: disable hover effects that cause sticky states ─── */
+  @media (hover: none) and (pointer: coarse) {
+    .card:hover { transform: none; border-color: rgba(201,169,110,0.06); }
+    .timeline-item:hover { transform: none; border-color: rgba(201,169,110,0.06); }
+    .supplier-card:hover { transform: none; border-color: rgba(201,169,110,0.06); }
+    .pyramid-level:hover { background: var(--bg-card); }
+    .pos-dot:hover { transform: translate(-50%, -50%); }
+
+    /* Ensure active state feedback instead */
+    .card:active { border-color: rgba(201,169,110,0.15); }
+    .timeline-item:active { border-color: rgba(201,169,110,0.15); }
+    .supplier-card:active { border-color: rgba(201,169,110,0.15); }
+  }
+
+  /* ─── iOS-specific: fix 100vh issue ─── */
+  @supports (-webkit-touch-callout: none) {
+    #hero {
+      min-height: -webkit-fill-available;
+    }
   }
 </style>
 </head>
@@ -1827,16 +2240,50 @@
   <p style="margin-top:4px;color:rgba(201,169,110,0.3);font-size:0.65rem">Подготовлено в формате стратегического консалтинга</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
 <script>
 (function () {
   const chartInstances = [];
+  const pendingCharts = [];
+
   function addChart(canvasId, config) {
+    pendingCharts.push({ canvasId, config });
+  }
+
+  function createChart(canvasId, config) {
     const el = document.getElementById(canvasId);
     if (!el || typeof Chart === 'undefined') return null;
+    config.options = config.options || {};
+    config.options.animation = { duration: 600 };
     const c = new Chart(el, config);
     chartInstances.push(c);
     return c;
+  }
+
+  function initLazyCharts() {
+    if (typeof Chart === 'undefined') {
+      console.warn('Chart.js не загрузился (CDN). Графики недоступны.');
+      return;
+    }
+
+    const chartObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          const canvas = entry.target;
+          const idx = pendingCharts.findIndex(function (p) { return p.canvasId === canvas.id; });
+          if (idx !== -1) {
+            createChart(pendingCharts[idx].canvasId, pendingCharts[idx].config);
+            pendingCharts.splice(idx, 1);
+            chartObserver.unobserve(canvas);
+          }
+        }
+      });
+    }, { rootMargin: '200px' });
+
+    pendingCharts.forEach(function (p) {
+      var el = document.getElementById(p.canvasId);
+      if (el) chartObserver.observe(el);
+    });
   }
 
   function resizeCharts() {
@@ -1846,26 +2293,26 @@
   }
 
   window.addEventListener('load', function () {
-    requestAnimationFrame(function () {
-      requestAnimationFrame(resizeCharts);
-    });
+    requestAnimationFrame(initLazyCharts);
   });
   var resizeT;
   window.addEventListener('resize', function () {
     clearTimeout(resizeT);
-    resizeT = setTimeout(resizeCharts, 120);
+    resizeT = setTimeout(resizeCharts, 200);
   });
 
-  if (typeof Chart === 'undefined') {
-    console.warn('Chart.js не загрузился (CDN). Графики недоступны.');
-    return;
-  }
+// ─── CHART DEFAULTS (applied when Chart.js is ready) ───
+function applyChartDefaults() {
+  if (typeof Chart === 'undefined') return;
+  Chart.defaults.color = '#8A847A';
+  Chart.defaults.borderColor = 'rgba(201,169,110,0.06)';
+  Chart.defaults.font.family = "'Outfit', sans-serif";
+  Chart.defaults.font.size = 11;
+}
 
-// ─── CHART DEFAULTS ───
-Chart.defaults.color = '#8A847A';
-Chart.defaults.borderColor = 'rgba(201,169,110,0.06)';
-Chart.defaults.font.family = "'Outfit', sans-serif";
-Chart.defaults.font.size = 11;
+// Apply defaults immediately if available, or defer
+if (typeof Chart !== 'undefined') { applyChartDefaults(); }
+else { window.addEventListener('load', applyChartDefaults); }
 
 const gold = '#C9A96E';
 const goldLight = '#E8D5A8';
