@@ -130,6 +130,7 @@ export const EMBROIDERY_COLORS: EmbroideryColor[] = [
 ];
 
 export const EMBROIDERY_TYPES: EmbroideryType[] = [
+  { id: "logo", name: "Логотип ПАРЪ", description: "Фирменная вышивка бренда ПАРЪ" },
   { id: "monogram", name: "Монограмма", description: "Инициалы в классическом стиле (1–3 буквы)" },
   { id: "name", name: "Имя", description: "Полное имя или фамилия (до 15 символов)" },
   { id: "phrase", name: "Фраза", description: "Любой текст или пожелание (до 30 символов)" },

@@ -56,8 +56,8 @@ export function formatOrderForTelegram(order: {
     if (item.variant) msg += `  Форма: ${item.variant}\n`;
     if (item.size) msg += `  Размер: ${item.size}\n`;
     if (item.trimColor) msg += `  Кант: ${item.trimColor}\n`;
-    if (item.engraving) {
-      msg += `  Вышивка: «${item.engraving}»\n`;
+    if (item.engraving || item.engravingType === "Логотип ПАРЪ") {
+      msg += `  Вышивка: ${item.engravingType === "Логотип ПАРЪ" ? "Логотип ПАРЪ" : `«${item.engraving}»`}\n`;
       if (item.engravingType) msg += `  Тип: ${item.engravingType}\n`;
       if (item.engravingColor) msg += `  Цвет нити: ${item.engravingColor}\n`;
       if (item.engravingPosition) msg += `  Расположение: ${item.engravingPosition}\n`;

@@ -237,9 +237,9 @@ export function OrderSummary() {
                     {variant && <p>Форма: {variant.name}</p>}
                     {size && <p>Размер: {size.name}</p>}
                     {trimColor && <p>Кант: {trimColor.name}</p>}
-                    {config?.engraving && (
+                    {(config?.engraving || config?.engravingTypeId === "logo") && (
                       <p className="text-gold">
-                        Вышивка: «{config.engraving}»
+                        Вышивка: {config.engravingTypeId === "logo" ? "Логотип ПАРЪ" : `«${config.engraving}»`}
                       </p>
                     )}
                   </div>

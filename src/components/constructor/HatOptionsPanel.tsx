@@ -135,47 +135,60 @@ export function HatOptionsPanel() {
           ))}
         </div>
 
-        {/* Text input */}
-        <input
-          type="text"
-          value={config.engraving ?? ""}
-          onChange={(e) => setItemConfig("hat", { engraving: e.target.value })}
-          placeholder={
-            config.engravingTypeId === "monogram"
-              ? "АБ"
-              : config.engravingTypeId === "name"
-                ? "Александр"
-                : "С лёгким паром!"
-          }
-          maxLength={
-            config.engravingTypeId === "monogram"
-              ? 3
-              : config.engravingTypeId === "name"
-                ? 15
-                : 30
-          }
-          className="w-full bg-bg-primary border border-white/10 px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-gold focus:outline-none transition-colors"
-        />
-
-        {/* Font */}
-        <div>
-          <label className="text-xs text-text-muted mb-2 block">Шрифт</label>
-          <div className="flex flex-wrap gap-2">
-            {FONTS_SHORT.map((font) => (
-              <button
-                key={font.id}
-                onClick={() => setItemConfig("hat", { engravingFont: font.id })}
-                className={`px-3 py-2 text-sm border transition-colors ${font.css} ${
-                  config.engravingFont === font.id
-                    ? "border-gold bg-gold/5"
-                    : "border-white/10 hover:border-white/20"
-                }`}
-              >
-                {font.name}
-              </button>
-            ))}
+        {config.engravingTypeId === "logo" ? (
+          <div className="border border-gold/20 bg-gold/5 p-4">
+            <p className="text-sm text-text-secondary">
+              Фирменная вышивка <span className="text-gold font-medium">ПАРЪ</span> по центру шапки
+            </p>
+            <p className="text-text-muted text-xs mt-1">
+              Выполняется в выбранном цвете нити
+            </p>
           </div>
-        </div>
+        ) : (
+          <>
+            {/* Text input */}
+            <input
+              type="text"
+              value={config.engraving ?? ""}
+              onChange={(e) => setItemConfig("hat", { engraving: e.target.value })}
+              placeholder={
+                config.engravingTypeId === "monogram"
+                  ? "АБ"
+                  : config.engravingTypeId === "name"
+                    ? "Александр"
+                    : "С лёгким паром!"
+              }
+              maxLength={
+                config.engravingTypeId === "monogram"
+                  ? 3
+                  : config.engravingTypeId === "name"
+                    ? 15
+                    : 30
+              }
+              className="w-full bg-bg-primary border border-white/10 px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-gold focus:outline-none transition-colors"
+            />
+
+            {/* Font */}
+            <div>
+              <label className="text-xs text-text-muted mb-2 block">Шрифт</label>
+              <div className="flex flex-wrap gap-2">
+                {FONTS_SHORT.map((font) => (
+                  <button
+                    key={font.id}
+                    onClick={() => setItemConfig("hat", { engravingFont: font.id })}
+                    className={`px-3 py-2 text-sm border transition-colors ${font.css} ${
+                      config.engravingFont === font.id
+                        ? "border-gold bg-gold/5"
+                        : "border-white/10 hover:border-white/20"
+                    }`}
+                  >
+                    {font.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
 
         {/* Thread color */}
         <div>
@@ -192,28 +205,30 @@ export function HatOptionsPanel() {
           />
         </div>
 
-        {/* Position */}
-        <div>
-          <label className="text-xs text-text-muted mb-2 block">Расположение</label>
-          <div className="grid grid-cols-2 gap-2">
-            {POSITION_OPTIONS.map((pos) => (
-              <button
-                key={pos.id}
-                onClick={() =>
-                  setItemConfig("hat", { engravingPositionId: pos.id })
-                }
-                className={`p-3 text-left border transition-colors ${
-                  config.engravingPositionId === pos.id
-                    ? "border-gold bg-gold/5"
-                    : "border-white/10 hover:border-white/20"
-                }`}
-              >
-                <div className={`text-xs font-medium ${config.engravingPositionId === pos.id ? "text-gold" : "text-text-secondary"}`}>{pos.name}</div>
-                <div className="text-text-muted text-[10px] mt-0.5">{pos.description}</div>
-              </button>
-            ))}
+        {/* Position — hidden for logo */}
+        {config.engravingTypeId !== "logo" && (
+          <div>
+            <label className="text-xs text-text-muted mb-2 block">Расположение</label>
+            <div className="grid grid-cols-2 gap-2">
+              {POSITION_OPTIONS.map((pos) => (
+                <button
+                  key={pos.id}
+                  onClick={() =>
+                    setItemConfig("hat", { engravingPositionId: pos.id })
+                  }
+                  className={`p-3 text-left border transition-colors ${
+                    config.engravingPositionId === pos.id
+                      ? "border-gold bg-gold/5"
+                      : "border-white/10 hover:border-white/20"
+                  }`}
+                >
+                  <div className={`text-xs font-medium ${config.engravingPositionId === pos.id ? "text-gold" : "text-text-secondary"}`}>{pos.name}</div>
+                  <div className="text-text-muted text-[10px] mt-0.5">{pos.description}</div>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* ── Custom order disclaimer ── */}

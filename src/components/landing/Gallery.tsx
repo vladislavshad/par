@@ -2,10 +2,19 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { PRESET_KITS } from "@/data/products";
-import Link from "next/link";
+import { useConstructor } from "@/store/useConstructor";
 
 export function Gallery() {
+  const router = useRouter();
+  const applyPreset = useConstructor((s) => s.applyPreset);
+
+  const handleSelectKit = (kitId: string) => {
+    applyPreset(kitId);
+    router.push("/constructor");
+  };
+
   return (
     <section id="gallery" className="py-24 sm:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +45,8 @@ export function Gallery() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.4, delay: i * 0.15 }}
-              className="group bg-bg-secondary border border-white/5 overflow-hidden hover:border-gold/30 transition-all duration-300"
+              onClick={() => handleSelectKit(kit.id)}
+              className="group bg-bg-secondary border border-white/5 overflow-hidden hover:border-gold/30 transition-all duration-300 cursor-pointer"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
@@ -64,15 +74,15 @@ export function Gallery() {
                     </span>
                     <span className="text-text-muted text-sm ml-1">₽</span>
                   </div>
-                  <Link
-                    href="/constructor"
+                  <button
+                    onClick={() => handleSelectKit(kit.id)}
                     className="text-gold hover:text-gold-light text-sm font-medium transition-colors flex items-center gap-1"
                   >
                     Выбрать
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
-                  </Link>
+                  </button>
                 </div>
               </div>
             </motion.div>

@@ -87,7 +87,7 @@ export function ItemCustomizer() {
                   <p className="text-text-muted text-sm truncate">
                     {selectedMaterial?.name}
                     {selectedVariant ? ` · ${selectedVariant.name}` : ""}
-                    {config.engraving ? ` · «${config.engraving}»` : ""}
+                    {config.engravingTypeId === "logo" ? " · Логотип ПАРЪ" : config.engraving ? ` · «${config.engraving}»` : ""}
                   </p>
                 </div>
                 <div className="text-right flex-shrink-0">

@@ -35,6 +35,12 @@ function getEngravingImage(variantId: string, colorId: string, threadColorId: st
   return `/images/hats/engraving/hat-${variantId}-${tone}-${thread}-${pos}.png`;
 }
 
+function getLogoImage(colorId: string, threadColorId: string): string {
+  const tone = DARK_COLORS.has(colorId) ? "dark" : "light";
+  const thread = threadColorId === "silver" ? "logo-silver" : "logo";
+  return `/images/hats/engraving/hat-kolpak-${tone}-${thread}-center.png`;
+}
+
 type Props = {
   config: ItemConfig;
   colorName: string;
@@ -46,7 +52,8 @@ export function HatPreview({ config, colorName, materialName }: Props) {
   const colorId = config.colorId ?? "snow";
   const colorKey = `${variantId}-${colorId}`;
 
-  const hasEngraving = !!config.engraving;
+  const isLogo = config.engravingTypeId === "logo";
+  const hasEngraving = isLogo || !!config.engraving;
 
   const shapeImage = HAT_COLOR_IMAGES[colorKey] ?? HAT_IMAGES[variantId] ?? HAT_IMAGES.kolpak;
   const engravingImage = getEngravingImage(
@@ -55,8 +62,9 @@ export function HatPreview({ config, colorName, materialName }: Props) {
     config.engravingColorId ?? "gold",
     config.engravingPositionId ?? "front-center"
   );
+  const logoImage = getLogoImage(colorId, config.engravingColorId ?? "gold");
 
-  const imageSrc = hasEngraving ? engravingImage : shapeImage;
+  const imageSrc = isLogo ? logoImage : hasEngraving ? engravingImage : shapeImage;
 
   const engravingColor = EMBROIDERY_COLORS.find(
     (c) => c.id === config.engravingColorId
@@ -77,7 +85,9 @@ export function HatPreview({ config, colorName, materialName }: Props) {
         {hasEngraving && (
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
             <p className="text-[10px] text-white/70 tracking-wide uppercase">
-              Пример вышивки «АБ» — ваши инициалы будут выполнены в выбранном стиле
+              {isLogo
+                ? "Фирменная вышивка ПАРЪ"
+                : "Пример вышивки «АБ» — ваши инициалы будут выполнены в выбранном стиле"}
             </p>
           </div>
         )}
@@ -93,11 +103,16 @@ export function HatPreview({ config, colorName, materialName }: Props) {
             />
             <div className="flex-1 min-w-0">
               <p className="text-sm text-text-secondary">
-                Вышивка:{" "}
-                <span className="text-gold font-medium">«{config.engraving}»</span>
+                {isLogo ? (
+                  <>Вышивка: <span className="text-gold font-medium">Логотип ПАРЪ</span></>
+                ) : (
+                  <>Вышивка: <span className="text-gold font-medium">«{config.engraving}»</span></>
+                )}
               </p>
               <p className="text-xs text-text-muted mt-0.5">
-                {config.engravingPositionId === "front-side" ? "Спереди сбоку" : "Спереди по центру"}
+                {isLogo
+                  ? "По центру"
+                  : config.engravingPositionId === "front-side" ? "Спереди сбоку" : "Спереди по центру"}
                 {" · "}
                 {EMBROIDERY_COLORS.find((c) => c.id === config.engravingColorId)?.name}
               </p>

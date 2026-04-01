@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import { PRODUCTS, PACKAGING_OPTIONS } from "@/data/products";
+import { PRODUCTS, PACKAGING_OPTIONS, PRESET_KITS } from "@/data/products";
 
 export type ItemConfig = {
   productId: string;
@@ -37,6 +37,7 @@ type ConstructorState = {
   setContactName: (name: string) => void;
   setContactPhone: (phone: string) => void;
   setContactMethod: (method: "telegram" | "whatsapp") => void;
+  applyPreset: (presetId: string) => void;
   getTotal: () => number;
   getItemPrice: (productId: string) => number;
   reset: () => void;
@@ -86,7 +87,7 @@ export const useConstructor = create<ConstructorState>((set, get) => ({
             engraving: "",
             engravingFont: "serif",
             engravingColorId: "gold",
-            engravingTypeId: "monogram",
+            engravingTypeId: productId === "hat" ? "logo" : "monogram",
             engravingPositionId: product.engravingPositions?.[0]?.id,
           },
         },
@@ -100,6 +101,37 @@ export const useConstructor = create<ConstructorState>((set, get) => ({
         [productId]: { ...s.itemConfigs[productId], ...config },
       },
     })),
+
+  applyPreset: (presetId) =>
+    set(() => {
+      const kit = PRESET_KITS.find((k) => k.id === presetId);
+      if (!kit) return {};
+      const configs: Record<string, ItemConfig> = {};
+      for (const productId of kit.items) {
+        const product = PRODUCTS.find((p) => p.id === productId);
+        if (!product) continue;
+        const materialId = kit.materialPreset[productId] ?? product.materials[0].id;
+        configs[productId] = {
+          productId,
+          materialId,
+          colorId: product.colors[0].id,
+          sizeId: product.sizes?.[0]?.id,
+          variantId: product.variants?.[0]?.id,
+          trimColorId: product.trimColors?.[0]?.id,
+          engraving: "",
+          engravingFont: "serif",
+          engravingColorId: "gold",
+          engravingTypeId: productId === "hat" ? "logo" : "monogram",
+          engravingPositionId: product.engravingPositions?.[0]?.id,
+        };
+      }
+      return {
+        selectedItems: [...kit.items],
+        itemConfigs: configs,
+        packagingId: kit.packagingId,
+        step: 2,
+      };
+    }),
 
   setPackaging: (id) => set({ packagingId: id }),
   setGiftCardText: (text) => set({ giftCardText: text }),
@@ -115,8 +147,9 @@ export const useConstructor = create<ConstructorState>((set, get) => ({
     if (!product) return 0;
     const material = product.materials.find((m) => m.id === config.materialId);
     const base = material?.price ?? product.materials[0].price;
+    const hasEngraving = config.engravingTypeId === "logo" || !!config.engraving;
     const engravingCost =
-      product.allowEngraving && config.engraving
+      product.allowEngraving && hasEngraving
         ? product.engravingPrice
         : 0;
     return base + engravingCost;
