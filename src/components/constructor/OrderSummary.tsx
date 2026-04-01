@@ -9,6 +9,7 @@ import {
   PACKAGING_OPTIONS,
   EMBROIDERY_COLORS,
   EMBROIDERY_TYPES,
+  getMaterialImage,
 } from "@/data/products";
 import { useConstructor } from "@/store/useConstructor";
 
@@ -153,7 +154,8 @@ export function OrderSummary() {
           {selectedProducts.map((product) => {
             const config = itemConfigs[product.id];
             const variant = product.variants?.find((v) => v.id === config?.variantId);
-            const displayImage = variant?.image ?? product.image;
+            const displayImage = (config ? getMaterialImage(product.id, config.materialId) : null)
+              ?? variant?.image ?? product.image;
             const color = product.colors.find((c) => c.id === config?.colorId);
 
             return (
@@ -204,7 +206,8 @@ export function OrderSummary() {
             const size = product.sizes?.find((s) => s.id === config?.sizeId);
             const variant = product.variants?.find((v) => v.id === config?.variantId);
             const trimColor = product.trimColors?.find((c) => c.id === config?.trimColorId);
-            const displayImage = variant?.image ?? product.image;
+            const displayImage = (config ? getMaterialImage(product.id, config.materialId) : null)
+              ?? variant?.image ?? product.image;
 
             return (
               <div

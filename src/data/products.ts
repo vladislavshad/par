@@ -323,6 +323,57 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
+// ─── Material images ──────────────────────────────────
+
+const MATERIAL_IMAGES: Record<string, Record<string, string>> = {
+  hat: {
+    "felt-standard": "/images/materials/hat/hat-felt-standard.png",
+    "felt-premium": "/images/materials/hat/hat-felt-premium.png",
+    "felt-merino": "/images/materials/hat/hat-felt-merino.png",
+    "felt-fetl": "/images/materials/hat/hat-felt-fetl.png",
+  },
+  towel: {
+    "cotton-400": "/images/materials/towel/towel-cotton-400.png",
+    "cotton-500": "/images/materials/towel/towel-cotton-500.png",
+    bamboo: "/images/materials/towel/towel-bamboo.png",
+    linen: "/images/materials/towel/towel-linen.png",
+    "linen-waffle": "/images/materials/towel/towel-linen-waffle.png",
+  },
+  robe: {
+    "cotton-terry": "/images/materials/robe/robe-cotton-terry.png",
+    "cotton-waffle": "/images/materials/robe/robe-cotton-waffle.png",
+    "bamboo-terry": "/images/materials/robe/robe-bamboo-terry.png",
+    linen: "/images/materials/robe/robe-linen.png",
+    "linen-cotton": "/images/materials/robe/robe-linen-cotton.png",
+  },
+  kilt: {
+    cotton: "/images/materials/kilt/kilt-cotton.png",
+    "cotton-waffle": "/images/materials/kilt/kilt-cotton-waffle.png",
+    "linen-cotton": "/images/materials/kilt/kilt-linen-cotton.png",
+    linen: "/images/materials/kilt/kilt-linen.png",
+  },
+  mat: {
+    felt: "/images/materials/mat/mat-felt.png",
+    "felt-premium": "/images/materials/mat/mat-felt-premium.png",
+    linen: "/images/materials/mat/mat-linen.png",
+  },
+  slippers: {
+    "felt-standard": "/images/materials/slippers/slippers-felt.png",
+    "felt-premium": "/images/materials/slippers/slippers-felt-premium.png",
+    "felt-merino": "/images/materials/slippers/slippers-merino.png",
+  },
+  bag: {
+    "linen-bag": "/images/materials/bag/bag-linen.png",
+    "canvas-bag": "/images/materials/bag/bag-canvas.png",
+    "leather-bag": "/images/materials/bag/bag-leather.png",
+    "vip-case": "/images/materials/bag/bag-vip.png",
+  },
+};
+
+export function getMaterialImage(productId: string, materialId: string): string | null {
+  return MATERIAL_IMAGES[productId]?.[materialId] ?? null;
+}
+
 // ─── Packaging ────────────────────────────────────────
 
 export const PACKAGING_OPTIONS: PackagingOption[] = [

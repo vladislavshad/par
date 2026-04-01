@@ -1,10 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { EMBROIDERY_COLORS } from "@/data/products";
+import { EMBROIDERY_COLORS, getMaterialImage } from "@/data/products";
 import type { ItemConfig } from "@/store/useConstructor";
 
-// Default hat images by shape
 const HAT_IMAGES: Record<string, string> = {
   kolpak: "/images/hat-kolpak.png",
   budenovka: "/images/hat-budenovka.png",
@@ -12,7 +11,6 @@ const HAT_IMAGES: Record<string, string> = {
   panama: "/images/hat-panama.png",
 };
 
-// Color-specific images
 const HAT_COLOR_IMAGES: Record<string, string> = {
   "kolpak-snow": "/images/hat-kolpak.png",
   "kolpak-cream": "/images/hats/kolpak-cream.png",
@@ -28,19 +26,6 @@ const HAT_COLOR_IMAGES: Record<string, string> = {
   "panama-anthracite": "/images/hats/panama-anthracite.png",
 };
 
-const FONT_SIZE_BY_TYPE: Record<string, string> = {
-  monogram: "3rem",
-  name: "1.75rem",
-  phrase: "1.15rem",
-};
-
-const FONT_CSS: Record<string, string> = {
-  serif: "font-serif",
-  script: "italic font-serif",
-  sans: "",
-  oldrus: "font-serif tracking-[0.2em]",
-};
-
 type Props = {
   config: ItemConfig;
   colorName: string;
@@ -51,20 +36,20 @@ export function HatPreview({ config, colorName, materialName }: Props) {
   const variantId = config.variantId ?? "kolpak";
   const colorId = config.colorId ?? "snow";
   const colorKey = `${variantId}-${colorId}`;
-  const imageSrc = HAT_COLOR_IMAGES[colorKey] ?? HAT_IMAGES[variantId] ?? HAT_IMAGES.kolpak;
+
+  const materialImage = getMaterialImage("hat", config.materialId);
+  const shapeImage = HAT_COLOR_IMAGES[colorKey] ?? HAT_IMAGES[variantId] ?? HAT_IMAGES.kolpak;
 
   const engravingColor = EMBROIDERY_COLORS.find(
     (c) => c.id === config.engravingColorId
   )?.hex ?? "#C9A96E";
 
-  const fontClass = FONT_CSS[config.engravingFont ?? "serif"] ?? "";
-  const fontSize = FONT_SIZE_BY_TYPE[config.engravingTypeId ?? "monogram"] ?? "3rem";
-
   return (
     <div>
+      {/* Shape preview */}
       <div className="relative aspect-[4/3] bg-bg-primary overflow-hidden border border-white/5">
         <Image
-          src={imageSrc}
+          src={shapeImage}
           alt="Банная шапка"
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"
@@ -73,53 +58,48 @@ export function HatPreview({ config, colorName, materialName }: Props) {
         />
       </div>
 
-      {/* Embroidery preview */}
-      {config.engraving ? (
-        <div className="mt-3 border border-gold/20 bg-bg-secondary">
-          <div className="px-3 py-1.5 border-b border-white/5">
-            <span className="text-[10px] text-gold tracking-[0.25em] uppercase">Именная вышивка</span>
-          </div>
-          <div className="flex gap-4 p-4">
-            {/* Reference photo */}
-            <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden border border-white/10">
-              <Image
-                src="/images/hats/embroidery-example.png"
-                alt="Пример именной вышивки"
-                fill
-                sizes="96px"
-                className="object-cover"
-              />
-            </div>
-            {/* User's selection */}
-            <div className="flex-1 min-w-0">
-              <p
-                className={`text-xl font-bold mb-2 ${fontClass}`}
-                style={{
-                  color: engravingColor,
-                  letterSpacing: "0.1em",
-                }}
-              >
-                «{config.engraving}»
+      {/* Material preview */}
+      {materialImage && (
+        <div className="mt-3">
+          <p className="text-[10px] text-text-muted tracking-wide uppercase mb-2">
+            Материал: {materialName}
+          </p>
+          <div className="relative aspect-[16/10] bg-bg-primary overflow-hidden border border-white/5">
+            <Image
+              src={materialImage}
+              alt={`Материал — ${materialName}`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
+              <p className="text-[10px] text-white/70 tracking-wide uppercase">
+                Пример вышивки «АБ» — ваши инициалы будут выполнены в выбранном стиле
               </p>
-              <div className="space-y-1 text-xs text-text-muted">
-                <p>
-                  Цвет нити:{" "}
-                  <span className="inline-flex items-center gap-1.5">
-                    <span
-                      className="w-2.5 h-2.5 rounded-full inline-block border border-white/20"
-                      style={{ backgroundColor: engravingColor }}
-                    />
-                    <span className="text-text-secondary">
-                      {EMBROIDERY_COLORS.find((c) => c.id === config.engravingColorId)?.name}
-                    </span>
-                  </span>
-                </p>
-                <p>Расположение: <span className="text-text-secondary">{config.engravingPositionId === "front-side" ? "Спереди сбоку" : "Спереди по центру"}</span></p>
-              </div>
             </div>
           </div>
-          <div className="px-4 pb-3">
-            <p className="text-[10px] text-text-muted italic">Пример вышивки на фото — ваши инициалы будут выполнены в выбранном стиле</p>
+        </div>
+      )}
+
+      {/* Embroidery summary */}
+      {config.engraving ? (
+        <div className="mt-3 border border-gold/20 bg-bg-secondary p-4">
+          <div className="flex items-center gap-3">
+            <span
+              className="w-3 h-3 rounded-full flex-shrink-0 border border-white/20"
+              style={{ backgroundColor: engravingColor }}
+            />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-text-secondary">
+                Вышивка:{" "}
+                <span className="text-gold font-medium">«{config.engraving}»</span>
+              </p>
+              <p className="text-xs text-text-muted mt-0.5">
+                {config.engravingPositionId === "front-side" ? "Спереди сбоку" : "Спереди по центру"}
+                {" · "}
+                {EMBROIDERY_COLORS.find((c) => c.id === config.engravingColorId)?.name}
+              </p>
+            </div>
           </div>
         </div>
       ) : (

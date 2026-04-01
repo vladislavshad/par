@@ -8,6 +8,7 @@ import {
   ENGRAVING_FONTS,
   EMBROIDERY_COLORS,
   EMBROIDERY_TYPES,
+  getMaterialImage,
 } from "@/data/products";
 import { useConstructor } from "@/store/useConstructor";
 import { ColorPicker } from "./ColorPicker";
@@ -69,7 +70,10 @@ export function ItemCustomizer() {
               >
                 <div className="relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 overflow-hidden">
                   <Image
-                    src={product.id === "hat" && selectedVariant?.image ? selectedVariant.image : product.image}
+                    src={
+                      getMaterialImage(product.id, config.materialId)
+                      ?? (product.id === "hat" && selectedVariant?.image ? selectedVariant.image : product.image)
+                    }
                     alt={product.name}
                     fill
                     sizes="64px"
@@ -128,6 +132,26 @@ export function ItemCustomizer() {
                     className="overflow-hidden"
                   >
                     <div className="px-4 pb-5 space-y-6 border-t border-white/5 pt-5">
+
+                      {/* ── Material image preview ── */}
+                      {getMaterialImage(product.id, config.materialId) && (
+                        <div className="relative aspect-[16/10] bg-bg-primary overflow-hidden border border-white/5">
+                          <Image
+                            src={getMaterialImage(product.id, config.materialId)!}
+                            alt={`${product.name} — ${selectedMaterial?.name}`}
+                            fill
+                            sizes="(max-width: 640px) 100vw, 50vw"
+                            className="object-cover"
+                          />
+                          {product.allowEngraving && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
+                              <p className="text-[10px] text-white/70 tracking-wide uppercase">
+                                Пример вышивки «АБ» — ваши инициалы будут выполнены в выбранном стиле
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )}
 
                       {/* ── Variant (hat shape, etc.) ── */}
                       {product.variants && (
@@ -316,29 +340,6 @@ export function ItemCustomizer() {
 
                           {config.engraving && (
                             <div className="space-y-4">
-                              {/* Preview */}
-                              <div className="bg-bg-primary border border-white/5 p-4 text-center">
-                                <p className="text-text-muted text-xs mb-2">Предпросмотр</p>
-                                <p
-                                  className={`text-2xl ${
-                                    config.engravingFont === "serif"
-                                      ? "font-serif"
-                                      : config.engravingFont === "script"
-                                        ? "italic font-serif"
-                                        : config.engravingFont === "oldrus"
-                                          ? "font-serif tracking-[0.2em]"
-                                          : ""
-                                  }`}
-                                  style={{
-                                    color: EMBROIDERY_COLORS.find(
-                                      (c) => c.id === config.engravingColorId
-                                    )?.hex ?? "#C9A96E",
-                                  }}
-                                >
-                                  {config.engraving}
-                                </p>
-                              </div>
-
                               {/* Font */}
                               <div>
                                 <label className="text-xs text-text-muted mb-2 block">Шрифт</label>
@@ -407,6 +408,20 @@ export function ItemCustomizer() {
                                   </div>
                                 </div>
                               )}
+
+                              {/* Summary */}
+                              <div className="bg-bg-primary border border-gold/10 p-3">
+                                <p className="text-sm text-text-secondary">
+                                  Вышивка:{" "}
+                                  <span className="text-gold font-medium">«{config.engraving}»</span>
+                                  <span className="text-text-muted"> · </span>
+                                  <span className="text-text-muted text-xs">
+                                    {ENGRAVING_FONTS.find((f) => f.id === config.engravingFont)?.name}
+                                    {" · "}
+                                    {EMBROIDERY_COLORS.find((c) => c.id === config.engravingColorId)?.name}
+                                  </span>
+                                </p>
+                              </div>
                             </div>
                           )}
                         </div>
