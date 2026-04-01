@@ -382,7 +382,7 @@ export const PACKAGING_OPTIONS: PackagingOption[] = [
     name: "Стандартная упаковка",
     description: "Фирменная крафт-коробка ПАРЪ с тишью-бумагой",
     price: 0,
-    image: "/images/packaging-linen.png",
+    image: "/images/packaging-standard.png",
   },
   {
     id: "linen-bag",
