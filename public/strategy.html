@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ПАРЪ — Brand Strategy & Positioning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg-deep: #0a0a0a;
+    --bg-card: #111111;
+    --bg-elevated: #1a1a1a;
+    --gold: #C9A96E;
+    --gold-light: #E8D5A8;
+    --gold-dim: #8B7345;
+    --ivory: #F5F0E8;
+    --ivory-muted: #C4BBAB;
+    --text: #E8E4DE;
+    --text-secondary: #8A847A;
+    --accent-red: #C46B5A;
+    --accent-green: #6BA87A;
+    --accent-blue: #5A8BC4;
+    --accent-purple: #8B6BA8;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Outfit', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--bg-deep);
+  }
+
+  body {
+    font-family: var(--sans);
+    color: var(--text);
+    background: var(--bg-deep);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,169,110,0.08);
+    transition: transform 0.4s;
+  }
+
+  nav .logo {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
+
+  nav .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  nav .nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  nav .nav-links a:hover { color: var(--gold); }
+
+  /* ─── SECTIONS ─── */
+  section {
+    min-height: 100vh;
+    padding: 120px 60px 80px;
+    position: relative;
+  }
+
+  @media (max-width: 900px) {
+    section { padding: 100px 24px 60px; }
+  }
+
+  .section-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold-dim);
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--ivory);
+    margin-bottom: 48px;
+    max-width: 800px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 50% 40%, rgba(201,169,110,0.06) 0%, transparent 60%);
+    animation: hero-glow 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes hero-glow {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.1) translate(2%, -2%); }
+  }
+
+  .hero-badge {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 8px 24px;
+    border: 1px solid rgba(201,169,110,0.25);
+    border-radius: 100px;
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--ivory);
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s forwards;
+  }
+
+  .hero-title .gold { color: var(--gold); }
+  .hero-title .italic { font-style: italic; }
+
+  .hero-subtitle {
+    font-family: var(--sans);
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 600px;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s forwards;
+  }
+
+  .hero-meta {
+    position: absolute;
+    bottom: 60px;
+    display: flex;
+    gap: 48px;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 1s 1s forwards;
+  }
+
+  .hero-meta-item {
+    text-align: center;
+  }
+
+  .hero-meta-item .num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--gold);
+  }
+
+  .hero-meta-item .lbl {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── CARDS ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid rgba(201,169,110,0.06);
+    border-radius: 12px;
+    padding: 32px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,169,110,0.04) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .card:hover {
+    border-color: rgba(201,169,110,0.15);
+    transform: translateY(-4px);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    position: relative;
+  }
+
+  .card-icon.gold { background: rgba(201,169,110,0.12); color: var(--gold); }
+  .card-icon.red { background: rgba(196,107,90,0.12); color: var(--accent-red); }
+  .card-icon.green { background: rgba(107,168,122,0.12); color: var(--accent-green); }
+  .card-icon.blue { background: rgba(90,139,196,0.12); color: var(--accent-blue); }
+  .card-icon.purple { background: rgba(139,107,168,0.12); color: var(--accent-purple); }
+
+  .card h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--ivory);
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    position: relative;
+  }
+
+  .card .metric {
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--gold);
+    margin-bottom: 4px;
+    display: block;
+    position: relative;
+  }
+
+  .card .metric-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+  }
+
+  /* ─── POSITIONING MAP ─── */
+  .pos-map {
+    width: 100%;
+    max-width: 700px;
+    aspect-ratio: 1;
+    position: relative;
+    margin: 0 auto 48px;
+    border-left: 1px solid rgba(201,169,110,0.15);
+    border-bottom: 1px solid rgba(201,169,110,0.15);
+  }
+
+  .pos-map .axis-label {
+    position: absolute;
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+
+  .pos-map .axis-label.x-min { bottom: -28px; left: 0; }
+  .pos-map .axis-label.x-max { bottom: -28px; right: 0; }
+  .pos-map .axis-label.y-min { left: -90px; bottom: 0; writing-mode: vertical-lr; transform: rotate(180deg); }
+  .pos-map .axis-label.y-max { left: -90px; top: 0; writing-mode: vertical-lr; transform: rotate(180deg); }
+
+  .pos-dot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .pos-dot:hover { transform: translate(-50%, -50%) scale(1.15); }
+
+  .pos-dot .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin: 0 auto 6px;
+    border: 2px solid;
+  }
+
+  .pos-dot .dot.par {
+    width: 22px;
+    height: 22px;
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(201,169,110,0.4);
+    animation: pulse-gold 2s infinite;
+  }
+
+  @keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 20px rgba(201,169,110,0.3); }
+    50% { box-shadow: 0 0 40px rgba(201,169,110,0.6); }
+  }
+
+  .pos-dot .name {
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .pos-dot .name.highlight {
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 0.7rem;
+  }
+
+  /* ─── CHART CONTAINERS ─── */
+  .chart-container {
+    background: var(--bg-card);
+    border: 1px solid rgba(201,169,110,0.06);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+
+  .chart-container h4 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--ivory);
+    margin-bottom: 20px;
+  }
+
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 900px) {
+    .chart-row { grid-template-columns: 1fr; }
+  }
+
+  /* ─── PYRAMID ─── */
+  .pyramid-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    max-width: 700px;
+    margin: 0 auto 60px;
+  }
+
+  .pyramid-level {
+    text-align: center;
+    padding: 20px 24px;
+    position: relative;
+    color: var(--ivory);
+    border: 1px solid rgba(201,169,110,0.1);
+    clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+    background: var(--bg-card);
+    transition: all 0.4s;
+  }
+
+  .pyramid-level:hover {
+    background: var(--bg-elevated);
+    border-color: rgba(201,169,110,0.2);
+  }
+
+  .pyramid-level:nth-child(1) { width: 200px; clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); background: linear-gradient(135deg, rgba(201,169,110,0.2), rgba(201,169,110,0.08)); }
+  .pyramid-level:nth-child(2) { width: 320px; }
+  .pyramid-level:nth-child(3) { width: 440px; }
+  .pyramid-level:nth-child(4) { width: 560px; }
+  .pyramid-level:nth-child(5) { width: 680px; clip-path: polygon(4% 0%, 96% 0%, 100% 100%, 0% 100%); }
+
+  .pyramid-level .level-tag {
+    font-size: 0.55rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .pyramid-level .level-text {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--ivory);
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    position: relative;
+    padding-left: 48px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), rgba(201,169,110,0.1));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 48px;
+    padding: 28px 32px;
+    background: var(--bg-card);
+    border: 1px solid rgba(201,169,110,0.06);
+    border-radius: 12px;
+    transition: all 0.3s;
+  }
+
+  .timeline-item:hover {
+    border-color: rgba(201,169,110,0.15);
+    transform: translateX(4px);
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -40px;
+    top: 34px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 3px solid var(--bg-deep);
+  }
+
+  .timeline-item .phase-tag {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .timeline-item h4 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--ivory);
+    margin-bottom: 12px;
+  }
+
+  .timeline-item p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .timeline-item .metrics-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .timeline-item .mini-metric {
+    text-align: center;
+    padding: 8px 16px;
+    background: rgba(201,169,110,0.05);
+    border-radius: 8px;
+  }
+
+  .timeline-item .mini-metric .val {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: var(--gold);
+  }
+
+  .timeline-item .mini-metric .lbl {
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  /* ─── SUPPLIER TABLE ─── */
+  .supplier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .supplier-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(201,169,110,0.06);
+    border-radius: 12px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .supplier-card:hover {
+    border-color: rgba(201,169,110,0.2);
+    transform: translateY(-2px);
+  }
+
+  .supplier-card .priority-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+
+  .priority-badge.high { background: rgba(201,169,110,0.15); color: var(--gold); }
+  .priority-badge.medium { background: rgba(90,139,196,0.15); color: var(--accent-blue); }
+  .priority-badge.low { background: rgba(138,132,122,0.15); color: var(--text-secondary); }
+
+  .supplier-card h4 {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--ivory);
+    margin-bottom: 4px;
+  }
+
+  .supplier-card .spec {
+    font-size: 0.75rem;
+    color: var(--gold-dim);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .supplier-card p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .supplier-card .contact {
+    font-size: 0.75rem;
+    color: var(--accent-blue);
+  }
+
+  /* ─── BAR CHART (HORIZONTAL) ─── */
+  .h-bar-group {
+    margin-bottom: 20px;
+  }
+
+  .h-bar-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .h-bar-track {
+    height: 28px;
+    background: rgba(201,169,110,0.05);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .h-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 0;
+    position: relative;
+  }
+
+  .h-bar-fill.gold { background: linear-gradient(90deg, var(--gold-dim), var(--gold)); }
+  .h-bar-fill.blue { background: linear-gradient(90deg, #3D6A99, var(--accent-blue)); }
+  .h-bar-fill.green { background: linear-gradient(90deg, #4A7A58, var(--accent-green)); }
+  .h-bar-fill.red { background: linear-gradient(90deg, #8B4A3D, var(--accent-red)); }
+  .h-bar-fill.purple { background: linear-gradient(90deg, #6A4A8B, var(--accent-purple)); }
+
+  /* ─── SEGMENT CARDS ─── */
+  .segment-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(201,169,110,0.06);
+    border-radius: 12px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .segment-card .segment-share {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: rgba(201,169,110,0.12);
+  }
+
+  .segment-card .segment-name {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .segment-card .segment-who {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .segment-card .segment-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .segment-card .detail-item {
+    padding: 12px;
+    background: rgba(201,169,110,0.03);
+    border-radius: 8px;
+  }
+
+  .segment-card .detail-item .dt-label {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 4px;
+  }
+
+  .segment-card .detail-item .dt-value {
+    font-size: 0.85rem;
+    color: var(--ivory);
+    font-weight: 400;
+  }
+
+  /* ─── NEGOTIATION SECTION ─── */
+  .nego-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin: 32px 0;
+  }
+
+  .nego-step {
+    background: var(--bg-card);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 24px 28px;
+    position: relative;
+  }
+
+  .nego-step .step-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 300;
+    color: rgba(201,169,110,0.2);
+    position: absolute;
+    top: 12px;
+    right: 20px;
+  }
+
+  .nego-step h5 {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--ivory);
+    margin-bottom: 8px;
+  }
+
+  .nego-step p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ─── FELT SPECS ─── */
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .spec-item {
+    background: var(--bg-card);
+    border: 1px solid rgba(201,169,110,0.06);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .spec-item:hover {
+    border-color: rgba(201,169,110,0.15);
+  }
+
+  .spec-item .spec-val {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .spec-item .spec-lbl {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+
+  .spec-item .spec-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ─── FINANCIAL SUMMARY ─── */
+  .fin-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 900px) {
+    .fin-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .fin-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(201,169,110,0.06);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .fin-card:hover {
+    border-color: rgba(201,169,110,0.15);
+  }
+
+  .fin-card .fin-val {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .fin-card .fin-lbl {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  /* ─── MOAT TABLE ─── */
+  .moat-grid {
+    display: grid;
+    gap: 12px;
+    margin: 24px 0 48px;
+  }
+
+  .moat-row {
+    display: grid;
+    grid-template-columns: 2fr 3fr 1.5fr;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 1px solid rgba(201,169,110,0.04);
+    border-radius: 10px;
+    align-items: center;
+    transition: all 0.3s;
+  }
+
+  .moat-row:hover {
+    border-color: rgba(201,169,110,0.12);
+  }
+
+  .moat-row .moat-name {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--ivory);
+  }
+
+  .moat-row .moat-why {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .moat-row .moat-time {
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--gold-dim);
+    font-weight: 500;
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── UNIT ECONOMICS ─── */
+  .unit-econ {
+    max-width: 500px;
+    margin: 0 auto 48px;
+  }
+
+  .ue-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(201,169,110,0.06);
+  }
+
+  .ue-row:last-child { border-bottom: none; }
+
+  .ue-row.total {
+    border-top: 2px solid var(--gold);
+    border-bottom: none;
+    margin-top: 4px;
+    padding-top: 16px;
+  }
+
+  .ue-row .ue-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .ue-row .ue-value {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--ivory);
+  }
+
+  .ue-row.total .ue-label,
+  .ue-row.total .ue-value {
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+
+  .ue-row .ue-pct {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-left: 8px;
+  }
+
+  /* ─── DIVIDER ─── */
+  .gold-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin: 60px 0 40px;
+  }
+
+  /* ─── TOV GRID ─── */
+  .tov-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .tov-item {
+    background: var(--bg-card);
+    border: 1px solid rgba(201,169,110,0.06);
+    border-radius: 10px;
+    padding: 20px 24px;
+  }
+
+  .tov-item .tov-do {
+    font-size: 0.8rem;
+    color: var(--accent-green);
+    margin-bottom: 8px;
+  }
+
+  .tov-item .tov-dont {
+    font-size: 0.8rem;
+    color: var(--accent-red);
+  }
+
+  .tov-item .tov-label {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 60px;
+    text-align: center;
+    border-top: 1px solid rgba(201,169,110,0.08);
+  }
+
+  footer .logo {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--gold);
+    letter-spacing: 8px;
+    margin-bottom: 12px;
+  }
+
+  footer p {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+</style>
+</head>
+<body>
+
+<div class="noise-overlay"></div>
+
+<nav>
+  <div class="logo">ПАРЪ</div>
+  <ul class="nav-links">
+    <li><a href="#market">Рынок</a></li>
+    <li><a href="#positioning">Позиционирование</a></li>
+    <li><a href="#audience">Аудитория</a></li>
+    <li><a href="#competitive">Конкуренция</a></li>
+    <li><a href="#supply">Производство</a></li>
+    <li><a href="#gtm">GTM</a></li>
+    <li><a href="#financials">Финансы</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<section id="hero">
+  <div class="hero-badge">Strategic Brand Plan · Q2–Q3 2026</div>
+  <h1 class="hero-title">
+    <span class="italic">Стратегия</span> бренда<br>
+    <span class="gold">ПАРЪ</span> Мануфактура
+  </h1>
+  <p class="hero-subtitle">
+    Позиционирование, Go-to-Market, цепочка поставок и финансовая модель для выхода на рынок премиальных банных комплектов
+  </p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="num">3.8M</div>
+      <div class="lbl">Посещений терм / год</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="num">+56%</div>
+      <div class="lbl">Рост люкса в РФ</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="num">63%</div>
+      <div class="lbl">Готовы к переплате<br>за персонализацию</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="num">0</div>
+      <div class="lbl">Конкурентов<br>с конструктором</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ MARKET ═══════════════════════════ -->
+<section id="market">
+  <div class="section-label reveal">01 — Макросреда</div>
+  <h2 class="section-title reveal">Четыре <em>мегатренда</em> формируют идеальное окно для запуска</h2>
+
+  <div class="card-grid reveal">
+    <div class="card">
+      <div class="card-icon gold">📈</div>
+      <span class="metric">+56%</span>
+      <span class="metric-label">Рост оборота люкса</span>
+      <p style="margin-top:12px">Оборот CDEK.Shopping премиум вырос до 310 млн ₽. Число заказов +85%. Доля люкса в fashion: 10% → 17%. Россияне покупают чаще, но на меньший чек — наша «сладкая зона» 8–15K.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon green">🎯</div>
+      <span class="metric">63%</span>
+      <span class="metric-label">Переплатят за персонализацию</span>
+      <p style="margin-top:12px">50%+ готовы доплатить 15% за кастом, 43% — до 30%. Тренд «от шаблонных подарков к адресному выбору». К 2026: 65% потребителей предпочтут персонализированный продукт.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon blue">🏛</div>
+      <span class="metric">+17</span>
+      <span class="metric-label">Новых терм до 2028</span>
+      <p style="margin-top:12px">18 объектов, 105 тыс. м². 3.8M посещений (+50% г/г). 30 новых открытий в 2025 — рекорд. К 2028: 35 терм = 35 точек B2B-контакта + место «обитания» ЦА.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon purple">🏢</div>
+      <span class="metric">33%</span>
+      <span class="metric-label">Компаний подняли бюджет</span>
+      <p style="margin-top:12px">53% отторгают бесполезные сувениры, 44% — шаблонные подарки. Спрос на персонализированные корп. подарки +83% г/г. Решения: HR (40%), руководитель (30%).</p>
+    </div>
+  </div>
+
+  <div class="gold-divider reveal"></div>
+  <h3 class="section-title reveal" style="font-size:1.8rem">TAM → SAM → SOM</h3>
+
+  <div class="chart-row reveal">
+    <div class="chart-container">
+      <h4>Воронка адресного рынка</h4>
+      <canvas id="tamChart" height="280"></canvas>
+    </div>
+    <div class="chart-container">
+      <h4>Индекс сезонности (6 мес.)</h4>
+      <canvas id="seasonChart" height="280"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ POSITIONING ═══════════════════════════ -->
+<section id="positioning">
+  <div class="section-label reveal">02 — Позиционирование</div>
+  <h2 class="section-title reveal">Мы занимаем <em>незанятый квадрант</em>: высокая персонализация × средне-высокая цена</h2>
+
+  <div class="reveal" style="max-width:800px;margin:0 auto 60px;text-align:center">
+    <div style="background:var(--bg-card);border:1px solid rgba(201,169,110,0.08);border-radius:12px;padding:28px 36px;font-family:var(--serif);font-size:1rem;line-height:2;color:var(--text-secondary)">
+      Для <span style="color:var(--ivory)">людей, ценящих банную культуру и ищущих осмысленный подарок</span>,<br>
+      ПАРЪ — <span style="color:var(--gold)">мануфактура персональных банных комплектов</span>,<br>
+      которая даёт <span style="color:var(--ivory)">собрать уникальный комплект в онлайн-конструкторе из натуральных материалов</span>,<br>
+      в отличие от <span style="color:var(--accent-red);text-decoration:line-through;opacity:0.6">масс-маркет наборов и стандартных подарков</span>,<br>
+      потому что <span style="color:var(--gold)">каждый комплект — вещь с характером, а не товар</span>.
+    </div>
+  </div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);text-align:center;margin-bottom:40px">Пирамида бренда</h3>
+
+  <div class="pyramid-wrapper reveal">
+    <div class="pyramid-level">
+      <div class="level-tag">Миссия</div>
+      <div class="level-text">«Вернуть банной культуре достоинство»</div>
+    </div>
+    <div class="pyramid-level">
+      <div class="level-tag">Обещание</div>
+      <div class="level-text">«Вещи, которые хочется передать»</div>
+    </div>
+    <div class="pyramid-level">
+      <div class="level-tag">Эмоция</div>
+      <div class="level-text">Гордость · Уважение к себе · Радость дарения · Ритуал</div>
+    </div>
+    <div class="pyramid-level">
+      <div class="level-tag">Функция</div>
+      <div class="level-text">Натуральные материалы · Комфорт · Долговечность · Персонализация</div>
+    </div>
+    <div class="pyramid-level">
+      <div class="level-tag">Атрибуты</div>
+      <div class="level-text">Войлок · Меринос · Лён · Бамбук · Кожа · Вышивка золотом · 7 предметов · Онлайн-конструктор</div>
+    </div>
+  </div>
+
+  <div class="gold-divider reveal"></div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);margin-bottom:32px">Tone of Voice</h3>
+
+  <div class="tov-grid reveal">
+    <div class="tov-item">
+      <div class="tov-label">Тон</div>
+      <div class="tov-do">✓ Спокойный, уверенный, тёплый</div>
+      <div class="tov-dont">✕ Агрессивный, кричащий</div>
+    </div>
+    <div class="tov-item">
+      <div class="tov-label">Стиль</div>
+      <div class="tov-do">✓ «Войлок ручной валки. 5 мм натуральной шерсти.»</div>
+      <div class="tov-dont">✕ «ЛУЧШИЕ ШАПКИ!!!»</div>
+    </div>
+    <div class="tov-item">
+      <div class="tov-label">Промо</div>
+      <div class="tov-do">✓ «Бесплатная вышивка при комплекте от 3 предметов»</div>
+      <div class="tov-dont">✕ «СКИДКА 50%!!! ТОЛЬКО СЕГОДНЯ!!!»</div>
+    </div>
+    <div class="tov-item">
+      <div class="tov-label">Юмор</div>
+      <div class="tov-do">✓ «Будёновка — для тех, кто и в бане командует.»</div>
+      <div class="tov-dont">✕ Мемы, панибратство, фамильярность</div>
+    </div>
+  </div>
+
+  <div class="gold-divider reveal"></div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);margin-bottom:32px">Конкурентные месседжи</h3>
+
+  <div class="card-grid reveal">
+    <div class="card">
+      <h3 style="color:var(--accent-red);font-size:0.7rem;letter-spacing:2px;font-family:var(--sans);text-transform:uppercase;margin-bottom:8px">VS Масс-маркет</h3>
+      <p style="color:var(--ivory);font-family:var(--serif);font-size:1.1rem;font-style:italic">«Ваша баня заслуживает лучше, чем синтетика с Wildberries»</p>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--accent-blue);font-size:0.7rem;letter-spacing:2px;font-family:var(--sans);text-transform:uppercase;margin-bottom:8px">VS Стандартные подарки</h3>
+      <p style="color:var(--ivory);font-family:var(--serif);font-size:1.1rem;font-style:italic">«Не ещё одна кружка — а вещь с вашим именем»</p>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--accent-green);font-size:0.7rem;letter-spacing:2px;font-family:var(--sans);text-transform:uppercase;margin-bottom:8px">VS Ярмарка мастеров</h3>
+      <p style="color:var(--ivory);font-family:var(--serif);font-size:1.1rem;font-style:italic">«Ручная работа — но с удобством онлайн-конструктора»</p>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--accent-purple);font-size:0.7rem;letter-spacing:2px;font-family:var(--sans);text-transform:uppercase;margin-bottom:8px">VS Корп. кружки</h3>
+      <p style="color:var(--ivory);font-family:var(--serif);font-size:1.1rem;font-style:italic">«Подарок, который используют — а не ставят на полку»</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ AUDIENCE ═══════════════════════════ -->
+<section id="audience">
+  <div class="section-label reveal">03 — Аудитория</div>
+  <h2 class="section-title reveal">Четыре сегмента, <em>два генератора</em> выручки</h2>
+
+  <div class="chart-row reveal">
+    <div class="chart-container">
+      <h4>Распределение выручки по сегментам</h4>
+      <canvas id="segmentChart" height="300"></canvas>
+    </div>
+    <div class="chart-container">
+      <h4>Средний чек и LTV</h4>
+      <canvas id="checkChart" height="300"></canvas>
+    </div>
+  </div>
+
+  <div class="card-grid reveal" style="grid-template-columns: 1fr 1fr;">
+    <div class="segment-card">
+      <div class="segment-share">35%</div>
+      <div class="segment-name">С1: «Банный эстет»</div>
+      <div class="segment-who">Мужчина, 35–55, доход 200K+/мес, баня 2–4 раза в месяц</div>
+      <div class="segment-details">
+        <div class="detail-item">
+          <div class="dt-label">Чек</div>
+          <div class="dt-value">12 000 – 20 000 ₽</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">LTV</div>
+          <div class="dt-value">25 000 – 40 000 ₽</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">Боль</div>
+          <div class="dt-value">«Развалилось после второй бани»</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">Каналы</div>
+          <div class="dt-value">Яндекс, Telegram, сарафан</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="segment-card">
+      <div class="segment-share">40%</div>
+      <div class="segment-name">С2: «Подарок со смыслом»</div>
+      <div class="segment-who">28–50 лет, ищет подарок мужу/отцу/другу, доход 100K+</div>
+      <div class="segment-details">
+        <div class="detail-item">
+          <div class="dt-label">Чек</div>
+          <div class="dt-value">7 000 – 15 000 ₽</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">LTV</div>
+          <div class="dt-value">15 000 – 25 000 ₽</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">Боль</div>
+          <div class="dt-value">«Мужу ничего не нужно, он сам покупает»</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">Каналы</div>
+          <div class="dt-value">Яндекс, Instagram, VK, Telegram</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="segment-card">
+      <div class="segment-share">10%</div>
+      <div class="segment-name">С3: «VIP-подарок»</div>
+      <div class="segment-who">30–55, руководитель/топ, подарок боссу/партнёру</div>
+      <div class="segment-details">
+        <div class="detail-item">
+          <div class="dt-label">Чек</div>
+          <div class="dt-value">20 000 – 35 000 ₽</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">LTV</div>
+          <div class="dt-value">50 000 – 80 000 ₽</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">Боль</div>
+          <div class="dt-value">«Нужно не банально и солидно»</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">Каналы</div>
+          <div class="dt-value">Рекомендации, бизнес-клубы</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="segment-card">
+      <div class="segment-share">15%</div>
+      <div class="segment-name">С4: «Корпоративный клиент»</div>
+      <div class="segment-who">HR/админ, 28–45, бюджет на 20–200 комплектов</div>
+      <div class="segment-details">
+        <div class="detail-item">
+          <div class="dt-label">Заказ</div>
+          <div class="dt-value">120 000 – 800 000 ₽</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">LTV</div>
+          <div class="dt-value">Ежегодный контракт</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">Боль</div>
+          <div class="dt-value">«Каждый год кружки, все закатывают глаза»</div>
+        </div>
+        <div class="detail-item">
+          <div class="dt-label">Каналы</div>
+          <div class="dt-value">Холодные рассылки, тендеры</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ COMPETITIVE ═══════════════════════════ -->
+<section id="competitive">
+  <div class="section-label reveal">04 — Конкурентный ландшафт</div>
+  <h2 class="section-title reveal">Карта позиционирования: <em>пустой квадрант</em></h2>
+
+  <div class="reveal" style="max-width:800px;margin:0 auto 60px;position:relative">
+    <div class="pos-map" id="posMap">
+      <span class="axis-label x-min">Низкая цена</span>
+      <span class="axis-label x-max">Высокая цена</span>
+      <span class="axis-label y-min">Низкая персонализация</span>
+      <span class="axis-label y-max">Высокая персонализация</span>
+
+      <div class="pos-dot" style="left:85%;top:12%">
+        <div class="dot par"></div>
+        <div class="name highlight">ПАРЪ ★</div>
+      </div>
+      <div class="pos-dot" style="left:15%;top:82%">
+        <div class="dot" style="border-color:var(--accent-red);background:rgba(196,107,90,0.3)"></div>
+        <div class="name">Добропаровъ</div>
+      </div>
+      <div class="pos-dot" style="left:22%;top:76%">
+        <div class="dot" style="border-color:var(--accent-red);background:rgba(196,107,90,0.2)"></div>
+        <div class="name">Банные штучки</div>
+      </div>
+      <div class="pos-dot" style="left:52%;top:55%">
+        <div class="dot" style="border-color:var(--accent-blue);background:rgba(90,139,196,0.3)"></div>
+        <div class="name">МинБа</div>
+      </div>
+      <div class="pos-dot" style="left:48%;top:48%">
+        <div class="dot" style="border-color:var(--accent-blue);background:rgba(90,139,196,0.2)"></div>
+        <div class="name">Суши Веник</div>
+      </div>
+      <div class="pos-dot" style="left:78%;top:52%">
+        <div class="dot" style="border-color:var(--accent-purple);background:rgba(139,107,168,0.3)"></div>
+        <div class="name">Sushivenik люкс</div>
+      </div>
+      <div class="pos-dot" style="left:68%;top:30%">
+        <div class="dot" style="border-color:var(--text-secondary);background:rgba(138,132,122,0.2)"></div>
+        <div class="name">Мастера (Etsy)</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);margin-bottom:24px">Защитные рвы (Competitive Moats)</h3>
+
+  <div class="moat-grid reveal">
+    <div class="moat-row">
+      <div class="moat-name">Онлайн-конструктор</div>
+      <div class="moat-why">UX-проектирование + генерация изображений + фронтенд</div>
+      <div class="moat-time">3–6 мес. для копирования</div>
+    </div>
+    <div class="moat-row">
+      <div class="moat-name">Бренд «ПАРЪ»</div>
+      <div class="moat-why">Уникальное имя, визуальный код, tone of voice</div>
+      <div class="moat-time">Некопируемо</div>
+    </div>
+    <div class="moat-row">
+      <div class="moat-name">Библиотека preview</div>
+      <div class="moat-why">100+ изображений для каждой конфигурации продукта</div>
+      <div class="moat-time">2–3 мес. работы</div>
+    </div>
+    <div class="moat-row">
+      <div class="moat-name">D2C + маркетплейсы</div>
+      <div class="moat-why">Конструктор на сайте + готовые наборы на WB/Ozon с QR-мостом</div>
+      <div class="moat-time">Операционная сложность</div>
+    </div>
+    <div class="moat-row">
+      <div class="moat-name">B2B-кастомизация</div>
+      <div class="moat-why">Именная вышивка + лого компании + индивидуальные тиражи</div>
+      <div class="moat-time">Инфраструктура + процессы</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ SUPPLY CHAIN ═══════════════════════════ -->
+<section id="supply">
+  <div class="section-label reveal">05 — Цепочка поставок</div>
+  <h2 class="section-title reveal">Производственная стратегия: <em>от контрактного к собственному</em></h2>
+
+  <p class="reveal" style="font-size:0.9rem;color:var(--text-secondary);max-width:700px;margin-bottom:48px;line-height:1.8">
+    Для старта премиального бренда критически важно найти производство в Москве / МО. Личный контроль качества мериноса и фетра на этапе пилотной партии — обязательное условие.
+  </p>
+
+  <div class="supplier-grid reveal">
+    <div class="supplier-card">
+      <span class="priority-badge high">Приоритет 1</span>
+      <h4>Moscado</h4>
+      <div class="spec">Премиальный сегмент · Контрактное производство</div>
+      <p>Фетр, войлок, шерсть альпаки для дорогих SPA и банных комплексов. Понимают разницу между масс-маркет войлоком и материалом, который не колется и держит форму. Максимальная гибкость: объём и сроки индивидуально.</p>
+      <div class="contact">moscado.ru</div>
+    </div>
+
+    <div class="supplier-card">
+      <span class="priority-badge high">Приоритет 1</span>
+      <h4>Delovshapke</h4>
+      <div class="spec">Быстрые тесты · Узкопрофильное B2B-производство</div>
+      <p>Бесшовные колпаки из 100% фетра и шерсти. Прозрачная схема, быстрый пошив от 3 дней. 100% предоплата для новых клиентов. Оптовые цены на премиум: от 600–700 ₽/шт.</p>
+      <div class="contact">delovshapke.ru · +7 (995) 260-33-00</div>
+    </div>
+
+    <div class="supplier-card">
+      <span class="priority-badge medium">Приоритет 2</span>
+      <h4>Щёлково-Фетр</h4>
+      <div class="spec">Историческая фабрика · Формованные шерстяные изделия</div>
+      <p>Идеальная технология фетрования. Для уникальных, сложных форм шапок — «отливка» / формовка на колодке, а не сшивание из плоского листа. Мыслят крупными тиражами — заходить с позиции долгосрочного контракта.</p>
+      <div class="contact">schelkovo-fetr.ru · +7 (985) 967-51-94</div>
+    </div>
+
+    <div class="supplier-card">
+      <span class="priority-badge medium">Приоритет 2</span>
+      <h4>ЗАО «Горизонт»</h4>
+      <div class="spec">Сырьё · Натуральный войлок мокрого валяния</div>
+      <p>Один из старейших заводов. Закупка материала (тонкошерстный войлок) в рулонах для пошива в собственном / частном швейном цехе. Ориентир для фазы собственного производства.</p>
+      <div class="contact">gorizont.org · +7 (495) 77-555-66</div>
+    </div>
+  </div>
+
+  <div class="gold-divider reveal"></div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);margin-bottom:24px">Тактика переговоров о тестовой партии</h3>
+
+  <div class="nego-steps reveal">
+    <div class="nego-step">
+      <div class="step-num">01</div>
+      <h5>Позиционирование</h5>
+      <p>«Мы запускаем премиальную D2C-линейку. Утверждаем матрицу поставщиков. Нужна тестовая партия <strong>бланковых изделий</strong> из 100% мериноса перед заключением годового контракта.»</p>
+    </div>
+    <div class="nego-step">
+      <div class="step-num">02</div>
+      <h5>Бланковый запрос</h5>
+      <p>Запрашивать чистые изделия без логотипов. Свой вышивальный станок = не нужны их услуги по брендированию. Это снижает цену и ускоряет производство.</p>
+    </div>
+    <div class="nego-step">
+      <div class="step-num">03</div>
+      <h5>Лекала</h5>
+      <p>Уточнить готовые премиальные лекала (колокольчик с удлинёнными полями, анатомический крой). Новые лекала = доп. деньги и время. На старте — использовать готовые.</p>
+    </div>
+  </div>
+
+  <div class="gold-divider reveal"></div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);margin-bottom:24px">Критические параметры войлока</h3>
+  <p class="reveal" style="font-size:0.85rem;color:var(--text-secondary);max-width:700px;margin-bottom:24px">
+    На что обращать внимание при запросе образцов, чтобы шапка не теряла вид после парной:
+  </p>
+
+  <div class="specs-grid reveal">
+    <div class="spec-item">
+      <div class="spec-val">5–8 мм</div>
+      <div class="spec-lbl">Толщина</div>
+      <div class="spec-desc">Оптимальная термоизоляция. Тоньше 4 мм — не защищает, толще 10 — неудобно.</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-val">0.45+</div>
+      <div class="spec-lbl">Плотность, г/см³</div>
+      <div class="spec-desc">Чем плотнее валяние, тем дольше держит форму. &lt;0.35 — растягивается после 3-й бани.</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-val">19–23 мкм</div>
+      <div class="spec-lbl">Тонина волокна</div>
+      <div class="spec-desc">Меринос: 19.5 мкм — мягкость без раздражения. Обычный войлок: 28–32 мкм — колется.</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-val">≤5%</div>
+      <div class="spec-lbl">Усадка при t°</div>
+      <div class="spec-desc">Тестировать: замочить в 90°C на 30 мин. Усадка &gt;8% = потеря формы за 5-7 посещений.</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-val">100%</div>
+      <div class="spec-lbl">Натуральная шерсть</div>
+      <div class="spec-desc">Категорически без синтетических примесей. Синтетика = плавление волокон при 100°C+.</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-val">Мокрое</div>
+      <div class="spec-lbl">Метод валяния</div>
+      <div class="spec-desc">Мокрое валяние > сухое иглопробивное. Мокрое даёт более плотную и однородную структуру.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ GTM ═══════════════════════════ -->
+<section id="gtm">
+  <div class="section-label reveal">06 — Go-to-Market</div>
+  <h2 class="section-title reveal">Три фазы, <em>шесть месяцев</em>, один фокус: validate → scale → grow</h2>
+
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="phase-tag">Фаза 1 · Апрель — Май</div>
+      <h4>Запуск и валидация</h4>
+      <p>Первые 30–50 заказов. Тест рекламных каналов. Сбор реальных отзывов. Определение работающих кластеров в Яндекс Директ. Отправка 5 комплектов блогерам.</p>
+      <div class="metrics-row">
+        <div class="mini-metric"><div class="val">120K</div><div class="lbl">₽/мес бюджет</div></div>
+        <div class="mini-metric"><div class="val">15–25</div><div class="lbl">заказов/мес</div></div>
+        <div class="mini-metric"><div class="val">&lt;2K</div><div class="lbl">₽ CAC цель</div></div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="phase-tag">Фаза 2 · Июнь — Июль</div>
+      <h4>Масштабирование</h4>
+      <p>Выход на WB/Ozon с готовыми наборами. Первые B2B-контракты. Запуск Instagram Reels. B2B-каталог и холодные рассылки 100 компаний. SEO-статьи и контент-маркетинг.</p>
+      <div class="metrics-row">
+        <div class="mini-metric"><div class="val">180K</div><div class="lbl">₽/мес бюджет</div></div>
+        <div class="mini-metric"><div class="val">30–40</div><div class="lbl">заказов/мес</div></div>
+        <div class="mini-metric"><div class="val">2+</div><div class="lbl">B2B-контракта</div></div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="phase-tag">Фаза 3 · Август — Сентябрь</div>
+      <h4>Подготовка к высокому сезону</h4>
+      <p>Масштабирование всех каналов. Корпоративные рассылки к НГ. PR в Forbes Life / GQ. Ретаргетинг по базе 5 месяцев. Закупка товара на Q4. Договоры с термами.</p>
+      <div class="metrics-row">
+        <div class="mini-metric"><div class="val">220K</div><div class="lbl">₽/мес бюджет</div></div>
+        <div class="mini-metric"><div class="val">50+</div><div class="lbl">заказов/мес</div></div>
+        <div class="mini-metric"><div class="val">3+</div><div class="lbl">B2B/мес</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gold-divider reveal"></div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);margin-bottom:32px">Стратегия «Тройной удар» + QR-мост</h3>
+
+  <div class="card-grid reveal" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="card" style="border-top:3px solid var(--gold)">
+      <div class="card-icon gold">🎯</div>
+      <h3>Удар 1: Поисковый спрос</h3>
+      <p>Яндекс Директ перехватывает горячий запрос «банный комплект в подарок». Быстрая конверсия. 5 семантических кластеров × 50 объявлений.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent-blue)">
+      <div class="card-icon blue">📱</div>
+      <h3>Удар 2: Создание спроса</h3>
+      <p>Telegram + Instagram + блогеры. Люди не знают, что хотят персонализированный комплект — контент создаёт желание. Долгосрочный бренд.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent-green)">
+      <div class="card-icon green">🛒</div>
+      <h3>Удар 3: Маркетплейсы</h3>
+      <p>Готовые наборы на WB/Ozon. Каждый заказ = QR-код → «Создайте свой на par-mfg.ru». Конвертация в D2C-клиента с чеком ×1.5.</p>
+    </div>
+  </div>
+
+  <div class="reveal" style="max-width:700px;margin:32px auto 0;background:var(--bg-card);border:1px solid rgba(201,169,110,0.08);border-radius:12px;padding:28px 32px">
+    <h4 style="font-family:var(--serif);color:var(--gold);font-size:1rem;margin-bottom:16px">Воронка QR-мост</h4>
+    <div style="font-size:0.85rem;color:var(--text-secondary);line-height:2">
+      Покупатель на WB → Получает набор «Классика» за 7 900 ₽ → Внутри QR + вкладка:<br>
+      <span style="color:var(--ivory);font-style:italic">«Понравилось? Соберите свой уникальный комплект с именной вышивкой — скидка 10% по промокоду ПЕРВЫЙ»</span><br>
+      → Переход на конструктор → Заказ (ср. чек 12 000 ₽) → LTV ×2–3
+    </div>
+  </div>
+
+  <div class="gold-divider reveal"></div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);margin-bottom:24px">Бюджет по каналам (6 мес.)</h3>
+
+  <div class="chart-container reveal">
+    <canvas id="channelChart" height="350"></canvas>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FINANCIALS ═══════════════════════════ -->
+<section id="financials">
+  <div class="section-label reveal">07 — Финансовая модель</div>
+  <h2 class="section-title reveal">Юнит-экономика: <em>45% чистой прибыли</em> на заказ</h2>
+
+  <div class="fin-row reveal">
+    <div class="fin-card">
+      <div class="fin-val">1.35M ₽</div>
+      <div class="fin-lbl">Бюджет 6 мес.</div>
+    </div>
+    <div class="fin-card">
+      <div class="fin-val">3.53M ₽</div>
+      <div class="fin-lbl">Прогноз выручки</div>
+    </div>
+    <div class="fin-card">
+      <div class="fin-val">1.12M ₽</div>
+      <div class="fin-lbl">Прогноз прибыли</div>
+    </div>
+    <div class="fin-card">
+      <div class="fin-val">6.7×</div>
+      <div class="fin-lbl">LTV / CAC</div>
+    </div>
+  </div>
+
+  <div class="chart-row reveal">
+    <div class="chart-container">
+      <h4>Юнит-экономика (на заказ)</h4>
+      <div class="unit-econ">
+        <div class="ue-row">
+          <span class="ue-label">Средний чек B2C</span>
+          <span class="ue-value">11 000 ₽</span>
+        </div>
+        <div class="ue-row">
+          <span class="ue-label">Себестоимость (COGS)</span>
+          <span class="ue-value">−3 500 ₽ <span class="ue-pct">32%</span></span>
+        </div>
+        <div class="ue-row">
+          <span class="ue-label">Валовая прибыль</span>
+          <span class="ue-value">7 500 ₽ <span class="ue-pct">68%</span></span>
+        </div>
+        <div class="ue-row">
+          <span class="ue-label">CAC</span>
+          <span class="ue-value">−1 500 ₽</span>
+        </div>
+        <div class="ue-row">
+          <span class="ue-label">Доставка</span>
+          <span class="ue-value">−500 ₽</span>
+        </div>
+        <div class="ue-row">
+          <span class="ue-label">Операционные</span>
+          <span class="ue-value">−500 ₽</span>
+        </div>
+        <div class="ue-row total">
+          <span class="ue-label">Чистая прибыль</span>
+          <span class="ue-value">5 000 ₽ <span class="ue-pct">45%</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="chart-container">
+      <h4>Прогноз выручки по источникам</h4>
+      <canvas id="revenueChart" height="300"></canvas>
+    </div>
+  </div>
+
+  <div class="gold-divider reveal"></div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);margin-bottom:24px">Ценовая архитектура: «Якорь + ступени»</h3>
+
+  <div class="card-grid reveal" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="card" style="text-align:center;">
+      <div style="font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:12px">Порог входа</div>
+      <h3 style="color:var(--ivory)">«Классика»</h3>
+      <div style="font-family:var(--serif);font-size:2.4rem;color:var(--gold);margin:8px 0">7 900 ₽</div>
+      <p>Шапка + полотенце + тапочки + льняная сумка</p>
+      <div style="margin-top:12px;font-size:0.7rem;color:var(--accent-green)">Маржа: 72%</div>
+    </div>
+    <div class="card" style="text-align:center;border-color:rgba(201,169,110,0.2);">
+      <div style="font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">★ Основной</div>
+      <h3 style="color:var(--ivory)">«Мастер»</h3>
+      <div style="font-family:var(--serif);font-size:2.4rem;color:var(--gold);margin:8px 0">16 900 ₽</div>
+      <p>5 предметов + кожаная сумка</p>
+      <div style="margin-top:12px;font-size:0.7rem;color:var(--accent-green)">Маржа: 67%</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div style="font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:12px">Якорь</div>
+      <h3 style="color:var(--ivory)">«Абсолют»</h3>
+      <div style="font-family:var(--serif);font-size:2.4rem;color:var(--gold);margin:8px 0">29 900 ₽</div>
+      <p>7 предметов + VIP кейс</p>
+      <div style="margin-top:12px;font-size:0.7rem;color:var(--accent-green)">Маржа: 68%</div>
+    </div>
+  </div>
+
+  <div class="gold-divider reveal"></div>
+
+  <h3 class="reveal" style="font-family:var(--serif);font-size:1.4rem;color:var(--ivory);margin-bottom:24px">Целевые KPI по месяцам</h3>
+
+  <div class="chart-container reveal">
+    <canvas id="kpiChart" height="350"></canvas>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">ПАРЪ</div>
+  <p>Brand Strategy & Positioning · Q2–Q3 2026 · Confidential</p>
+  <p style="margin-top:4px;color:rgba(201,169,110,0.3);font-size:0.65rem">Подготовлено в формате стратегического консалтинга</p>
+</footer>
+
+<script>
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── CHART DEFAULTS ───
+Chart.defaults.color = '#8A847A';
+Chart.defaults.borderColor = 'rgba(201,169,110,0.06)';
+Chart.defaults.font.family = "'Outfit', sans-serif";
+Chart.defaults.font.size = 11;
+
+const gold = '#C9A96E';
+const goldLight = '#E8D5A8';
+const goldDim = '#8B7345';
+const red = '#C46B5A';
+const green = '#6BA87A';
+const blue = '#5A8BC4';
+const purple = '#8B6BA8';
+
+// ─── TAM CHART ───
+new Chart(document.getElementById('tamChart'), {
+  type: 'bar',
+  data: {
+    labels: ['TAM', 'SAM', 'SOM'],
+    datasets: [{
+      data: [20, 4, 0.007],
+      backgroundColor: [goldDim, gold, goldLight],
+      borderRadius: 6,
+      barThickness: 60
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => {
+            const labels = ['~18-22 млрд ₽/год', '~2-4 млрд ₽/год', '3-7 млн ₽ (6 мес.)'];
+            return labels[ctx.dataIndex];
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        display: false
+      },
+      x: {
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+// ─── SEASON CHART ───
+new Chart(document.getElementById('seasonChart'), {
+  type: 'line',
+  data: {
+    labels: ['Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен'],
+    datasets: [{
+      label: 'Индекс спроса',
+      data: [0.6, 0.7, 0.5, 0.4, 0.5, 0.8],
+      borderColor: gold,
+      backgroundColor: 'rgba(201,169,110,0.08)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 5,
+      pointBackgroundColor: gold,
+      pointBorderColor: '#0a0a0a',
+      pointBorderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { min: 0, max: 1, ticks: { callback: v => v + '×' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ─── SEGMENT CHART ───
+new Chart(document.getElementById('segmentChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Подарок со смыслом (40%)', 'Банный эстет (35%)', 'Корпоративный (15%)', 'VIP-подарок (10%)'],
+    datasets: [{
+      data: [40, 35, 15, 10],
+      backgroundColor: [gold, blue, green, purple],
+      borderColor: '#111111',
+      borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '55%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' }
+      }
+    }
+  }
+});
+
+// ─── CHECK CHART ───
+new Chart(document.getElementById('checkChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Эстет', 'Подарок', 'VIP', 'Корп.'],
+    datasets: [
+      {
+        label: 'Ср. чек (₽)',
+        data: [16000, 11000, 27500, 6000],
+        backgroundColor: gold,
+        borderRadius: 4,
+        barThickness: 28
+      },
+      {
+        label: 'LTV (₽)',
+        data: [32500, 20000, 65000, 400000],
+        backgroundColor: blue,
+        borderRadius: 4,
+        barThickness: 28
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' }
+      }
+    },
+    scales: {
+      y: { ticks: { callback: v => (v/1000) + 'K' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ─── CHANNEL CHART ───
+new Chart(document.getElementById('channelChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Яндекс Директ', 'Telegram Ads', 'VK', 'Instagram', 'Блогеры', 'WB/Ozon', 'B2B', 'SEO'],
+    datasets: [
+      {
+        label: 'Мес. 1-2 (₽)',
+        data: [50000, 25000, 15000, 10000, 50000, 0, 5000, 10000],
+        backgroundColor: goldDim,
+        borderRadius: 3
+      },
+      {
+        label: 'Мес. 3-4 (₽)',
+        data: [70000, 35000, 20000, 15000, 30000, 20000, 10000, 10000],
+        backgroundColor: gold,
+        borderRadius: 3
+      },
+      {
+        label: 'Мес. 5-6 (₽)',
+        data: [100000, 50000, 30000, 20000, 50000, 30000, 10000, 10000],
+        backgroundColor: goldLight,
+        borderRadius: 3
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' }
+      }
+    },
+    scales: {
+      y: { stacked: true, ticks: { callback: v => (v/1000) + 'K' } },
+      x: { stacked: true, grid: { display: false } }
+    }
+  }
+});
+
+// ─── REVENUE CHART ───
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['B2C (сайт)', 'B2C (маркетплейсы)', 'B2B'],
+    datasets: [{
+      data: [1650000, 680000, 1200000],
+      backgroundColor: [gold, blue, green],
+      borderRadius: 6,
+      barThickness: 60
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => new Intl.NumberFormat('ru-RU').format(ctx.raw) + ' ₽'
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { callback: v => (v/1000000).toFixed(1) + 'M' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ─── KPI CHART ───
+new Chart(document.getElementById('kpiChart'), {
+  type: 'line',
+  data: {
+    labels: ['Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен'],
+    datasets: [
+      {
+        label: 'B2C-заказы',
+        data: [10, 20, 30, 30, 40, 55],
+        borderColor: gold,
+        backgroundColor: 'rgba(201,169,110,0.05)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: gold
+      },
+      {
+        label: 'Посетители (×100)',
+        data: [5, 10, 18, 20, 35, 50],
+        borderColor: blue,
+        borderDash: [5, 5],
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: blue
+      },
+      {
+        label: 'Telegram подписчики (×100)',
+        data: [1, 3, 6, 8, 15, 25],
+        borderColor: green,
+        borderDash: [2, 3],
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: green
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ─── ANIMATE HORIZONTAL BARS ───
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const fill = e.target.querySelector('.h-bar-fill');
+      if (fill) fill.style.width = fill.dataset.width;
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.h-bar-group').forEach(el => barObserver.observe(el));
+</script>
+
+</body>
+</html>
