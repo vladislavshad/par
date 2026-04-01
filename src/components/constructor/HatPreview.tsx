@@ -20,6 +20,12 @@ const HAT_COLOR_IMAGES: Record<string, string> = {
   "budenovka-snow": "/images/hat-budenovka.png",
   "budenovka-cream": "/images/hats/budenovka-cream.png",
   "budenovka-anthracite": "/images/hats/budenovka-anthracite.png",
+  "ushanka-snow": "/images/hat-ushanka.png",
+  "ushanka-cream": "/images/hats/ushanka-cream.png",
+  "ushanka-anthracite": "/images/hats/ushanka-anthracite.png",
+  "panama-snow": "/images/hat-panama.png",
+  "panama-cream": "/images/hats/panama-cream.png",
+  "panama-anthracite": "/images/hats/panama-anthracite.png",
 };
 
 const FONT_SIZE_BY_TYPE: Record<string, string> = {

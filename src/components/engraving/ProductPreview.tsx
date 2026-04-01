@@ -3,37 +3,43 @@
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-const HAT_IMAGES: Record<string, string> = {
-  kolpak: "/images/hat-kolpak.png",
-  budenovka: "/images/hat-budenovka.png",
-  ushanka: "/images/hat-ushanka.png",
-  panama: "/images/hat-panama.png",
+const HAT_ENGRAVING_IMAGES: Record<string, string> = {
+  kolpak: "/images/engraving/kolpak.png",
+  budenovka: "/images/engraving/budenovka.png",
+  ushanka: "/images/engraving/ushanka.png",
+  panama: "/images/engraving/panama.png",
 };
 
 const HAT_COLOR_IMAGES: Record<string, string> = {
-  "kolpak-snow": "/images/hat-kolpak.png",
+  "kolpak-snow": "/images/engraving/kolpak.png",
   "kolpak-cream": "/images/hats/kolpak-cream.png",
   "kolpak-anthracite": "/images/hats/kolpak-anthracite.png",
-  "budenovka-snow": "/images/hat-budenovka.png",
+  "budenovka-snow": "/images/engraving/budenovka.png",
   "budenovka-cream": "/images/hats/budenovka-cream.png",
   "budenovka-anthracite": "/images/hats/budenovka-anthracite.png",
+  "ushanka-snow": "/images/engraving/ushanka.png",
+  "ushanka-cream": "/images/hats/ushanka-cream.png",
+  "ushanka-anthracite": "/images/hats/ushanka-anthracite.png",
+  "panama-snow": "/images/engraving/panama.png",
+  "panama-cream": "/images/hats/panama-cream.png",
+  "panama-anthracite": "/images/hats/panama-anthracite.png",
 };
 
-const TOWEL_IMAGE = "/images/product-towel.png";
+const TOWEL_IMAGE = "/images/engraving/towel.png";
 
 type OverlayPosition = { top: string; left: string };
 
 const HAT_OVERLAY_POSITIONS: Record<string, OverlayPosition> = {
-  kolpak: { top: "55%", left: "48%" },
-  budenovka: { top: "44%", left: "48%" },
-  ushanka: { top: "40%", left: "48%" },
-  panama: { top: "38%", left: "48%" },
+  kolpak: { top: "58%", left: "50%" },
+  budenovka: { top: "55%", left: "50%" },
+  ushanka: { top: "48%", left: "50%" },
+  panama: { top: "40%", left: "50%" },
 };
 
 const TOWEL_OVERLAY_POSITIONS: Record<string, OverlayPosition> = {
-  corner: { top: "72%", left: "75%" },
-  "center-edge": { top: "48%", left: "50%" },
-  "wide-border": { top: "85%", left: "50%" },
+  corner: { top: "35%", left: "55%" },
+  "center-edge": { top: "45%", left: "50%" },
+  "wide-border": { top: "60%", left: "50%" },
 };
 
 const FONT_SIZE_BY_TYPE: Record<string, { hat: string; towel: string }> = {
@@ -81,7 +87,7 @@ export function ProductPreview({
   const isHat = productId === "hat";
 
   const imageSrc = isHat
-    ? HAT_COLOR_IMAGES[`${variantId}-${colorId}`] ?? HAT_IMAGES[variantId] ?? HAT_IMAGES.kolpak
+    ? HAT_COLOR_IMAGES[`${variantId}-${colorId}`] ?? HAT_ENGRAVING_IMAGES[variantId] ?? HAT_ENGRAVING_IMAGES.kolpak
     : TOWEL_IMAGE;
 
   const imageKey = `${productId}-${variantId}-${colorId}`;
