@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PRODUCTS } from "@/data/products";
@@ -13,22 +13,16 @@ const hatProduct = PRODUCTS.find((p) => p.id === "hat")!;
 export default function HatConstructorPage() {
   const router = useRouter();
   const {
-    selectedItems,
-    toggleItem,
     itemConfigs,
     getItemPrice,
     setStep,
   } = useConstructor();
 
-  // Auto-add hat if not selected — run only once on mount
-  const didInit = useRef(false);
   useEffect(() => {
-    if (didInit.current) return;
-    didInit.current = true;
-    if (!selectedItems.includes("hat")) {
-      toggleItem("hat");
+    const state = useConstructor.getState();
+    if (!state.selectedItems.includes("hat")) {
+      state.toggleItem("hat");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const config = itemConfigs["hat"];
