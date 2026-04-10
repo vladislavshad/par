@@ -45,7 +45,7 @@ Playwright is already installed. e2e/hat-configurator.spec.ts exists with initia
 - If image preloading via new window.Image() is fundamentally broken → simplify: remove preloading, let next/image handle it directly (just use imageSrc as displayedSrc with a simple key-based transition).
 **Done when:** You have a concrete fix committed to git.
 
-## Task 5: [ ] Re-run E2E tests and verify
+## Task 5: [x] Re-run E2E tests and verify
 **Goal:** All E2E tests pass.
 **Steps:**
 1. Run: npm run test:e2e 2>&1 | tee /tmp/e2e-run2.log
