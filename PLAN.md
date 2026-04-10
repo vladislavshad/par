@@ -20,11 +20,11 @@ Users reported two bugs on `/constructor/hat`:
 **Goal:** Always show the base image as the primary hat photo. Overlay embroidery visuals on TOP using CSS, not by swapping the entire image.
 
 Changes to `HatPreview.tsx`:
-- Always use `getBaseImage(variantId, colorId, materialId)` as the displayed `<Image>` src
-- For `engravingTypeId === "logo"`: overlay a ПАРЪ text/badge positioned on the hat using absolute positioning + CSS (e.g., gold "ПАРЪ" text with drop-shadow, positioned at center of hat)
-- For custom engraving (monogram/name/phrase): overlay the user's text `config.engraving` with the selected font and color on the hat using absolute positioning (similar to what ItemCustomizer already does with the `<span>` overlay)
-- Remove the logo/engraving image switching logic (getLogoImage, getEngravingImage are no longer used for display)
-- Keep the preload/transition logic for base image changes only (variant, color, material switches)
+- [x] Always use `getBaseImage(variantId, colorId, materialId)` as the displayed `<Image>` src
+- [x] For `engravingTypeId === "logo"`: overlay a ПАРЪ text/badge positioned on the hat using absolute positioning + CSS (e.g., gold "ПАРЪ" text with drop-shadow, positioned at center of hat)
+- [x] For custom engraving (monogram/name/phrase): overlay the user's text `config.engraving` with the selected font and color on the hat using absolute positioning (similar to what ItemCustomizer already does with the `<span>` overlay)
+- [x] Remove the logo/engraving image switching logic (getLogoImage, getEngravingImage are no longer used for display)
+- [x] Keep the preload/transition logic for base image changes only (variant, color, material switches)
 
 **Acceptance:** Switching embroidery type (none → logo → monogram → name → phrase) does NOT change the hat photo. Only overlay text/badge appears/disappears.
 

@@ -2,10 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { EMBROIDERY_COLORS } from "@/data/products";
+import { EMBROIDERY_COLORS, ENGRAVING_FONTS } from "@/data/products";
 import type { ItemConfig } from "@/store/useConstructor";
-
-const DARK_COLORS = new Set(["anthracite", "graphite", "burgundy", "cognac"]);
 
 const MATERIAL_LABELS: Record<string, string> = {
   "felt-standard": "felt",
@@ -20,19 +18,6 @@ function getBaseImage(variantId: string, colorId: string, materialId: string): s
     return `/images/hats/base/${variantId}-${colorId}-${mat}.png`;
   }
   return `/images/hats/base/${variantId}-${colorId}.png`;
-}
-
-function getLogoImage(variantId: string, colorId: string, threadColorId: string): string {
-  const tone = DARK_COLORS.has(colorId) ? "dark" : "light";
-  const thread = threadColorId === "silver" ? "silver" : "gold";
-  return `/images/hats/logo/${variantId}-${tone}-${thread}.png`;
-}
-
-function getEngravingImage(variantId: string, colorId: string, threadColorId: string, positionId: string): string {
-  const tone = DARK_COLORS.has(colorId) ? "dark" : "light";
-  const thread = threadColorId === "silver" ? "silver" : "gold";
-  const pos = positionId === "front-side" ? "side" : "center";
-  return `/images/hats/engraving/hat-${variantId}-${tone}-${thread}-${pos}.png`;
 }
 
 type Props = {
@@ -51,43 +36,24 @@ export function HatPreview({ config, colorName, materialName }: Props) {
   const hasCustomEngraving = !isNone && !isLogo && !!config.engraving;
   const hasEngraving = isLogo || hasCustomEngraving;
 
+  // Always use the base image — embroidery is rendered as CSS overlay
   const baseImage = getBaseImage(variantId, colorId, materialId);
-  const logoImage = getLogoImage(variantId, colorId, config.engravingColorId ?? "gold");
-  const engravingImage = getEngravingImage(
-    variantId,
-    colorId,
-    config.engravingColorId ?? "gold",
-    config.engravingPositionId ?? "front-center"
-  );
-
-  let imageSrc: string;
-  if (isNone) {
-    imageSrc = baseImage;
-  } else if (isLogo) {
-    imageSrc = logoImage;
-  } else if (hasCustomEngraving) {
-    imageSrc = engravingImage;
-  } else {
-    imageSrc = baseImage;
-  }
 
   // Track which image is currently displayed (loaded) vs which is requested
-  const [displayedSrc, setDisplayedSrc] = useState(imageSrc);
+  const [displayedSrc, setDisplayedSrc] = useState(baseImage);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const pendingSrcRef = useRef(imageSrc);
+  const pendingSrcRef = useRef(baseImage);
 
-  // When the desired image changes, start loading it in background
+  // When the base image changes, preload then swap
   useEffect(() => {
-    if (imageSrc === displayedSrc) return;
-    pendingSrcRef.current = imageSrc;
+    if (baseImage === displayedSrc) return;
+    pendingSrcRef.current = baseImage;
     setIsTransitioning(true);
 
-    // Preload the new image via a plain <img> to avoid unmounting Next/Image
-    const targetSrc = imageSrc;
+    const targetSrc = baseImage;
     const img = new window.Image();
-    img.src = imageSrc;
+    img.src = baseImage;
     img.onload = () => {
-      // Only apply if this is still the latest requested src
       if (pendingSrcRef.current === targetSrc) {
         setDisplayedSrc(targetSrc);
         setIsTransitioning(false);
@@ -99,11 +65,22 @@ export function HatPreview({ config, colorName, materialName }: Props) {
         setIsTransitioning(false);
       }
     };
-  }, [imageSrc, displayedSrc]);
+  }, [baseImage, displayedSrc]);
 
   const engravingColor = EMBROIDERY_COLORS.find(
     (c) => c.id === config.engravingColorId
   )?.hex ?? "#C9A96E";
+
+  const engravingFontCss = ENGRAVING_FONTS.find(
+    (f) => f.id === config.engravingFont
+  )?.css ?? "font-serif";
+
+  // Determine text size based on engraving type
+  const isMonogram = config.engravingTypeId === "monogram";
+  const textSizeClass = isMonogram ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl";
+
+  // Determine horizontal position based on engravingPositionId
+  const isFrontSide = config.engravingPositionId === "front-side";
 
   return (
     <div>
@@ -116,6 +93,46 @@ export function HatPreview({ config, colorName, materialName }: Props) {
           className={`object-cover transition-opacity duration-200 ${isTransitioning ? "opacity-60" : "opacity-100"}`}
           priority
         />
+
+        {/* Logo overlay: gold "ПАРЪ" text */}
+        {isLogo && (
+          <div
+            className="absolute inset-x-0 flex items-center pointer-events-none"
+            style={{ top: "55%" }}
+            data-testid="logo-overlay"
+          >
+            <span
+              className={`mx-auto font-serif font-bold text-2xl sm:text-3xl ${isFrontSide ? "ml-[25%]" : ""}`}
+              style={{
+                color: engravingColor,
+                textShadow: `0 1px 3px rgba(0,0,0,0.4), 0 0 8px ${engravingColor}40`,
+                letterSpacing: "0.15em",
+              }}
+            >
+              ПАРЪ
+            </span>
+          </div>
+        )}
+
+        {/* Custom engraving overlay: user text */}
+        {hasCustomEngraving && (
+          <div
+            className={`absolute inset-x-0 flex items-center pointer-events-none ${isFrontSide ? "justify-start pl-[20%]" : "justify-center"}`}
+            style={{ top: "55%" }}
+            data-testid="engraving-overlay"
+          >
+            <span
+              className={`${textSizeClass} ${engravingFontCss} drop-shadow-lg`}
+              style={{
+                color: engravingColor,
+                textShadow: `0 1px 2px rgba(0,0,0,0.3)`,
+              }}
+            >
+              {config.engraving}
+            </span>
+          </div>
+        )}
+
         {hasEngraving && (
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
             <p className="text-[10px] text-white/70 tracking-wide uppercase">

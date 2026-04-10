@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: "./e2e",
   timeout: 60000,
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: "http://localhost:3099",
   },
   projects: [
     {
@@ -13,8 +13,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run build && npm run start",
-    url: "http://localhost:3000",
+    command: "npm run build && npx next start -p 3099",
+    url: "http://localhost:3099",
     reuseExistingServer: !process.env.CI,
     timeout: 180000,
   },

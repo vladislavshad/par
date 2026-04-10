@@ -4,9 +4,7 @@ test.describe("Hat configurator", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/constructor/hat", { waitUntil: "networkidle" });
     // Wait for Zustand store hydration and hat config initialization
-    // The page shows "Загрузка..." until the config is ready
     await page.locator("h3", { hasText: "Форма" }).waitFor({ state: "visible", timeout: 30000 });
-    // Now wait for the preview image
     await page.locator("img[alt='Банная шапка']").waitFor({ state: "visible", timeout: 10000 });
   });
 
@@ -14,15 +12,11 @@ test.describe("Hat configurator", () => {
     const img = page.locator("img[alt='Банная шапка']");
     await expect(img).toBeVisible();
     const src = await img.getAttribute("src");
-    // Next.js may rewrite src via Image optimization; check the underlying image path
-    // Default: kolpak, snow, felt-standard → kolpak-snow-felt
     expect(src).toContain("kolpak-snow-felt");
   });
 
   test("switches hat variant and updates preview image", async ({ page }) => {
     const img = page.locator("img[alt='Банная шапка']");
-
-    // Find variant buttons under the "Форма" section
     const formaSection = page.locator("h3", { hasText: "Форма" }).locator("..");
     const variantButtons = formaSection.locator("button");
 
@@ -36,11 +30,7 @@ test.describe("Hat configurator", () => {
     for (const variant of variants) {
       const btn = variantButtons.nth(variant.index);
       await btn.click();
-
-      // Active variant should have gold border
       await expect(btn).toHaveClass(/border-gold/);
-
-      // Wait for image src to update
       await expect(async () => {
         const src = await img.getAttribute("src");
         expect(src).toContain(variant.idFragment);
@@ -62,11 +52,7 @@ test.describe("Hat configurator", () => {
     for (const mat of materials) {
       const btn = materialButtons.nth(mat.index);
       await btn.click();
-
-      // Active material should have gold border
       await expect(btn).toHaveClass(/border-gold/);
-
-      // Wait for image src to update
       const img = page.locator("img[alt='Банная шапка']");
       await expect(async () => {
         const src = await img.getAttribute("src");
@@ -77,19 +63,14 @@ test.describe("Hat configurator", () => {
 
   test("switches color and updates image src", async ({ page }) => {
     const img = page.locator("img[alt='Банная шапка']");
-
-    // Color picker buttons are round buttons under "Цвет:" heading
     const colorSection = page.locator("h3", { hasText: "Цвет:" }).locator("..");
     const colorButtons = colorSection.locator("button.rounded-full");
 
-    // Click the anthracite color (3rd color, index 2)
+    // Click anthracite (3rd color, index 2)
     const anthraciteBtn = colorButtons.nth(2);
     await anthraciteBtn.click();
-
-    // Active color button should have gold border and scale
     await expect(anthraciteBtn).toHaveClass(/border-gold/);
 
-    // Image should now contain "anthracite" in the path
     await expect(async () => {
       const src = await img.getAttribute("src");
       expect(src).toContain("anthracite");
@@ -105,108 +86,103 @@ test.describe("Hat configurator", () => {
     }).toPass({ timeout: 5000 });
   });
 
-  test("selects logo embroidery and updates image to logo path", async ({ page }) => {
+  test("selects logo embroidery and base image stays unchanged with overlay", async ({ page }) => {
     const img = page.locator("img[alt='Банная шапка']");
+
+    // Get the base image src before selecting logo
+    const baseSrcBefore = await img.getAttribute("src");
 
     // Click "Логотип ПАРЪ" embroidery type button
     const logoBtn = page.locator("button", { hasText: "Логотип ПАРЪ" });
     await logoBtn.click();
-
-    // Button should be active
     await expect(logoBtn).toHaveClass(/border-gold/);
 
-    // Image should switch to logo path (decode URL-encoded Next.js image src)
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("/hats/logo/");
-    }).toPass({ timeout: 5000 });
+    // Base image should NOT change — still contains /hats/base/
+    const baseSrcAfter = await img.getAttribute("src");
+    expect(baseSrcAfter).toBe(baseSrcBefore);
+
+    // Logo overlay should be visible
+    const logoOverlay = page.locator("[data-testid='logo-overlay']");
+    await expect(logoOverlay).toBeVisible();
+    await expect(logoOverlay).toContainText("ПАРЪ");
   });
 
-  test("selects no embroidery and returns to base image", async ({ page }) => {
+  test("selects no embroidery and overlay disappears", async ({ page }) => {
     const img = page.locator("img[alt='Банная шапка']");
 
-    // First select logo to change the image
+    // First select logo
     await page.locator("button", { hasText: "Логотип ПАРЪ" }).click();
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("/hats/logo/");
-    }).toPass({ timeout: 5000 });
+    await expect(page.locator("[data-testid='logo-overlay']")).toBeVisible();
 
-    // Now select "Без вышивки" to go back to base
+    // Get base image src
+    const baseSrc = await img.getAttribute("src");
+
+    // Now select "Без вышивки" to go back to none
     const noneBtn = page.locator("button", { hasText: "Без вышивки" });
     await noneBtn.click();
     await expect(noneBtn).toHaveClass(/border-gold/);
 
-    // Image should go back to base path
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("/hats/base/");
-    }).toPass({ timeout: 5000 });
+    // Overlay should disappear
+    await expect(page.locator("[data-testid='logo-overlay']")).not.toBeVisible();
+
+    // Base image should remain the same
+    const currentSrc = await img.getAttribute("src");
+    expect(currentSrc).toBe(baseSrc);
   });
 
-  test("monogram with text switches to engraving image", async ({ page }) => {
+  test("monogram with text shows engraving overlay, base image unchanged", async ({ page }) => {
     const img = page.locator("img[alt='Банная шапка']");
+
+    // Get baseline image src
+    const baseSrc = await img.getAttribute("src");
 
     // Select "Монограмма" embroidery type
     const monogramBtn = page.locator("button", { hasText: "Монограмма" });
     await monogramBtn.click();
     await expect(monogramBtn).toHaveClass(/border-gold/);
 
-    // Type text into the monogram input (use placeholder to avoid matching contact form)
+    // Type text into the monogram input
     const input = page.locator("input[placeholder='АБ']");
     await input.fill("АБ");
 
-    // Image should switch to engraving path (decode URL-encoded Next.js image src)
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("/hats/engraving/");
-    }).toPass({ timeout: 5000 });
+    // Base image should still be the same
+    const currentSrc = await img.getAttribute("src");
+    expect(currentSrc).toBe(baseSrc);
+
+    // Engraving overlay should be visible with the text
+    const engravingOverlay = page.locator("[data-testid='engraving-overlay']");
+    await expect(engravingOverlay).toBeVisible();
+    await expect(engravingOverlay).toContainText("АБ");
   });
 
-  test("switch thread color gold to silver updates logo image path", async ({ page }) => {
+  test("switching embroidery type does not change base image", async ({ page }) => {
     const img = page.locator("img[alt='Банная шапка']");
 
-    // Select logo embroidery to reveal thread color picker
+    // Record base image src in default state (no engraving)
+    const baseSrc = await img.getAttribute("src");
+
+    // Switch to logo
     await page.locator("button", { hasText: "Логотип ПАРЪ" }).click();
+    expect(await img.getAttribute("src")).toBe(baseSrc);
 
-    // Default thread is gold — logo path should contain "gold"
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("/hats/logo/");
-      expect(src).toContain("-gold");
-    }).toPass({ timeout: 5000 });
+    // Switch to monogram
+    await page.locator("button", { hasText: "Монограмма" }).click();
+    expect(await img.getAttribute("src")).toBe(baseSrc);
 
-    // Switch to silver thread — button has title="Серебро"
-    const silverBtn = page.locator("button[title='Серебро']");
-    await silverBtn.click();
-
-    // Logo path should now contain "silver"
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("/hats/logo/");
-      expect(src).toContain("-silver");
-    }).toPass({ timeout: 5000 });
-
-    // Switch back to gold
-    const goldBtn = page.locator("button[title='Золото']");
-    await goldBtn.click();
-
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("-gold");
-    }).toPass({ timeout: 5000 });
+    // Switch back to none
+    await page.locator("button", { hasText: "Без вышивки" }).click();
+    expect(await img.getAttribute("src")).toBe(baseSrc);
   });
 
   test("rapid variant switching settles on last clicked variant", async ({ page }) => {
     const img = page.locator("img[alt='Банная шапка']");
-
     const formaSection = page.locator("h3", { hasText: "Форма" }).locator("..");
     const variantButtons = formaSection.locator("button");
 
-    // Rapidly click variant 1 (Будёновка) → 2 (Ушанка) → 3 (Панама) without waiting
-    await variantButtons.nth(1).click(); // Будёновка
-    await variantButtons.nth(2).click(); // Ушанка
-    await variantButtons.nth(3).click(); // Панама
+    // Rapidly click variant 1 → 2 → 3 without waiting
+    await variantButtons.nth(1).click();
+    await variantButtons.nth(2).click();
+    await variantButtons.nth(3).click();
 
     // Final image should match the last clicked variant (panama)
     await expect(async () => {
@@ -220,33 +196,31 @@ test.describe("Hat configurator", () => {
     await expect(variantButtons.nth(2)).not.toHaveClass(/border-gold/);
   });
 
-  test("anthracite color produces dark tone in logo path", async ({ page }) => {
+  test("anthracite color keeps base image path with anthracite", async ({ page }) => {
     const img = page.locator("img[alt='Банная шапка']");
 
-    // Switch to anthracite color first
+    // Switch to anthracite color
     const colorSection = page.locator("h3", { hasText: "Цвет:" }).locator("..");
     const colorButtons = colorSection.locator("button.rounded-full");
-    await colorButtons.nth(2).click(); // anthracite
+    await colorButtons.nth(2).click();
 
     await expect(async () => {
       const src = decodeURIComponent(await img.getAttribute("src") || "");
       expect(src).toContain("anthracite");
     }).toPass({ timeout: 5000 });
 
-    // Now select logo embroidery
+    // Select logo embroidery — base image should still be base path with anthracite
     await page.locator("button", { hasText: "Логотип ПАРЪ" }).click();
 
-    // Logo path should contain "dark" tone (anthracite is a dark color)
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("/hats/logo/");
-      expect(src).toContain("-dark-");
-    }).toPass({ timeout: 5000 });
+    const src = decodeURIComponent(await img.getAttribute("src") || "");
+    expect(src).toContain("/hats/base/");
+    expect(src).toContain("anthracite");
+
+    // Logo overlay should be visible
+    await expect(page.locator("[data-testid='logo-overlay']")).toBeVisible();
   });
 
-  test("engraving with custom text reflects thread color in path", async ({ page }) => {
-    const img = page.locator("img[alt='Банная шапка']");
-
+  test("engraving overlay reflects thread color visually", async ({ page }) => {
     // Select monogram embroidery type
     await page.locator("button", { hasText: "Монограмма" }).click();
 
@@ -254,21 +228,19 @@ test.describe("Hat configurator", () => {
     const input = page.locator("input[placeholder='АБ']");
     await input.fill("ИВ");
 
-    // Default thread is gold — engraving path should contain "gold"
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("/hats/engraving/");
-      expect(src).toContain("-gold-");
-    }).toPass({ timeout: 5000 });
+    // Engraving overlay should be visible
+    const overlay = page.locator("[data-testid='engraving-overlay']");
+    await expect(overlay).toBeVisible();
+    await expect(overlay).toContainText("ИВ");
 
-    // Switch to silver thread
+    // Switch thread color to silver
     await page.locator("button[title='Серебро']").click();
 
-    // Engraving path should now contain "silver"
-    await expect(async () => {
-      const src = decodeURIComponent(await img.getAttribute("src") || "");
-      expect(src).toContain("/hats/engraving/");
-      expect(src).toContain("-silver-");
-    }).toPass({ timeout: 5000 });
+    // Overlay should still be visible with the text
+    await expect(overlay).toContainText("ИВ");
+
+    // The overlay span should have silver color (#C0C0C0)
+    const span = overlay.locator("span");
+    await expect(span).toHaveCSS("color", "rgb(192, 192, 192)");
   });
 });
