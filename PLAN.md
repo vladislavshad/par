@@ -23,7 +23,7 @@ Playwright is already installed. e2e/hat-configurator.spec.ts exists with initia
 5. DO NOT fix anything yet — just report what happened.
 **Done when:** E2E_RESULTS_BEFORE.md is written with real results.
 
-## Task 3: [ ] Diagnose any failing tests
+## Task 3: [x] Diagnose any failing tests
 **Goal:** For each failing test from Task 2, identify the root cause.
 **Steps:**
 1. Read E2E_RESULTS_BEFORE.md
