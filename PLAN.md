@@ -5,7 +5,7 @@
 **Problem:** When user clicks a different hat variant/color/material, the preview image does not change. Root cause: the preloading useEffect creates a `new Image()`, sets `img.src = imageSrc` (relative URL like `/images/hats/base/kolpak-snow-felt.png`). But after assignment, `img.src` is resolved by the browser to an absolute URL (e.g. `https://domain.com/images/hats/base/kolpak-snow-felt.png`). The onload/onerror callbacks compare `pendingSrcRef.current` (relative) with `img.src` (absolute) — they never match, so `setDisplayedSrc` is never called and the image stays frozen on the initial one. Also `isTransitioning` stays true forever (60% opacity).
 **Fix:** Capture the target URL in a local `const targetSrc = imageSrc` before creating the Image. In onload/onerror, compare `pendingSrcRef.current === targetSrc` (both relative). When matched, call `setDisplayedSrc(targetSrc)` and `setIsTransitioning(false)`. This ensures the comparison uses the same URL format. Do NOT change `img.src` to absolute — just fix the comparison logic.
 
-## Task 2: [ ] Install and configure Playwright for E2E testing
+## Task 2: [x] Install and configure Playwright for E2E testing
 **File:** package.json, playwright.config.ts
 **Problem:** No E2E test infrastructure exists in the project.
 **Fix:**
