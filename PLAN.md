@@ -37,7 +37,7 @@ Design system: dark theme, gold (#c9a96e) accent, Playfair serif headings, Inter
 - Add a thin separator (border-b border-white/5 my-8) between presets and the manual item grid
 - In ItemSelector.tsx, import and render `<PresetKits />` before the products grid
 
-## Task 3: [ ] Make StepIndicator clickable for completed steps
+## Task 3: [x] Make StepIndicator clickable for completed steps
 
 **File:** `src/components/constructor/StepIndicator.tsx`
 **Problem:** Users can't navigate back to completed steps by clicking the stepper — only Forward/Back buttons work.

@@ -10,12 +10,12 @@ import { StickyPriceBar } from "@/components/constructor/StickyPriceBar";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function ConstructorPage() {
-  const { step } = useConstructor();
+  const { step, setStep } = useConstructor();
 
   return (
     <div className="min-h-screen pt-24 sm:pt-28 pb-24">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <StepIndicator current={step} />
+        <StepIndicator current={step} onStepClick={setStep} />
 
         <AnimatePresence mode="wait">
           <motion.div
