@@ -150,10 +150,10 @@ export function ItemCustomizer() {
                               sizes="(max-width: 640px) 100vw, 50vw"
                               className="object-cover transition-opacity duration-300"
                             />
-                            {product.allowEngraving && !isNone && !isLogo && config.engraving && (
-                              <AnimatePresence>
+                            <AnimatePresence>
+                              {product.allowEngraving && !isNone && !isLogo && config.engraving && (
                                 <motion.div
-                                  key={config.engraving + (config.engravingFont ?? "") + (config.engravingColorId ?? "")}
+                                  key="embroidery-preview"
                                   initial={{ opacity: 0, scale: 0.9 }}
                                   animate={{ opacity: 1, scale: 1 }}
                                   exit={{ opacity: 0, scale: 0.9 }}
@@ -167,8 +167,8 @@ export function ItemCustomizer() {
                                     {config.engraving}
                                   </span>
                                 </motion.div>
-                              </AnimatePresence>
-                            )}
+                              )}
+                            </AnimatePresence>
                             {product.allowEngraving && !isNone && (
                               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
                                 <p className="text-[10px] text-white/70 tracking-wide uppercase">
