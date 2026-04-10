@@ -4,7 +4,7 @@ Context: Hat configurator at /constructor/hat has a bug where clicking a differe
 
 Playwright is already installed. e2e/hat-configurator.spec.ts exists with initial tests.
 
-## Task 1: [ ] Build the project and verify it compiles
+## Task 1: [x] Build the project and verify it compiles
 **Goal:** Confirm the project builds cleanly before testing.
 **Steps:**
 1. cd /root/par
