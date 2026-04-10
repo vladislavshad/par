@@ -22,7 +22,7 @@ export function ItemSelector() {
 
       <PresetKits />
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4">
         {PRODUCTS.map((product, i) => {
           const isSelected = selectedItems.includes(product.id);
           return (
@@ -32,7 +32,7 @@ export function ItemSelector() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: i * 0.05 }}
               onClick={() => toggleItem(product.id)}
-              className={`relative text-left bg-bg-secondary border overflow-hidden transition-all duration-200 group ${
+              className={`relative text-left bg-bg-secondary border overflow-hidden transition-all duration-200 group min-h-[44px] ${
                 isSelected
                   ? "border-gold ring-1 ring-gold/30"
                   : "border-white/5 hover:border-white/20"
@@ -43,13 +43,13 @@ export function ItemSelector() {
                   src={product.image}
                   alt={product.name}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-bg-secondary/90 to-transparent" />
 
                 <div
-                  className={`absolute top-3 right-3 w-6 h-6 flex items-center justify-center transition-colors ${
+                  className={`absolute top-2 right-2 sm:top-3 sm:right-3 w-6 h-6 flex items-center justify-center transition-colors ${
                     isSelected
                       ? "bg-gold text-bg-primary"
                       : "bg-bg-primary/60 border border-white/20 text-transparent"
@@ -60,18 +60,18 @@ export function ItemSelector() {
                   </svg>
                 </div>
 
-                <div className="absolute bottom-3 left-3">
-                  <span className="text-gold text-xs tracking-wider">
+                <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3">
+                  <span className="text-gold text-[10px] sm:text-xs tracking-wider">
                     от {product.materials[0].price.toLocaleString("ru-RU")} ₽
                   </span>
                 </div>
               </div>
 
-              <div className="p-4">
-                <h3 className="font-serif text-lg font-semibold mb-1">
+              <div className="p-2 sm:p-4">
+                <h3 className="font-serif text-sm sm:text-lg font-semibold mb-0.5 sm:mb-1">
                   {product.name}
                 </h3>
-                <p className="text-text-muted text-xs leading-relaxed line-clamp-2">
+                <p className="text-text-muted text-[10px] sm:text-xs leading-relaxed line-clamp-2">
                   {product.description}
                 </p>
               </div>

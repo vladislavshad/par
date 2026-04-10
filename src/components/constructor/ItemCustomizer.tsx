@@ -236,7 +236,7 @@ export function ItemCustomizer() {
                               onClick={() =>
                                 setItemConfig(product.id, { materialId: mat.id })
                               }
-                              className={`p-3 text-left border transition-colors ${
+                              className={`p-3 min-h-[44px] text-left border transition-colors ${
                                 config.materialId === mat.id
                                   ? "border-gold bg-gold/5"
                                   : "border-white/10 hover:border-white/20"
@@ -271,11 +271,13 @@ export function ItemCustomizer() {
                             {product.colors.find((c) => c.id === config.colorId)?.name}
                           </span>
                         </label>
-                        <ColorPicker
-                          colors={product.colors}
-                          selected={config.colorId}
-                          onSelect={(id) => setItemConfig(product.id, { colorId: id })}
-                        />
+                        <div className="overflow-x-auto sm:overflow-x-visible -mx-4 px-4 sm:mx-0 sm:px-0">
+                          <ColorPicker
+                            colors={product.colors}
+                            selected={config.colorId}
+                            onSelect={(id) => setItemConfig(product.id, { colorId: id })}
+                          />
+                        </div>
                       </div>
 
                       {/* ── Trim / edging color ── */}
@@ -287,11 +289,13 @@ export function ItemCustomizer() {
                               {product.trimColors.find((c) => c.id === config.trimColorId)?.name}
                             </span>
                           </label>
-                          <ColorPicker
-                            colors={product.trimColors}
-                            selected={config.trimColorId ?? ""}
-                            onSelect={(id) => setItemConfig(product.id, { trimColorId: id })}
-                          />
+                          <div className="overflow-x-auto sm:overflow-x-visible -mx-4 px-4 sm:mx-0 sm:px-0">
+                            <ColorPicker
+                              colors={product.trimColors}
+                              selected={config.trimColorId ?? ""}
+                              onSelect={(id) => setItemConfig(product.id, { trimColorId: id })}
+                            />
+                          </div>
                         </div>
                       )}
 
@@ -308,7 +312,7 @@ export function ItemCustomizer() {
                                 onClick={() =>
                                   setItemConfig(product.id, { sizeId: size.id })
                                 }
-                                className={`px-4 py-2 text-sm border transition-colors ${
+                                className={`px-4 py-2.5 min-h-[44px] text-sm border transition-colors ${
                                   config.sizeId === size.id
                                     ? "border-gold bg-gold/5 text-gold"
                                     : "border-white/10 text-text-secondary hover:border-white/20"
@@ -343,7 +347,7 @@ export function ItemCustomizer() {
                                 onClick={() =>
                                   setItemConfig(product.id, { engravingTypeId: type.id })
                                 }
-                                className={`px-3 py-2 text-xs border transition-colors ${
+                                className={`px-3 py-2.5 min-h-[44px] text-xs border transition-colors ${
                                   config.engravingTypeId === type.id
                                     ? "border-gold bg-gold/5 text-gold"
                                     : "border-white/10 text-text-secondary hover:border-white/20"
@@ -401,7 +405,7 @@ export function ItemCustomizer() {
                                           onClick={() =>
                                             setItemConfig(product.id, { engravingFont: font.id })
                                           }
-                                          className={`px-3 py-2 text-sm border transition-colors ${font.css} ${
+                                          className={`px-3 py-2.5 min-h-[44px] text-sm border transition-colors ${font.css} ${
                                             config.engravingFont === font.id
                                               ? "border-gold bg-gold/5"
                                               : "border-white/10 hover:border-white/20"
@@ -428,7 +432,7 @@ export function ItemCustomizer() {
                                                 engravingPositionId: pos.id,
                                               })
                                             }
-                                            className={`px-3 py-2 text-xs border transition-colors ${
+                                            className={`px-3 py-2.5 min-h-[44px] text-xs border transition-colors ${
                                               config.engravingPositionId === pos.id
                                                 ? "border-gold bg-gold/5 text-gold"
                                                 : "border-white/10 text-text-secondary hover:border-white/20"
@@ -470,13 +474,15 @@ export function ItemCustomizer() {
                                   )?.name}
                                 </span>
                               </label>
-                              <ColorPicker
-                                colors={EMBROIDERY_COLORS}
-                                selected={config.engravingColorId ?? "gold"}
-                                onSelect={(id) =>
-                                  setItemConfig(product.id, { engravingColorId: id })
-                                }
-                              />
+                              <div className="overflow-x-auto sm:overflow-x-visible -mx-4 px-4 sm:mx-0 sm:px-0">
+                                <ColorPicker
+                                  colors={EMBROIDERY_COLORS}
+                                  selected={config.engravingColorId ?? "gold"}
+                                  onSelect={(id) =>
+                                    setItemConfig(product.id, { engravingColorId: id })
+                                  }
+                                />
+                              </div>
                             </div>
                           )}
                         </div>

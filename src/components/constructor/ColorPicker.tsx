@@ -16,7 +16,7 @@ export function ColorPicker({ colors, selected, onSelect }: Props) {
           key={color.id}
           onClick={() => onSelect(color.id)}
           title={color.name}
-          className={`w-8 h-8 rounded-full border-2 transition-[border-color,transform] duration-150 relative ${
+          className={`w-11 h-11 sm:w-8 sm:h-8 rounded-full border-2 transition-[border-color,transform] duration-150 relative ${
             selected === color.id
               ? "border-gold scale-110"
               : "border-transparent hover:border-white/30"

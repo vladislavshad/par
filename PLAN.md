@@ -90,7 +90,7 @@ Design system: dark theme, gold (#c9a96e) accent, Playfair serif headings, Inter
 - Add `reset()` that also clears localStorage: `localStorage.removeItem('par-constructor')`
 - On order submission success, call `reset()` to clear saved state
 
-## Task 7: [ ] Mobile UX improvements — sticky bottom actions and responsive cards
+## Task 7: [x] Mobile UX improvements — sticky bottom actions and responsive cards
 
 **File:** `src/components/constructor/ItemSelector.tsx`, `src/components/constructor/ItemCustomizer.tsx`, `src/app/constructor/page.tsx`
 **Problem:** On mobile, item cards get truncated, the "Next" button scrolls off screen, and material options are cramped.
