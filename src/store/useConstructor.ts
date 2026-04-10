@@ -177,7 +177,7 @@ export const useConstructor = create<ConstructorState>()(persist((set, get) => (
   },
 
   reset: () => {
-    localStorage.removeItem("par-constructor");
+    if (typeof window !== "undefined") localStorage.removeItem("par-constructor");
     set(initialState);
   },
 }), {

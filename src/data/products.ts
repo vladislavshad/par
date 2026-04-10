@@ -141,7 +141,7 @@ export const EMBROIDERY_TYPES: EmbroideryType[] = [
 export const ENGRAVING_FONTS = [
   { id: "serif", name: "Классический", sample: "АБВ", css: "font-serif" },
   { id: "script", name: "Рукописный", sample: "АБВ", css: "italic" },
-  { id: "sans", name: "Современный", sample: "АБВ", css: "" },
+  { id: "sans", name: "Современный", sample: "АБВ", css: "font-sans" },
   { id: "oldrus", name: "Старорусский", sample: "АБВ", css: "font-serif tracking-widest" },
 ];
 

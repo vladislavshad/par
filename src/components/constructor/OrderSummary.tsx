@@ -37,6 +37,8 @@ export function OrderSummary() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [savedTotal, setSavedTotal] = useState(0);
+  const [savedContactMethod, setSavedContactMethod] = useState(contactMethod);
 
   const selectedProducts = PRODUCTS.filter((p) =>
     selectedItems.includes(p.id)
@@ -94,6 +96,8 @@ export function OrderSummary() {
       });
 
       if (res.ok) {
+        setSavedTotal(total);
+        setSavedContactMethod(contactMethod);
         reset();
         setSubmitted(true);
       } else {
@@ -130,10 +134,10 @@ export function OrderSummary() {
         </h2>
         <p className="text-text-muted text-lg mb-2">
           Мы свяжемся с вами в ближайшее время через{" "}
-          {contactMethod === "telegram" ? "Telegram" : "WhatsApp"}.
+          {savedContactMethod === "telegram" ? "Telegram" : "WhatsApp"}.
         </p>
         <p className="text-gold text-xl font-serif font-bold">
-          Итого: {total.toLocaleString("ru-RU")} ₽
+          Итого: {savedTotal.toLocaleString("ru-RU")} ₽
         </p>
       </motion.div>
     );
