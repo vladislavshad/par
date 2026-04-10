@@ -65,6 +65,11 @@ export function HatPreview({ config, colorName, materialName }: Props) {
         setIsTransitioning(false);
       }
     };
+
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+    };
   }, [baseImage, displayedSrc]);
 
   const engravingColor = EMBROIDERY_COLORS.find(
@@ -102,7 +107,7 @@ export function HatPreview({ config, colorName, materialName }: Props) {
             data-testid="logo-overlay"
           >
             <span
-              className={`mx-auto font-serif font-bold text-2xl sm:text-3xl ${isFrontSide ? "ml-[25%]" : ""}`}
+              className={`font-serif font-bold text-2xl sm:text-3xl ${isFrontSide ? "ml-[25%]" : "mx-auto"}`}
               style={{
                 color: engravingColor,
                 textShadow: `0 1px 3px rgba(0,0,0,0.4), 0 0 8px ${engravingColor}40`,

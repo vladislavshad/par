@@ -401,7 +401,7 @@ export const PACKAGING_OPTIONS: PackagingOption[] = [
     id: "linen-bag",
     name: "Льняная сумка",
     description: "Элегантная сумка из натурального льна с лого ПАРЪ",
-    price: 0,
+    price: 1900,
     image: "/images/packaging-linen.png",
     freeThreshold: 3,
   },

@@ -49,11 +49,14 @@ export function StickyPriceBar() {
               {count}
             </span>
             <span className="hidden sm:inline">
-              {count === 1
-                ? "предмет"
-                : count >= 2 && count <= 4
-                  ? "предмета"
-                  : "предметов"}
+              {(() => {
+                const mod10 = count % 10;
+                const mod100 = count % 100;
+                if (mod100 >= 11 && mod100 <= 14) return "предметов";
+                if (mod10 === 1) return "предмет";
+                if (mod10 >= 2 && mod10 <= 4) return "предмета";
+                return "предметов";
+              })()}
             </span>
           </div>
         </div>

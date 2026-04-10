@@ -164,20 +164,14 @@ export const useConstructor = create<ConstructorState>()(persist((set, get) => (
     }
     const pkg = PACKAGING_OPTIONS.find((p) => p.id === state.packagingId);
     if (pkg) {
-      if (pkg.freeThreshold && state.selectedItems.length >= pkg.freeThreshold) {
-        /* free */
-      } else if (pkg.freeThreshold && state.selectedItems.length < pkg.freeThreshold) {
-        total += 1900;
-      } else {
-        total += pkg.price;
-      }
+      const isFree = pkg.freeThreshold && state.selectedItems.length >= pkg.freeThreshold;
+      if (!isFree) total += pkg.price;
     }
     if (state.giftCardText) total += 300;
     return total;
   },
 
   reset: () => {
-    if (typeof window !== "undefined") localStorage.removeItem("par-constructor");
     set(initialState);
   },
 }), {

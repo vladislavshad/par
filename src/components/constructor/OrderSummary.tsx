@@ -98,8 +98,8 @@ export function OrderSummary() {
       if (res.ok) {
         setSavedTotal(total);
         setSavedContactMethod(contactMethod);
-        reset();
         setSubmitted(true);
+        reset();
       } else {
         setError("Ошибка при отправке. Попробуйте ещё раз.");
       }
@@ -296,7 +296,7 @@ export function OrderSummary() {
               {packaging?.freeThreshold && selectedItems.length >= packaging.freeThreshold
                 ? "Бесплатно"
                 : packaging?.price === 0
-                  ? selectedItems.length < (packaging.freeThreshold ?? 0) ? "1 900 ₽" : "Бесплатно"
+                  ? "Бесплатно"
                   : `${packaging?.price.toLocaleString("ru-RU")} ₽`}
             </div>
           </div>
