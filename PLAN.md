@@ -63,7 +63,7 @@ Design system: dark theme, gold (#c9a96e) accent, Playfair serif headings, Inter
   - `<div className="flex flex-wrap gap-1 mt-1.5">` with `<span className="text-[10px] text-text-muted bg-bg-primary px-1.5 py-0.5">{prop}</span>` for each property
 - Make material cards slightly taller to accommodate the extra info
 
-## Task 5: [ ] Add live embroidery text preview overlay
+## Task 5: [x] Add live embroidery text preview overlay
 
 **File:** `src/components/constructor/ItemCustomizer.tsx`
 **Problem:** When users type embroidery text, they see it in a summary box below but NOT on the product image. The main UTP (personalized embroidery) has no visual wow-effect.

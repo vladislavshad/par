@@ -150,6 +150,25 @@ export function ItemCustomizer() {
                               sizes="(max-width: 640px) 100vw, 50vw"
                               className="object-cover transition-opacity duration-300"
                             />
+                            {product.allowEngraving && !isNone && !isLogo && config.engraving && (
+                              <AnimatePresence>
+                                <motion.div
+                                  key={config.engraving + (config.engravingFont ?? "") + (config.engravingColorId ?? "")}
+                                  initial={{ opacity: 0, scale: 0.9 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={{ opacity: 0, scale: 0.9 }}
+                                  transition={{ duration: 0.3 }}
+                                  className="absolute inset-x-0 bottom-1/4 flex items-center justify-center pointer-events-none"
+                                >
+                                  <span
+                                    className={`text-2xl sm:text-3xl drop-shadow-lg ${ENGRAVING_FONTS.find((f) => f.id === config.engravingFont)?.css ?? "font-serif"}`}
+                                    style={{ color: EMBROIDERY_COLORS.find((c) => c.id === config.engravingColorId)?.hex ?? "#C9A96E" }}
+                                  >
+                                    {config.engraving}
+                                  </span>
+                                </motion.div>
+                              </AnimatePresence>
+                            )}
                             {product.allowEngraving && !isNone && (
                               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
                                 <p className="text-[10px] text-white/70 tracking-wide uppercase">
