@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { PRODUCTS } from "@/data/products";
 import { useConstructor } from "@/store/useConstructor";
+import { PresetKits } from "./PresetKits";
 
 export function ItemSelector() {
   const { selectedItems, toggleItem } = useConstructor();
@@ -18,6 +19,8 @@ export function ItemSelector() {
           Отметьте, что войдёт в ваш комплект (минимум 1 предмет)
         </p>
       </div>
+
+      <PresetKits />
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {PRODUCTS.map((product, i) => {

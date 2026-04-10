@@ -23,7 +23,7 @@ Design system: dark theme, gold (#c9a96e) accent, Playfair serif headings, Inter
 - Add pb-20 to the constructor page container so content isn't hidden behind the bar
 - Remove the individual "Далее"/"Назад" button rows from ItemSelector, ItemCustomizer, PackagingStep (the bar replaces them). Keep the "Назад" as a text link inside the bar on steps 2-4.
 
-## Task 2: [ ] Add preset kit quick-start cards on Step 1
+## Task 2: [x] Add preset kit quick-start cards on Step 1
 
 **File:** `src/components/constructor/PresetKits.tsx` (new), `src/components/constructor/ItemSelector.tsx`
 **Problem:** Users must manually select items one by one. The PRESET_KITS data exists in products.ts but there's no UI for it on step 1.
