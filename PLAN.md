@@ -1,35 +1,74 @@
-# Fix hat configurator image switching bug + E2E tests
+# Fix hat configurator image switching — E2E verified
 
-## Task 1: [x] Fix HatPreview image transition — URL comparison bug
-**File:** src/components/constructor/HatPreview.tsx
-**Problem:** When user clicks a different hat variant/color/material, the preview image does not change. Root cause: the preloading useEffect creates a `new Image()`, sets `img.src = imageSrc` (relative URL like `/images/hats/base/kolpak-snow-felt.png`). But after assignment, `img.src` is resolved by the browser to an absolute URL (e.g. `https://domain.com/images/hats/base/kolpak-snow-felt.png`). The onload/onerror callbacks compare `pendingSrcRef.current` (relative) with `img.src` (absolute) — they never match, so `setDisplayedSrc` is never called and the image stays frozen on the initial one. Also `isTransitioning` stays true forever (60% opacity).
-**Fix:** Capture the target URL in a local `const targetSrc = imageSrc` before creating the Image. In onload/onerror, compare `pendingSrcRef.current === targetSrc` (both relative). When matched, call `setDisplayedSrc(targetSrc)` and `setIsTransitioning(false)`. This ensures the comparison uses the same URL format. Do NOT change `img.src` to absolute — just fix the comparison logic.
+Context: Hat configurator at /constructor/hat has a bug where clicking a different variant/color/material does not update the preview image. A previous fix (commit fde2981) modified HatPreview.tsx to use a local targetSrc variable to compare against pendingSrcRef.current. We need to VERIFY the fix actually works via real E2E tests, and if not — diagnose and fix for real.
 
-## Task 2: [x] Install and configure Playwright for E2E testing
-**File:** package.json, playwright.config.ts
-**Problem:** No E2E test infrastructure exists in the project.
-**Fix:**
-1. Run `npm install -D @playwright/test` and `npx playwright install chromium`
-2. Create `playwright.config.ts` with:
-   - baseURL: `http://localhost:3000`
-   - webServer config to run `npm run dev` automatically
-   - Use chromium only for speed
-   - Set timeout to 30s
-3. Add to package.json scripts: `"test:e2e": "playwright test"`, `"test:e2e:ui": "playwright test --ui"`
-4. Create `e2e/` directory for test files
+Playwright is already installed. e2e/hat-configurator.spec.ts exists with initial tests.
 
-## Task 3: [ ] Write E2E tests for hat configurator — variant switching
-**File:** e2e/hat-configurator.spec.ts
-**Problem:** No automated tests verify hat configurator functionality.
-**Fix:** Write Playwright tests that:
-1. Navigate to `/constructor/hat`
-2. Verify initial hat image is displayed (check img src contains expected variant)
-3. Click each hat variant (Колпак, Будёновка, Ушанка, Панама) and verify:
-   - The active variant button has gold border (border-gold class)
-   - The preview image src changes to match the new variant
-4. Click different materials and verify the active material button changes
-5. Click different colors and verify image src includes the color name
-6. Test embroidery type switching: click "Логотип ПАРЪ", verify logo image path is used
-7. Test that "Без вышивки" → base image, "Монограмма" with text → engraving image
-Use `page.waitForFunction` or polling to check image src changes (since preloading is async).
-Add reasonable timeouts. Tests must pass with `npm run test:e2e`.
+## Task 1: [ ] Build the project and verify it compiles
+**Goal:** Confirm the project builds cleanly before testing.
+**Steps:**
+1. cd /root/par
+2. Run: npm install (idempotent, should be fast)
+3. Run: npm run build 2>&1 | tee /tmp/build.log
+4. If build fails → fix TypeScript/lint errors first
+**Done when:** Build succeeds with no errors.
+
+## Task 2: [ ] Run existing E2E tests and capture results
+**Goal:** Run the existing e2e/hat-configurator.spec.ts suite against the dev server and see what actually passes/fails.
+**Steps:**
+1. cd /root/par
+2. Run: npx playwright install chromium --with-deps (if not already)
+3. Run: npm run test:e2e 2>&1 | tee /tmp/e2e-run1.log
+4. Save the raw log to /root/par/E2E_RESULTS_BEFORE.md with: which tests passed, which failed, failure messages
+5. DO NOT fix anything yet — just report what happened.
+**Done when:** E2E_RESULTS_BEFORE.md is written with real results.
+
+## Task 3: [ ] Diagnose any failing tests
+**Goal:** For each failing test from Task 2, identify the root cause.
+**Steps:**
+1. Read E2E_RESULTS_BEFORE.md
+2. For each failure, open Playwright trace/screenshot in test-results/ — analyze what happened
+3. Write DIAGNOSIS.md with one section per failure: test name, observed behavior, root cause hypothesis, proposed fix
+**Done when:** DIAGNOSIS.md covers every failure (or says all tests pass).
+
+## Task 4: [ ] Fix the root cause(s)
+**Goal:** Apply fixes so the hat configurator actually switches images when user clicks variant/color/material/embroidery buttons.
+**Key files to inspect:**
+- src/components/constructor/HatPreview.tsx (image preloading logic)
+- src/components/constructor/HatOptionsPanel.tsx (button click handlers)
+- src/store/useConstructor.ts (Zustand store update logic)
+**Guidance:**
+- If tests fail because imageSrc does not update at all → the store update is broken (handler or setState issue)
+- If imageSrc updates but displayedSrc stays stale → the HatPreview useEffect has a bug
+- Consider: next/image src may contain the path in a URL-encoded form (_next/image?url=...). Tests should check the underlying path, not strict equality.
+- Consider: the existing fix may be correct but tests have incorrect selectors — fix the tests in that case.
+- If image preloading via new window.Image() is fundamentally broken → simplify: remove preloading, let next/image handle it directly (just use imageSrc as displayedSrc with a simple key-based transition).
+**Done when:** You have a concrete fix committed to git.
+
+## Task 5: [ ] Re-run E2E tests and verify
+**Goal:** All E2E tests pass.
+**Steps:**
+1. Run: npm run test:e2e 2>&1 | tee /tmp/e2e-run2.log
+2. If any tests still fail → go back to Task 3 (max 3 iterations)
+3. Save final log to /root/par/E2E_RESULTS_AFTER.md
+**Done when:** All tests pass.
+
+## Task 6: [ ] Write additional E2E coverage for embroidery and rapid switching
+**Goal:** Cover edge cases that Vlad reported.
+**Add tests:**
+1. Click Логотип ПАРЪ embroidery type → image src should contain /logo/
+2. Type custom text for engraving → image src should contain /engraving/
+3. Switch thread color (gold ↔ silver) → image path should reflect it
+4. Rapid click test: click variant 1 → variant 2 → variant 3 within 200ms → final image should match variant 3 (tests the pendingSrcRef guard)
+5. Color switch to anthracite (dark) → image path should contain dark tone logic
+**Done when:** Tests added and all pass.
+
+## Task 7: [ ] Final verification
+**Goal:** Confirm everything works end-to-end.
+**Steps:**
+1. Run full suite one more time: npm run test:e2e
+2. Run: npm run lint (must pass)
+3. Run: npm run build (must succeed)
+4. Commit everything with a clear message
+5. Write FINAL_REPORT.md summarizing: what was broken, what was fixed, test count, any remaining concerns
+**Done when:** Clean build, clean lint, all tests pass, FINAL_REPORT.md written.
