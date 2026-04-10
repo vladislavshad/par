@@ -3,7 +3,7 @@
 Improve the ПАРЪ bath set configurator (Next.js 16 + React 19 + Zustand + Tailwind v4 + Framer Motion).
 Design system: dark theme, gold (#c9a96e) accent, Playfair serif headings, Inter sans body.
 
-## Task 1: [ ] Add sticky price bar across all constructor steps
+## Task 1: [x] Add sticky price bar across all constructor steps
 
 **File:** `src/components/constructor/StickyPriceBar.tsx` (new), `src/app/constructor/page.tsx`
 **Problem:** Users have no price feedback until the final step. They don't know the running total while selecting items or customizing.

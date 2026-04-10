@@ -20,8 +20,6 @@ export function ItemCustomizer() {
     selectedItems,
     itemConfigs,
     setItemConfig,
-    nextStep,
-    prevStep,
     getItemPrice,
   } = useConstructor();
   const [expandedItem, setExpandedItem] = useState<string | null>(
@@ -465,26 +463,6 @@ export function ItemCustomizer() {
         })}
       </div>
 
-      <div className="mt-8 flex justify-between">
-        <button
-          onClick={prevStep}
-          className="border border-white/10 hover:border-white/20 text-text-secondary px-6 py-3 font-medium tracking-wide transition-colors flex items-center gap-2"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          Назад
-        </button>
-        <button
-          onClick={nextStep}
-          className="bg-gold hover:bg-gold-light text-bg-primary px-6 py-3 font-medium tracking-wide transition-colors flex items-center gap-2"
-        >
-          Далее
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { PRODUCTS } from "@/data/products";
 import { useConstructor } from "@/store/useConstructor";
 
 export function ItemSelector() {
-  const { selectedItems, toggleItem, nextStep } = useConstructor();
+  const { selectedItems, toggleItem } = useConstructor();
 
   return (
     <div>
@@ -77,20 +77,10 @@ export function ItemSelector() {
         })}
       </div>
 
-      <div className="mt-8 flex justify-between items-center">
+      <div className="mt-8">
         <p className="text-text-muted text-sm">
           Выбрано: <span className="text-gold font-medium">{selectedItems.length}</span> из {PRODUCTS.length}
         </p>
-        <button
-          onClick={nextStep}
-          disabled={selectedItems.length === 0}
-          className="bg-gold hover:bg-gold-light disabled:bg-bg-card disabled:text-text-muted text-bg-primary px-6 py-3 font-medium tracking-wide transition-colors flex items-center gap-2"
-        >
-          Далее
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
       </div>
     </div>
   );
