@@ -3,6 +3,7 @@ export type Material = {
   name: string;
   price: number;
   description?: string;
+  properties?: { thickness?: string; warmth?: string; softness?: string };
 };
 
 export type Color = {
@@ -162,10 +163,10 @@ export const PRODUCTS: Product[] = [
     description: "Защита от перегрева. Натуральная шерсть, ручная валка.",
     image: "/images/product-sauna-hat.png",
     materials: [
-      { id: "felt-standard", name: "Войлок", price: 1900, description: "Плотный натуральный войлок 5 мм" },
-      { id: "felt-premium", name: "Войлок премиум", price: 2900, description: "Утолщённый 8 мм, ручная валка" },
-      { id: "felt-merino", name: "Меринос", price: 3400, description: "Тончайшая шерсть мериноса, мягкий" },
-      { id: "felt-fetl", name: "Фетр", price: 2400, description: "Гладкий плотный фетр" },
+      { id: "felt-standard", name: "Войлок", price: 1900, description: "Плотный натуральный войлок 5 мм", properties: { thickness: "5-6 мм", warmth: "Высокая", softness: "Средняя" } },
+      { id: "felt-premium", name: "Войлок премиум", price: 2900, description: "Утолщённый 8 мм, ручная валка", properties: { thickness: "8 мм", warmth: "Очень высокая", softness: "Средняя" } },
+      { id: "felt-merino", name: "Меринос", price: 3400, description: "Тончайшая шерсть мериноса, мягкий", properties: { thickness: "6-8 мм", warmth: "Очень высокая", softness: "Высокая" } },
+      { id: "felt-fetl", name: "Фетр", price: 2400, description: "Гладкий плотный фетр", properties: { thickness: "4-5 мм", warmth: "Средняя", softness: "Средняя" } },
     ],
     colors: UNIVERSAL_COLORS,
     variants: [
@@ -187,11 +188,11 @@ export const PRODUCTS: Product[] = [
     description: "70x140 см. Натуральные ткани, превосходное впитывание.",
     image: "/images/product-towel.png",
     materials: [
-      { id: "cotton-400", name: "Хлопок 400 г/м²", price: 2200, description: "Классический плотный хлопок" },
-      { id: "cotton-500", name: "Хлопок 500 г/м²", price: 2600, description: "Повышенная плотность, люкс" },
-      { id: "bamboo", name: "Бамбук", price: 2800, description: "Антибактериальный, шелковистый" },
-      { id: "linen", name: "Лён 100%", price: 3200, description: "Натуральный, прочный, дышащий" },
-      { id: "linen-waffle", name: "Лён вафельный", price: 3500, description: "Рельефное плетение, массажный эффект" },
+      { id: "cotton-400", name: "Хлопок 400 г/м²", price: 2200, description: "Классический плотный хлопок", properties: { thickness: "400 г/м²", warmth: "Средняя", softness: "Высокая" } },
+      { id: "cotton-500", name: "Хлопок 500 г/м²", price: 2600, description: "Повышенная плотность, люкс", properties: { thickness: "500 г/м²", warmth: "Высокая", softness: "Высокая" } },
+      { id: "bamboo", name: "Бамбук", price: 2800, description: "Антибактериальный, шелковистый", properties: { thickness: "450 г/м²", warmth: "Средняя", softness: "Премиальная" } },
+      { id: "linen", name: "Лён 100%", price: 3200, description: "Натуральный, прочный, дышащий", properties: { thickness: "350 г/м²", warmth: "Средняя", softness: "Средняя" } },
+      { id: "linen-waffle", name: "Лён вафельный", price: 3500, description: "Рельефное плетение, массажный эффект", properties: { thickness: "380 г/м²", warmth: "Средняя", softness: "Средняя" } },
     ],
     colors: UNIVERSAL_COLORS,
     allowEngraving: true,
@@ -209,11 +210,11 @@ export const PRODUCTS: Product[] = [
     description: "Свободный крой, комфорт и элегантность после парной.",
     image: "/images/product-linen-robe.png",
     materials: [
-      { id: "cotton-terry", name: "Хлопок махровый", price: 5900, description: "Мягкий, тёплый, классика" },
-      { id: "cotton-waffle", name: "Хлопок вафельный", price: 5200, description: "Лёгкий, быстро сохнет" },
-      { id: "bamboo-terry", name: "Бамбук махровый", price: 7900, description: "Шелковистый, гипоаллергенный" },
-      { id: "linen", name: "Лён", price: 8900, description: "Натуральный лён, дышащий" },
-      { id: "linen-cotton", name: "Лён/хлопок", price: 7200, description: "Смесь 50/50, мягче чистого льна" },
+      { id: "cotton-terry", name: "Хлопок махровый", price: 5900, description: "Мягкий, тёплый, классика", properties: { thickness: "450 г/м²", warmth: "Высокая", softness: "Высокая" } },
+      { id: "cotton-waffle", name: "Хлопок вафельный", price: 5200, description: "Лёгкий, быстро сохнет", properties: { thickness: "280 г/м²", warmth: "Средняя", softness: "Средняя" } },
+      { id: "bamboo-terry", name: "Бамбук махровый", price: 7900, description: "Шелковистый, гипоаллергенный", properties: { thickness: "500 г/м²", warmth: "Высокая", softness: "Премиальная" } },
+      { id: "linen", name: "Лён", price: 8900, description: "Натуральный лён, дышащий", properties: { thickness: "300 г/м²", warmth: "Средняя", softness: "Средняя" } },
+      { id: "linen-cotton", name: "Лён/хлопок", price: 7200, description: "Смесь 50/50, мягче чистого льна", properties: { thickness: "350 г/м²", warmth: "Средняя", softness: "Высокая" } },
     ],
     colors: UNIVERSAL_COLORS,
     sizes: [
@@ -239,10 +240,10 @@ export const PRODUCTS: Product[] = [
     description: "На регулируемой застёжке. Удобная альтернатива полотенцу.",
     image: "/images/product-kilt.png",
     materials: [
-      { id: "cotton", name: "Хлопок", price: 2400, description: "Классический мягкий хлопок" },
-      { id: "cotton-waffle", name: "Хлопок вафельный", price: 2800, description: "Рельефное плетение, лёгкий" },
-      { id: "linen-cotton", name: "Лён/хлопок", price: 3200, description: "Смесь 50/50, прочный" },
-      { id: "linen", name: "Лён 100%", price: 3900, description: "Натуральный, дышащий лён" },
+      { id: "cotton", name: "Хлопок", price: 2400, description: "Классический мягкий хлопок", properties: { thickness: "400 г/м²", warmth: "Средняя", softness: "Высокая" } },
+      { id: "cotton-waffle", name: "Хлопок вафельный", price: 2800, description: "Рельефное плетение, лёгкий", properties: { thickness: "280 г/м²", warmth: "Средняя", softness: "Средняя" } },
+      { id: "linen-cotton", name: "Лён/хлопок", price: 3200, description: "Смесь 50/50, прочный", properties: { thickness: "350 г/м²", warmth: "Средняя", softness: "Высокая" } },
+      { id: "linen", name: "Лён 100%", price: 3900, description: "Натуральный, дышащий лён", properties: { thickness: "300 г/м²", warmth: "Средняя", softness: "Средняя" } },
     ],
     colors: UNIVERSAL_COLORS,
     sizes: [
@@ -265,9 +266,9 @@ export const PRODUCTS: Product[] = [
     description: "50x150 см. Гигиеничный барьер между вами и полком.",
     image: "/images/product-mat.png",
     materials: [
-      { id: "felt", name: "Войлок", price: 1800, description: "Плотный натуральный войлок" },
-      { id: "felt-premium", name: "Войлок премиум", price: 2400, description: "Утолщённый, двойной слой" },
-      { id: "linen", name: "Лён", price: 2900, description: "Натуральный лён с подкладкой" },
+      { id: "felt", name: "Войлок", price: 1800, description: "Плотный натуральный войлок", properties: { thickness: "6 мм", warmth: "Высокая", softness: "Средняя" } },
+      { id: "felt-premium", name: "Войлок премиум", price: 2400, description: "Утолщённый, двойной слой", properties: { thickness: "10 мм", warmth: "Очень высокая", softness: "Средняя" } },
+      { id: "linen", name: "Лён", price: 2900, description: "Натуральный лён с подкладкой", properties: { thickness: "4 мм", warmth: "Средняя", softness: "Высокая" } },
     ],
     colors: UNIVERSAL_COLORS,
     allowEngraving: false,
@@ -280,9 +281,9 @@ export const PRODUCTS: Product[] = [
     description: "Войлок ручной работы. Не нагреваются, защищают от грибка.",
     image: "/images/product-slippers.png",
     materials: [
-      { id: "felt-standard", name: "Войлок", price: 1400, description: "Натуральный плотный войлок" },
-      { id: "felt-premium", name: "Войлок премиум", price: 2200, description: "Утолщённый, двойная подошва" },
-      { id: "felt-merino", name: "Меринос", price: 2800, description: "Мягчайшая шерсть мериноса" },
+      { id: "felt-standard", name: "Войлок", price: 1400, description: "Натуральный плотный войлок", properties: { thickness: "6 мм", warmth: "Высокая", softness: "Средняя" } },
+      { id: "felt-premium", name: "Войлок премиум", price: 2200, description: "Утолщённый, двойная подошва", properties: { thickness: "10 мм", warmth: "Очень высокая", softness: "Средняя" } },
+      { id: "felt-merino", name: "Меринос", price: 2800, description: "Мягчайшая шерсть мериноса", properties: { thickness: "8 мм", warmth: "Очень высокая", softness: "Премиальная" } },
     ],
     colors: UNIVERSAL_COLORS,
     sizes: [
@@ -302,10 +303,10 @@ export const PRODUCTS: Product[] = [
     description: "Стильная упаковка для комплекта. Используется повторно.",
     image: "/images/product-bag.png",
     materials: [
-      { id: "linen-bag", name: "Льняная сумка", price: 1900, description: "Элегантный натуральный лён" },
-      { id: "canvas-bag", name: "Канвас", price: 2900, description: "Плотный хлопковый канвас" },
-      { id: "leather-bag", name: "Кожаная сумка", price: 4900, description: "Натуральная кожа, золотая фурнитура" },
-      { id: "vip-case", name: "VIP кожаный кейс", price: 7900, description: "Ручная работа, полированная кожа" },
+      { id: "linen-bag", name: "Льняная сумка", price: 1900, description: "Элегантный натуральный лён", properties: { thickness: "Лёгкая", softness: "Высокая" } },
+      { id: "canvas-bag", name: "Канвас", price: 2900, description: "Плотный хлопковый канвас", properties: { thickness: "Плотная", softness: "Средняя" } },
+      { id: "leather-bag", name: "Кожаная сумка", price: 4900, description: "Натуральная кожа, золотая фурнитура", properties: { thickness: "Плотная", softness: "Высокая" } },
+      { id: "vip-case", name: "VIP кожаный кейс", price: 7900, description: "Ручная работа, полированная кожа", properties: { thickness: "Премиальная", softness: "Премиальная" } },
     ],
     colors: [
       { id: "sand", name: "Песочный", hex: "#D4C5A9" },

@@ -49,7 +49,7 @@ Design system: dark theme, gold (#c9a96e) accent, Playfair serif headings, Inter
 - Update page.tsx to pass `onStepClick={setStep}` to StepIndicator
 - Show step labels on mobile too (text-xs), not just desktop — users need orientation on small screens
 
-## Task 4: [ ] Add material descriptions and properties to customizer cards
+## Task 4: [x] Add material descriptions and properties to customizer cards
 
 **File:** `src/data/products.ts`, `src/components/constructor/ItemCustomizer.tsx`
 **Problem:** Material cards show only name and price. Users can't compare quality characteristics (thickness, warmth, softness) to justify price differences.

@@ -230,6 +230,15 @@ export function ItemCustomizer() {
                               <div className="text-gold text-xs mt-1">
                                 {mat.price.toLocaleString("ru-RU")} ₽
                               </div>
+                              {mat.properties && (
+                                <div className="flex flex-wrap gap-1 mt-1.5">
+                                  {Object.entries(mat.properties).map(([key, val]) => (
+                                    <span key={key} className="text-[10px] text-text-muted bg-bg-primary px-1.5 py-0.5">
+                                      {val}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
                             </button>
                           ))}
                         </div>
