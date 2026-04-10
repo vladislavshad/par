@@ -63,7 +63,7 @@ Playwright is already installed. e2e/hat-configurator.spec.ts exists with initia
 5. Color switch to anthracite (dark) → image path should contain dark tone logic
 **Done when:** Tests added and all pass.
 
-## Task 7: [ ] Final verification
+## Task 7: [x] Final verification
 **Goal:** Confirm everything works end-to-end.
 **Steps:**
 1. Run full suite one more time: npm run test:e2e
