@@ -53,7 +53,7 @@ Playwright is already installed. e2e/hat-configurator.spec.ts exists with initia
 3. Save final log to /root/par/E2E_RESULTS_AFTER.md
 **Done when:** All tests pass.
 
-## Task 6: [ ] Write additional E2E coverage for embroidery and rapid switching
+## Task 6: [x] Write additional E2E coverage for embroidery and rapid switching
 **Goal:** Cover edge cases that Vlad reported.
 **Add tests:**
 1. Click Логотип ПАРЪ embroidery type → image src should contain /logo/

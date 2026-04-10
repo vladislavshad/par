@@ -162,4 +162,113 @@ test.describe("Hat configurator", () => {
       expect(src).toContain("/hats/engraving/");
     }).toPass({ timeout: 5000 });
   });
+
+  test("switch thread color gold to silver updates logo image path", async ({ page }) => {
+    const img = page.locator("img[alt='Банная шапка']");
+
+    // Select logo embroidery to reveal thread color picker
+    await page.locator("button", { hasText: "Логотип ПАРЪ" }).click();
+
+    // Default thread is gold — logo path should contain "gold"
+    await expect(async () => {
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
+      expect(src).toContain("/hats/logo/");
+      expect(src).toContain("-gold");
+    }).toPass({ timeout: 5000 });
+
+    // Switch to silver thread — button has title="Серебро"
+    const silverBtn = page.locator("button[title='Серебро']");
+    await silverBtn.click();
+
+    // Logo path should now contain "silver"
+    await expect(async () => {
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
+      expect(src).toContain("/hats/logo/");
+      expect(src).toContain("-silver");
+    }).toPass({ timeout: 5000 });
+
+    // Switch back to gold
+    const goldBtn = page.locator("button[title='Золото']");
+    await goldBtn.click();
+
+    await expect(async () => {
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
+      expect(src).toContain("-gold");
+    }).toPass({ timeout: 5000 });
+  });
+
+  test("rapid variant switching settles on last clicked variant", async ({ page }) => {
+    const img = page.locator("img[alt='Банная шапка']");
+
+    const formaSection = page.locator("h3", { hasText: "Форма" }).locator("..");
+    const variantButtons = formaSection.locator("button");
+
+    // Rapidly click variant 1 (Будёновка) → 2 (Ушанка) → 3 (Панама) without waiting
+    await variantButtons.nth(1).click(); // Будёновка
+    await variantButtons.nth(2).click(); // Ушанка
+    await variantButtons.nth(3).click(); // Панама
+
+    // Final image should match the last clicked variant (panama)
+    await expect(async () => {
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
+      expect(src).toContain("panama");
+    }).toPass({ timeout: 5000 });
+
+    // Only the last button should be active
+    await expect(variantButtons.nth(3)).toHaveClass(/border-gold/);
+    await expect(variantButtons.nth(1)).not.toHaveClass(/border-gold/);
+    await expect(variantButtons.nth(2)).not.toHaveClass(/border-gold/);
+  });
+
+  test("anthracite color produces dark tone in logo path", async ({ page }) => {
+    const img = page.locator("img[alt='Банная шапка']");
+
+    // Switch to anthracite color first
+    const colorSection = page.locator("h3", { hasText: "Цвет:" }).locator("..");
+    const colorButtons = colorSection.locator("button.rounded-full");
+    await colorButtons.nth(2).click(); // anthracite
+
+    await expect(async () => {
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
+      expect(src).toContain("anthracite");
+    }).toPass({ timeout: 5000 });
+
+    // Now select logo embroidery
+    await page.locator("button", { hasText: "Логотип ПАРЪ" }).click();
+
+    // Logo path should contain "dark" tone (anthracite is a dark color)
+    await expect(async () => {
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
+      expect(src).toContain("/hats/logo/");
+      expect(src).toContain("-dark-");
+    }).toPass({ timeout: 5000 });
+  });
+
+  test("engraving with custom text reflects thread color in path", async ({ page }) => {
+    const img = page.locator("img[alt='Банная шапка']");
+
+    // Select monogram embroidery type
+    await page.locator("button", { hasText: "Монограмма" }).click();
+
+    // Type text
+    const input = page.locator("input[placeholder='АБ']");
+    await input.fill("ИВ");
+
+    // Default thread is gold — engraving path should contain "gold"
+    await expect(async () => {
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
+      expect(src).toContain("/hats/engraving/");
+      expect(src).toContain("-gold-");
+    }).toPass({ timeout: 5000 });
+
+    // Switch to silver thread
+    await page.locator("button[title='Серебро']").click();
+
+    // Engraving path should now contain "silver"
+    await expect(async () => {
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
+      expect(src).toContain("/hats/engraving/");
+      expect(src).toContain("-silver-");
+    }).toPass({ timeout: 5000 });
+  });
 });
