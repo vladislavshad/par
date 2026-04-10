@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { PRODUCTS, PACKAGING_OPTIONS, PRESET_KITS } from "@/data/products";
 
 export type ItemConfig = {
@@ -54,7 +55,7 @@ const initialState = {
   contactMethod: "telegram" as const,
 };
 
-export const useConstructor = create<ConstructorState>((set, get) => ({
+export const useConstructor = create<ConstructorState>()(persist((set, get) => ({
   ...initialState,
 
   setStep: (step) => set({ step }),
@@ -175,5 +176,17 @@ export const useConstructor = create<ConstructorState>((set, get) => ({
     return total;
   },
 
-  reset: () => set(initialState),
+  reset: () => {
+    localStorage.removeItem("par-constructor");
+    set(initialState);
+  },
+}), {
+  name: "par-constructor",
+  partialize: (state) => ({
+    selectedItems: state.selectedItems,
+    itemConfigs: state.itemConfigs,
+    packagingId: state.packagingId,
+    giftCardText: state.giftCardText,
+    step: state.step,
+  }),
 }));

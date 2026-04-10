@@ -31,6 +31,7 @@ export function OrderSummary() {
     prevStep,
     toggleItem,
     setStep,
+    reset,
   } = useConstructor();
 
   const [submitting, setSubmitting] = useState(false);
@@ -93,6 +94,7 @@ export function OrderSummary() {
       });
 
       if (res.ok) {
+        reset();
         setSubmitted(true);
       } else {
         setError("Ошибка при отправке. Попробуйте ещё раз.");

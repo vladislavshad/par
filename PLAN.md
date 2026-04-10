@@ -77,7 +77,7 @@ Design system: dark theme, gold (#c9a96e) accent, Playfair serif headings, Inter
   - Animate entry with framer-motion: fade in + slight scale
 - This gives instant visual feedback of what the embroidery will look like on the product
 
-## Task 6: [ ] Add LocalStorage persistence for constructor state
+## Task 6: [x] Add LocalStorage persistence for constructor state
 
 **File:** `src/store/useConstructor.ts`
 **Problem:** If users accidentally close the browser or navigate away, their entire configuration is lost.
