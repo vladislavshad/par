@@ -143,7 +143,7 @@ export function HatPreview({ config, colorName, materialName }: Props) {
             <p className="text-[10px] text-white/70 tracking-wide uppercase">
               {isLogo
                 ? "Фирменная вышивка ПАРЪ"
-                : "Пример вышивки «АБ» — ваши инициалы будут выполнены в выбранном стиле"}
+                : `Пример вышивки «${config.engraving}» — ваш текст будет выполнен в выбранном стиле`}
             </p>
           </div>
         )}
