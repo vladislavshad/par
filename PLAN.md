@@ -13,7 +13,7 @@ Playwright is already installed. e2e/hat-configurator.spec.ts exists with initia
 4. If build fails → fix TypeScript/lint errors first
 **Done when:** Build succeeds with no errors.
 
-## Task 2: [ ] Run existing E2E tests and capture results
+## Task 2: [x] Run existing E2E tests and capture results
 **Goal:** Run the existing e2e/hat-configurator.spec.ts suite against the dev server and see what actually passes/fails.
 **Steps:**
 1. cd /root/par
