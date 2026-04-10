@@ -115,9 +115,9 @@ test.describe("Hat configurator", () => {
     // Button should be active
     await expect(logoBtn).toHaveClass(/border-gold/);
 
-    // Image should switch to logo path
+    // Image should switch to logo path (decode URL-encoded Next.js image src)
     await expect(async () => {
-      const src = await img.getAttribute("src");
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
       expect(src).toContain("/hats/logo/");
     }).toPass({ timeout: 5000 });
   });
@@ -128,7 +128,7 @@ test.describe("Hat configurator", () => {
     // First select logo to change the image
     await page.locator("button", { hasText: "Логотип ПАРЪ" }).click();
     await expect(async () => {
-      const src = await img.getAttribute("src");
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
       expect(src).toContain("/hats/logo/");
     }).toPass({ timeout: 5000 });
 
@@ -139,7 +139,7 @@ test.describe("Hat configurator", () => {
 
     // Image should go back to base path
     await expect(async () => {
-      const src = await img.getAttribute("src");
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
       expect(src).toContain("/hats/base/");
     }).toPass({ timeout: 5000 });
   });
@@ -152,13 +152,13 @@ test.describe("Hat configurator", () => {
     await monogramBtn.click();
     await expect(monogramBtn).toHaveClass(/border-gold/);
 
-    // Type text into the engraving input
-    const input = page.locator("input[type='text']");
+    // Type text into the monogram input (use placeholder to avoid matching contact form)
+    const input = page.locator("input[placeholder='АБ']");
     await input.fill("АБ");
 
-    // Image should switch to engraving path
+    // Image should switch to engraving path (decode URL-encoded Next.js image src)
     await expect(async () => {
-      const src = await img.getAttribute("src");
+      const src = decodeURIComponent(await img.getAttribute("src") || "");
       expect(src).toContain("/hats/engraving/");
     }).toPass({ timeout: 5000 });
   });

@@ -31,7 +31,7 @@ Playwright is already installed. e2e/hat-configurator.spec.ts exists with initia
 3. Write DIAGNOSIS.md with one section per failure: test name, observed behavior, root cause hypothesis, proposed fix
 **Done when:** DIAGNOSIS.md covers every failure (or says all tests pass).
 
-## Task 4: [ ] Fix the root cause(s)
+## Task 4: [x] Fix the root cause(s)
 **Goal:** Apply fixes so the hat configurator actually switches images when user clicks variant/color/material/embroidery buttons.
 **Key files to inspect:**
 - src/components/constructor/HatPreview.tsx (image preloading logic)
