@@ -111,12 +111,14 @@ function CustomContactForm() {
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async () => {
     if (!name.trim() || !phone.trim()) return;
     setSending(true);
+    setError("");
     try {
-      await fetch("/api/order", {
+      const res = await fetch("/api/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -129,9 +131,10 @@ function CustomContactForm() {
           total: 0,
         }),
       });
+      if (!res.ok) throw new Error("Server error");
       setSent(true);
     } catch {
-      // silent
+      setError("Ошибка соединения. Попробуйте ещё раз.");
     } finally {
       setSending(false);
     }
@@ -189,6 +192,9 @@ function CustomContactForm() {
           className="w-full bg-bg-primary border border-white/10 px-4 py-3 text-sm text-text-primary placeholder:text-text-muted focus:border-gold focus:outline-none transition-colors resize-none"
         />
       </div>
+      {error && (
+        <p className="text-red-400 text-sm mb-4">{error}</p>
+      )}
       <button
         onClick={handleSubmit}
         disabled={sending || !name.trim() || !phone.trim()}

@@ -107,7 +107,7 @@ export function HatPreview({ config, colorName, materialName }: Props) {
             data-testid="logo-overlay"
           >
             <span
-              className={`font-serif font-bold text-2xl sm:text-3xl ${isFrontSide ? "ml-[25%]" : "mx-auto"}`}
+              className="font-serif font-bold text-2xl sm:text-3xl mx-auto"
               style={{
                 color: engravingColor,
                 textShadow: `0 1px 3px rgba(0,0,0,0.4), 0 0 8px ${engravingColor}40`,
