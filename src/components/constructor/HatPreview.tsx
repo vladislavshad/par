@@ -83,18 +83,19 @@ export function HatPreview({ config, colorName, materialName }: Props) {
     setIsTransitioning(true);
 
     // Preload the new image via a plain <img> to avoid unmounting Next/Image
+    const targetSrc = imageSrc;
     const img = new window.Image();
     img.src = imageSrc;
     img.onload = () => {
       // Only apply if this is still the latest requested src
-      if (pendingSrcRef.current === img.src) {
-        setDisplayedSrc(img.src);
+      if (pendingSrcRef.current === targetSrc) {
+        setDisplayedSrc(targetSrc);
         setIsTransitioning(false);
       }
     };
     img.onerror = () => {
-      if (pendingSrcRef.current === img.src) {
-        setDisplayedSrc(img.src);
+      if (pendingSrcRef.current === targetSrc) {
+        setDisplayedSrc(targetSrc);
         setIsTransitioning(false);
       }
     };

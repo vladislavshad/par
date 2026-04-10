@@ -1,6 +1,6 @@
 # Fix hat configurator image switching bug + E2E tests
 
-## Task 1: [ ] Fix HatPreview image transition — URL comparison bug
+## Task 1: [x] Fix HatPreview image transition — URL comparison bug
 **File:** src/components/constructor/HatPreview.tsx
 **Problem:** When user clicks a different hat variant/color/material, the preview image does not change. Root cause: the preloading useEffect creates a `new Image()`, sets `img.src = imageSrc` (relative URL like `/images/hats/base/kolpak-snow-felt.png`). But after assignment, `img.src` is resolved by the browser to an absolute URL (e.g. `https://domain.com/images/hats/base/kolpak-snow-felt.png`). The onload/onerror callbacks compare `pendingSrcRef.current` (relative) with `img.src` (absolute) — they never match, so `setDisplayedSrc` is never called and the image stays frozen on the initial one. Also `isTransitioning` stays true forever (60% opacity).
 **Fix:** Capture the target URL in a local `const targetSrc = imageSrc` before creating the Image. In onload/onerror, compare `pendingSrcRef.current === targetSrc` (both relative). When matched, call `setDisplayedSrc(targetSrc)` and `setIsTransitioning(false)`. This ensures the comparison uses the same URL format. Do NOT change `img.src` to absolute — just fix the comparison logic.
